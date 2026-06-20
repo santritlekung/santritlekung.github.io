@@ -8,19 +8,246 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
     <!-- Toast -->
     <div id="toast" class="toast"></div>
 
     <div id="app">
-        <!-- Login Page -->
-        <div id="loginPage"> ... </div>
 
-        <!-- Main App -->
-        <div id="mainApp">
-            <!-- Header, Clock, Nav, Content -->
-            <!-- Semua konten halaman (dashboard, kalender, dll) -->
+        <!-- ===== LOGIN PAGE ===== -->
+        <div id="loginPage">
+            <div class="login-logo">
+                <i class="fas fa-mosque"></i> HARUM
+            </div>
+            <div class="login-sub">Himpunan Alumni Roudlotul Ulum Malang</div>
+            <div class="login-box">
+                <h2><i class="fas fa-lock" style="margin-right:8px;opacity:0.6;"></i>Login Anggota</h2>
+                <form id="loginForm" autocomplete="off">
+                    <label>Nama Pengguna</label>
+                    <input type="text" id="loginUser" placeholder="Masukkan nama" required />
+                    <label>Kata Sandi</label>
+                    <input type="password" id="loginPass" placeholder="Masukkan sandi" required />
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Masuk
+                    </button>
+                    <div class="login-error" id="loginError"></div>
+                </form>
+                <div class="login-register">
+                    Belum punya akun? <a href="#" id="goToRegisterLink">Daftar via WhatsApp</a>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <!-- ===== MAIN APP ===== -->
+        <div id="mainApp">
+
+            <!-- HEADER -->
+            <header class="app-header">
+                <div class="brand">
+                    <i class="fas fa-mosque"></i>
+                    <div>
+                        <span>HARUM</span>
+                        <small>Alumni Roudlotul Ulum</small>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <span class="user-badge"><i class="fas fa-user"></i> <span id="userNameDisplay">Anggota</span></span>
+                    <button class="logout-btn" id="logoutBtn" title="Keluar"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </header>
+
+            <!-- CLOCK -->
+            <div class="clock-row">
+                <div class="digital-clock" id="digitalClock">--:--:--</div>
+                <div class="date-info">
+                    <div id="gregDate">--</div>
+                    <div id="hijriDateSmall">--</div>
+                </div>
+            </div>
+
+            <!-- NAVIGATION -->
+            <nav class="nav-tabs" id="navTabs">
+                <button class="nav-tab active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</button>
+                <button class="nav-tab" data-page="calendar"><i class="fas fa-calendar-alt"></i> Kalender</button>
+                <button class="nav-tab" data-page="jumatpahing"><i class="fas fa-star-and-crescent"></i> Jumat Pahing</button>
+                <button class="nav-tab" data-page="iuran"><i class="fas fa-hand-holding-usd"></i> Iuran</button>
+                <button class="nav-tab" data-page="kas"><i class="fas fa-wallet"></i> Kas</button>
+                <button class="nav-tab" data-page="buku"><i class="fas fa-book"></i> Buku</button>
+                <button class="nav-tab" data-page="register"><i class="fab fa-whatsapp"></i> Daftar</button>
+            </nav>
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <!-- DASHBOARD -->
+                <div class="page active" id="page-dashboard">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-gem"></i> Selamat Datang, <span id="dashUserName">Anggota</span>!</div>
+                        <p style="color:var(--text-light);font-size:0.9rem;margin-bottom:1rem;">
+                            <i class="fas fa-mosque" style="color:var(--gold);"></i> HARUM — Himpunan Alumni Roudlotul Ulum Malang
+                        </p>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <span class="number" id="dashTotalMembers">0</span>
+                                <span class="label"><i class="fas fa-users"></i> Anggota</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="number gold" id="dashTotalKas">Rp 0</span>
+                                <span class="label"><i class="fas fa-wallet"></i> Kas</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="number" id="dashJpCount">0</span>
+                                <span class="label"><i class="fas fa-calendar-check"></i> Jumat Pahing</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="number" id="dashPaidCount">0</span>
+                                <span class="label"><i class="fas fa-check-circle"></i> Iuran Lunas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-clock"></i> Jumat Pahing Mendatang</div>
+                        <div id="dashNextJp" class="text-center" style="font-size:0.95rem;color:var(--text-light);">
+                            Memuat...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CALENDAR -->
+                <div class="page" id="page-calendar">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-calendar-alt"></i> Kalender Jawa &amp; Hijriyah</div>
+                        <div class="calendar-nav">
+                            <button id="calPrev"><i class="fas fa-chevron-left"></i></button>
+                            <span class="month-label" id="calMonthLabel">Januari 2025</span>
+                            <button id="calNext"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                        <div class="hijri-date" id="hijriDateDisplay">Hijriyah: --</div>
+                        <div class="text-muted text-center mt-1" id="javanesePasaranDisplay">Pasaran: --</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-info-circle"></i> Keterangan</div>
+                        <div style="font-size:0.8rem;color:var(--text-light);line-height:1.6;">
+                            <span style="display:inline-block;background:var(--gold);width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:middle;"></span> Hari ini
+                            <br>
+                            <span style="display:inline-block;background:var(--primary-light);width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:middle;"></span> Jumat Pahing
+                            <br>
+                            <span style="display:inline-block;background:var(--cream);width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:middle;border:1px solid #ddd;"></span> Hari biasa
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JUMAT PAHING -->
+                <div class="page" id="page-jumatpahing">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-star-and-crescent"></i> Jadwal Jumat Pahing</div>
+                        <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:0.8rem;">
+                            <i class="fas fa-info-circle"></i> Setiap <strong>selapanan</strong> (35 hari sekali) pada hari Jumat Pahing.
+                            Iuran <strong>Rp 20.000</strong> per anggota (bisa dicicil berapa pun).
+                        </p>
+                        <ul class="jp-list" id="jpList"></ul>
+                        <div class="text-center mt-2">
+                            <button id="jpGenerateBtn" class="wa-btn" style="background:var(--primary);font-size:0.8rem;padding:0.5rem 1.5rem;box-shadow:none;">
+                                <i class="fas fa-sync"></i> Perbarui Jadwal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IURAN -->
+                <div class="page" id="page-iuran">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-table"></i> Tabel Iuran Jumat Pahing</div>
+                        <p class="text-muted" style="margin-bottom:0.5rem;">
+                            <i class="fas fa-info-circle"></i> Masukkan nominal pembayaran, lalu klik "Bayar". Total akan terakumulasi.
+                            Status otomatis: <span class="status-badge lunas">Lunas (≥20rb)</span>
+                            <span class="status-badge setengah">Setengah (≥10rb)</span>
+                            <span class="status-badge belum">Belum</span>
+                        </p>
+                        <div class="table-wrap">
+                            <table class="iuran-table" id="iuranTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:28px;">#</th>
+                                        <th>Nama</th>
+                                        <th style="width:70px;">Dibayar</th>
+                                        <th style="width:80px;">Status</th>
+                                        <th style="width:180px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="iuranTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="add-member-row" id="adminControls">
+                            <input type="text" id="iuranNewName" placeholder="Nama anggota baru" />
+                            <button id="iuranAddBtn"><i class="fas fa-plus"></i> Tambah</button>
+                            <button id="iuranResetBtn" style="background:transparent;border:1px solid #ddd;color:var(--text-light);">
+                                <i class="fas fa-undo"></i> Reset Semua
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KAS -->
+                <div class="page" id="page-kas">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-wallet"></i> Uang Kas</div>
+                        <div class="kas-total" id="kasTotal">Rp 0</div>
+                        <div class="kas-entries" id="kasEntries"></div>
+                        <div class="kas-form" id="kasForm">
+                            <input type="text" id="kasDesc" placeholder="Keterangan" />
+                            <input type="number" id="kasAmount" placeholder="Jumlah" />
+                            <select id="kasType">
+                                <option value="income">Pemasukan</option>
+                                <option value="expense">Pengeluaran</option>
+                            </select>
+                            <button id="kasAddBtn"><i class="fas fa-plus"></i> Tambah</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BUKU -->
+                <div class="page" id="page-buku">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-book"></i> Buku Sabilun Najah</div>
+                        <div class="book-content" id="bookContent"></div>
+                        <div class="book-edit" id="bookEdit">
+                            <textarea id="bookEditor" placeholder="Tulis catatan / isi buku di sini..."></textarea>
+                            <button id="bookSaveBtn"><i class="fas fa-save"></i> Simpan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REGISTER WA -->
+                <div class="page" id="page-register">
+                    <div class="card">
+                        <div class="card-title"><i class="fab fa-whatsapp"></i> Daftar Anggota</div>
+                        <div class="wa-register">
+                            <div class="wa-icon"><i class="fab fa-whatsapp"></i></div>
+                            <h3>Daftar via WhatsApp</h3>
+                            <p>Klik tombol di bawah untuk mendaftar sebagai anggota HARUM melalui WhatsApp.</p>
+                            <a href="#" id="waRegisterBtn" class="wa-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Daftar via WhatsApp
+                            </a>
+                            <div style="margin-top:1.2rem;font-size:0.8rem;color:var(--text-light);">
+                                <i class="fas fa-info-circle"></i> Kirim pesan: <br />
+                                <code style="background:var(--cream);padding:0.2rem 0.6rem;border-radius:6px;display:inline-block;margin-top:4px;">
+                                    Nama: [nama Anda], Alamat: [alamat], No HP: [no HP]
+                                </code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-users"></i> Anggota Terdaftar</div>
+                        <div id="registeredUsersList" class="registered-users"></div>
+                    </div>
+                </div>
+
+            </div><!-- end content -->
+            <div style="height:10px;"></div>
+        </div><!-- end mainApp -->
+    </div><!-- end app -->
 
     <script src="script.js"></script>
 </body>
