@@ -47,16 +47,9 @@
             overflow: hidden;
             position: relative;
         }
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--cream);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-light);
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--cream); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
 
         /* ===== LOGIN PAGE ===== */
         #loginPage {
@@ -94,10 +87,7 @@
             align-items: center;
             gap: 0.75rem;
         }
-        .login-logo i {
-            font-size: 3rem;
-            color: var(--gold-light);
-        }
+        .login-logo i { font-size: 3rem; color: var(--gold-light); }
         .login-sub {
             color: rgba(255, 255, 255, 0.7);
             font-size: 0.95rem;
@@ -145,9 +135,7 @@
             margin-bottom: 1.2rem;
             outline: none;
         }
-        .login-box input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
+        .login-box input::placeholder { color: rgba(255, 255, 255, 0.4); }
         .login-box input:focus {
             background: rgba(255, 255, 255, 0.25);
             box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.3);
@@ -189,9 +177,7 @@
             font-weight: 600;
             transition: var(--transition);
         }
-        .login-register a:hover {
-            color: #fff;
-        }
+        .login-register a:hover { color: #fff; }
 
         /* ===== MAIN APP ===== */
         #mainApp {
@@ -219,27 +205,10 @@
             gap: 0.6rem;
             color: #fff;
         }
-        .app-header .brand i {
-            font-size: 1.8rem;
-            color: var(--gold);
-        }
-        .app-header .brand span {
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
-        }
-        .app-header .brand small {
-            font-weight: 300;
-            font-size: 0.65rem;
-            opacity: 0.7;
-            display: block;
-            margin-top: -2px;
-        }
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+        .app-header .brand i { font-size: 1.8rem; color: var(--gold); }
+        .app-header .brand span { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5px; }
+        .app-header .brand small { font-weight: 300; font-size: 0.65rem; opacity: 0.7; display: block; margin-top: -2px; }
+        .header-actions { display: flex; align-items: center; gap: 0.75rem; }
         .header-actions .user-badge {
             color: rgba(255, 255, 255, 0.85);
             font-size: 0.8rem;
@@ -250,9 +219,7 @@
             align-items: center;
             gap: 0.4rem;
         }
-        .header-actions .user-badge i {
-            font-size: 0.8rem;
-        }
+        .header-actions .user-badge i { font-size: 0.8rem; }
         .logout-btn {
             background: rgba(255, 255, 255, 0.10);
             border: none;
@@ -267,11 +234,9 @@
             justify-content: center;
             font-size: 1rem;
         }
-        .logout-btn:hover {
-            background: rgba(255, 80, 80, 0.3);
-        }
+        .logout-btn:hover { background: rgba(255, 80, 80, 0.3); }
 
-        /* CLOCK ROW */
+        /* CLOCK */
         .clock-row {
             background: var(--primary);
             padding: 0.6rem 1.25rem;
@@ -292,12 +257,7 @@
             padding: 0.2rem 0.8rem;
             border-radius: 8px;
         }
-        .clock-row .date-info {
-            font-size: 0.75rem;
-            opacity: 0.85;
-            text-align: right;
-            line-height: 1.3;
-        }
+        .clock-row .date-info { font-size: 0.75rem; opacity: 0.85; text-align: right; line-height: 1.3; }
 
         /* NAVIGATION */
         .nav-tabs {
@@ -310,9 +270,7 @@
             flex-shrink: 0;
             scrollbar-width: none;
         }
-        .nav-tabs::-webkit-scrollbar {
-            display: none;
-        }
+        .nav-tabs::-webkit-scrollbar { display: none; }
         .nav-tab {
             flex: 0 0 auto;
             padding: 0.5rem 1rem;
@@ -329,42 +287,15 @@
             align-items: center;
             gap: 0.4rem;
         }
-        .nav-tab i {
-            font-size: 0.9rem;
-        }
-        .nav-tab:hover {
-            background: rgba(26, 107, 60, 0.08);
-            color: var(--primary);
-        }
-        .nav-tab.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(26, 107, 60, 0.25);
-        }
+        .nav-tab i { font-size: 0.9rem; }
+        .nav-tab:hover { background: rgba(26, 107, 60, 0.08); color: var(--primary); }
+        .nav-tab.active { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(26, 107, 60, 0.25); }
 
         /* CONTENT */
-        .content {
-            flex: 1;
-            padding: 1.25rem 1rem 6rem;
-            overflow-y: auto;
-        }
-        .page {
-            display: none;
-            animation: fadeUp 0.35s ease;
-        }
-        .page.active {
-            display: block;
-        }
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .content { flex: 1; padding: 1.25rem 1rem 6rem; overflow-y: auto; }
+        .page { display: none; animation: fadeUp 0.35s ease; }
+        .page.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
         /* CARDS */
         .card {
@@ -384,12 +315,9 @@
             gap: 0.6rem;
             margin-bottom: 1rem;
         }
-        .card-title i {
-            color: var(--gold);
-            font-size: 1.2rem;
-        }
+        .card-title i { color: var(--gold); font-size: 1.2rem; }
 
-        /* DASHBOARD STATS */
+        /* DASHBOARD */
         .stat-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -402,22 +330,9 @@
             text-align: center;
             border: 1px solid rgba(0, 0, 0, 0.04);
         }
-        .stat-item .number {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-        }
-        .stat-item .label {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
-        }
-        .stat-item .number.gold {
-            color: var(--gold);
-        }
+        .stat-item .number { font-size: 1.6rem; font-weight: 800; color: var(--primary); display: block; }
+        .stat-item .label { font-size: 0.7rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+        .stat-item .number.gold { color: var(--gold); }
         .upcoming-badge {
             background: var(--primary);
             color: #fff;
@@ -453,19 +368,9 @@
             cursor: default;
             font-size: 0.8rem;
         }
-        .calendar-grid .day-cell.today {
-            background: var(--gold);
-            color: #fff;
-            font-weight: 700;
-        }
-        .calendar-grid .day-cell.jumat-pahing {
-            background: var(--primary-light);
-            color: #fff;
-            font-weight: 600;
-        }
-        .calendar-grid .day-cell.other-month {
-            opacity: 0.3;
-        }
+        .calendar-grid .day-cell.today { background: var(--gold); color: #fff; font-weight: 700; }
+        .calendar-grid .day-cell.jumat-pahing { background: var(--primary-light); color: #fff; font-weight: 600; }
+        .calendar-grid .day-cell.other-month { opacity: 0.3; }
         .calendar-nav {
             display: flex;
             justify-content: space-between;
@@ -483,30 +388,12 @@
             transition: var(--transition);
             font-size: 0.85rem;
         }
-        .calendar-nav button:hover {
-            background: var(--primary);
-            color: #fff;
-        }
-        .calendar-nav .month-label {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--primary-dark);
-        }
-        .hijri-date {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 0.5rem;
-            text-align: center;
-            background: var(--cream);
-            padding: 0.4rem;
-            border-radius: 8px;
-        }
+        .calendar-nav button:hover { background: var(--primary); color: #fff; }
+        .calendar-nav .month-label { font-weight: 700; font-size: 1rem; color: var(--primary-dark); }
+        .hijri-date { font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem; text-align: center; background: var(--cream); padding: 0.4rem; border-radius: 8px; }
 
-        /* JUMAT PAHING LIST */
-        .jp-list {
-            list-style: none;
-            padding: 0;
-        }
+        /* JUMAT PAHING */
+        .jp-list { list-style: none; padding: 0; }
         .jp-list li {
             display: flex;
             justify-content: space-between;
@@ -515,13 +402,8 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             font-size: 0.9rem;
         }
-        .jp-list li:last-child {
-            border-bottom: none;
-        }
-        .jp-list .jp-date {
-            font-weight: 600;
-            color: var(--primary-dark);
-        }
+        .jp-list li:last-child { border-bottom: none; }
+        .jp-list .jp-date { font-weight: 600; color: var(--primary-dark); }
         .jp-list .jp-badge {
             background: var(--gold-light);
             color: var(--primary-dark);
@@ -530,12 +412,9 @@
             font-size: 0.7rem;
             font-weight: 600;
         }
-        .jp-list .jp-badge.upcoming {
-            background: var(--primary);
-            color: #fff;
-        }
+        .jp-list .jp-badge.upcoming { background: var(--primary); color: #fff; }
 
-        /* ===== TABEL IURAN (SHEET) ===== */
+        /* ===== TABEL IURAN (dengan input pembayaran) ===== */
         .table-wrap {
             overflow-x: auto;
             margin-top: 0.5rem;
@@ -545,100 +424,81 @@
         table.iuran-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
-            min-width: 340px;
+            font-size: 0.82rem;
+            min-width: 420px;
         }
         table.iuran-table th {
             background: var(--primary-dark);
             color: #fff;
-            padding: 0.6rem 0.5rem;
+            padding: 0.5rem 0.4rem;
             text-align: left;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
         }
-        table.iuran-table th:first-child {
-            border-radius: 10px 0 0 0;
-        }
-        table.iuran-table th:last-child {
-            border-radius: 0 10px 0 0;
-        }
+        table.iuran-table th:first-child { border-radius: 10px 0 0 0; }
+        table.iuran-table th:last-child { border-radius: 0 10px 0 0; }
         table.iuran-table td {
-            padding: 0.6rem 0.5rem;
+            padding: 0.5rem 0.4rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
             vertical-align: middle;
         }
-        table.iuran-table tr:last-child td {
-            border-bottom: none;
-        }
-        table.iuran-table tr:hover td {
-            background: rgba(26, 107, 60, 0.03);
-        }
+        table.iuran-table tr:last-child td { border-bottom: none; }
+        table.iuran-table tr:hover td { background: rgba(26, 107, 60, 0.03); }
+
         .status-badge {
             display: inline-block;
-            padding: 0.15rem 0.7rem;
+            padding: 0.15rem 0.6rem;
             border-radius: 20px;
             font-size: 0.7rem;
             font-weight: 600;
             white-space: nowrap;
         }
-        .status-badge.lunas {
-            background: #c8f0d6;
-            color: #1a6b3c;
-        }
-        .status-badge.setengah {
-            background: #fff3cd;
-            color: #856404;
-        }
-        .status-badge.belum {
-            background: #fdd;
-            color: #b33;
-        }
-        .btn-group {
+        .status-badge.lunas { background: #c8f0d6; color: #1a6b3c; }
+        .status-badge.setengah { background: #fff3cd; color: #856404; }
+        .status-badge.belum { background: #fdd; color: #b33; }
+
+        .pay-form {
             display: flex;
             gap: 0.3rem;
+            align-items: center;
             flex-wrap: wrap;
         }
-        .btn-group button {
+        .pay-form input[type="number"] {
+            width: 60px;
+            padding: 0.2rem 0.3rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            text-align: center;
+            outline: none;
+        }
+        .pay-form input[type="number"]:focus { border-color: var(--primary); }
+        .pay-form button {
             border: none;
-            padding: 0.2rem 0.5rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 6px;
             font-size: 0.7rem;
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            font-weight: 600;
-        }
-        .btn-group .btn-lunas {
-            background: #1a6b3c;
+            background: var(--primary);
             color: #fff;
         }
-        .btn-group .btn-lunas:hover {
-            background: #0f4a28;
-        }
-        .btn-group .btn-setengah {
-            background: #e6b800;
-            color: #fff;
-        }
-        .btn-group .btn-setengah:hover {
-            background: #c9a84c;
-        }
-        .btn-group .btn-belum {
-            background: #c0392b;
-            color: #fff;
-        }
-        .btn-group .btn-belum:hover {
-            background: #a93226;
-        }
-        .btn-group .btn-hapus {
+        .pay-form button:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .pay-form .btn-reset {
             background: #eee;
             color: #888;
         }
-        .btn-group .btn-hapus:hover {
-            background: #c0392b;
-            color: #fff;
+        .pay-form .btn-reset:hover { background: #c0392b; color: #fff; }
+        .pay-form .btn-hapus {
+            background: #eee;
+            color: #888;
         }
+        .pay-form .btn-hapus:hover { background: #c0392b; color: #fff; }
+
         .add-member-row {
             display: flex;
             gap: 0.6rem;
@@ -671,10 +531,7 @@
             font-size: 0.85rem;
             white-space: nowrap;
         }
-        .add-member-row button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
+        .add-member-row button:hover { background: var(--primary-dark); transform: translateY(-1px); }
 
         /* KAS */
         .kas-total {
@@ -684,11 +541,7 @@
             text-align: center;
             padding: 0.5rem 0;
         }
-        .kas-total small {
-            font-size: 1rem;
-            font-weight: 400;
-            color: var(--text-light);
-        }
+        .kas-total small { font-size: 1rem; font-weight: 400; color: var(--text-light); }
         .kas-entries {
             margin-top: 0.8rem;
             max-height: 260px;
@@ -710,25 +563,11 @@
             flex: 1;
             min-width: 0;
         }
-        .kas-entry .entry-desc i {
-            width: 1.2rem;
-            color: var(--text-light);
-        }
-        .kas-entry .entry-desc span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .kas-entry .entry-amount {
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .kas-entry .entry-amount.income {
-            color: var(--primary);
-        }
-        .kas-entry .entry-amount.expense {
-            color: #c0392b;
-        }
+        .kas-entry .entry-desc i { width: 1.2rem; color: var(--text-light); }
+        .kas-entry .entry-desc span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .kas-entry .entry-amount { font-weight: 700; white-space: nowrap; }
+        .kas-entry .entry-amount.income { color: var(--primary); }
+        .kas-entry .entry-amount.expense { color: #c0392b; }
         .kas-entry .btn-hapus-kas {
             background: transparent;
             border: none;
@@ -738,17 +577,15 @@
             font-size: 0.9rem;
             padding: 0 0.2rem;
         }
-        .kas-entry .btn-hapus-kas:hover {
-            color: #c0392b;
-        }
+        .kas-entry .btn-hapus-kas:hover { color: #c0392b; }
+
         .kas-form {
             display: flex;
             gap: 0.5rem;
             margin-top: 0.8rem;
             flex-wrap: wrap;
         }
-        .kas-form input,
-        .kas-form select {
+        .kas-form input, .kas-form select {
             padding: 0.5rem 0.8rem;
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -758,8 +595,7 @@
             flex: 1;
             min-width: 70px;
         }
-        .kas-form input:focus,
-        .kas-form select:focus {
+        .kas-form input:focus, .kas-form select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(26, 107, 60, 0.1);
         }
@@ -775,10 +611,7 @@
             font-size: 0.85rem;
             white-space: nowrap;
         }
-        .kas-form button:hover {
-            background: var(--gold-light);
-            transform: translateY(-1px);
-        }
+        .kas-form button:hover { background: var(--gold-light); transform: translateY(-1px); }
 
         /* BUKU */
         .book-content {
@@ -798,9 +631,7 @@
             color: var(--text-light);
             font-style: italic;
         }
-        .book-edit {
-            margin-top: 0.8rem;
-        }
+        .book-edit { margin-top: 0.8rem; }
         .book-edit textarea {
             width: 100%;
             padding: 0.8rem;
@@ -829,30 +660,13 @@
             transition: var(--transition);
             font-size: 0.85rem;
         }
-        .book-edit button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
+        .book-edit button:hover { background: var(--primary-dark); transform: translateY(-1px); }
 
         /* REGISTER WA */
-        .wa-register {
-            text-align: center;
-            padding: 1rem 0;
-        }
-        .wa-register .wa-icon {
-            font-size: 4rem;
-            color: #25D366;
-            margin-bottom: 0.5rem;
-        }
-        .wa-register h3 {
-            color: var(--primary-dark);
-            margin-bottom: 0.25rem;
-        }
-        .wa-register p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 1.2rem;
-        }
+        .wa-register { text-align: center; padding: 1rem 0; }
+        .wa-register .wa-icon { font-size: 4rem; color: #25D366; margin-bottom: 0.5rem; }
+        .wa-register h3 { color: var(--primary-dark); margin-bottom: 0.25rem; }
+        .wa-register p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.2rem; }
         .wa-btn {
             display: inline-flex;
             align-items: center;
@@ -869,16 +683,9 @@
             transition: var(--transition);
             box-shadow: 0 6px 25px rgba(37, 211, 102, 0.3);
         }
-        .wa-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.4);
-        }
-        .wa-btn i {
-            font-size: 1.4rem;
-        }
-        .registered-users {
-            margin-top: 1rem;
-        }
+        .wa-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(37, 211, 102, 0.4); }
+        .wa-btn i { font-size: 1.4rem; }
+        .registered-users { margin-top: 1rem; }
         .registered-users .user-chip {
             display: inline-block;
             background: var(--cream);
@@ -909,89 +716,30 @@
             max-width: 90%;
             text-align: center;
         }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
-        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 
-        .text-center {
-            text-align: center;
-        }
-        .mt-2 {
-            margin-top: 1rem;
-        }
-        .mt-1 {
-            margin-top: 0.5rem;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 1.5rem 0;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-        .empty-state i {
-            font-size: 2.5rem;
-            opacity: 0.3;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        .text-muted {
-            color: var(--text-light);
-            font-size: 0.8rem;
-        }
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-1 { margin-top: 0.5rem; }
+        .text-muted { color: var(--text-light); font-size: 0.8rem; }
+        .empty-state { text-align: center; padding: 1.5rem 0; color: var(--text-light); font-size: 0.9rem; }
+        .empty-state i { font-size: 2.5rem; opacity: 0.3; display: block; margin-bottom: 0.5rem; }
 
         @media (max-width: 480px) {
-            #app {
-                max-width: 100%;
-                border-radius: 0;
-            }
-            .app-header .brand span {
-                font-size: 1rem;
-            }
-            .clock-row .digital-clock {
-                font-size: 1.1rem;
-            }
-            .nav-tab {
-                font-size: 0.7rem;
-                padding: 0.4rem 0.7rem;
-            }
-            .stat-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.5rem;
-            }
-            .stat-item .number {
-                font-size: 1.2rem;
-            }
-            .login-logo {
-                font-size: 3.2rem;
-            }
-            .login-box {
-                padding: 1.5rem 1.25rem;
-            }
-            .content {
-                padding: 1rem 0.8rem 5rem;
-            }
-            .card {
-                padding: 1rem;
-            }
-            table.iuran-table {
-                font-size: 0.75rem;
-                min-width: 280px;
-            }
-            table.iuran-table th,
-            table.iuran-table td {
-                padding: 0.4rem 0.3rem;
-            }
-            .btn-group button {
-                font-size: 0.6rem;
-                padding: 0.15rem 0.4rem;
-            }
-            .kas-form input,
-            .kas-form select {
-                min-width: 60px;
-                font-size: 0.75rem;
-            }
+            #app { max-width: 100%; border-radius: 0; }
+            .app-header .brand span { font-size: 1rem; }
+            .clock-row .digital-clock { font-size: 1.1rem; }
+            .nav-tab { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
+            .stat-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .stat-item .number { font-size: 1.2rem; }
+            .login-logo { font-size: 3.2rem; }
+            .login-box { padding: 1.5rem 1.25rem; }
+            .content { padding: 1rem 0.8rem 5rem; }
+            .card { padding: 1rem; }
+            table.iuran-table { font-size: 0.7rem; min-width: 360px; }
+            table.iuran-table th, table.iuran-table td { padding: 0.3rem 0.2rem; }
+            .pay-form input[type="number"] { width: 50px; font-size: 0.7rem; }
+            .pay-form button { font-size: 0.6rem; padding: 0.15rem 0.4rem; }
         }
     </style>
 </head>
@@ -1134,7 +882,7 @@
                         <div class="card-title"><i class="fas fa-star-and-crescent"></i> Jadwal Jumat Pahing</div>
                         <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:0.8rem;">
                             <i class="fas fa-info-circle"></i> Setiap <strong>selapanan</strong> (35 hari sekali) pada hari Jumat Pahing.
-                            Iuran <strong>Rp 20.000</strong> per anggota (bisa dicicil Rp 10.000).
+                            Iuran <strong>Rp 20.000</strong> per anggota (bisa dicicil berapa pun).
                         </p>
                         <ul class="jp-list" id="jpList"></ul>
                         <div class="text-center mt-2">
@@ -1145,21 +893,25 @@
                     </div>
                 </div>
 
-                <!-- IURAN (TABEL SHEET) -->
+                <!-- IURAN (TABEL dengan input bayar) -->
                 <div class="page" id="page-iuran">
                     <div class="card">
                         <div class="card-title"><i class="fas fa-table"></i> Tabel Iuran Jumat Pahing</div>
                         <p class="text-muted" style="margin-bottom:0.5rem;">
-                            <i class="fas fa-info-circle"></i> Klik tombol status untuk mengubah: <span class="status-badge lunas">Lunas (20.000)</span> <span class="status-badge setengah">Setengah (10.000)</span> <span class="status-badge belum">Belum</span>
+                            <i class="fas fa-info-circle"></i> Masukkan nominal pembayaran, lalu klik "Bayar". Total akan terakumulasi.
+                            Status otomatis: <span class="status-badge lunas">Lunas (≥20rb)</span>
+                            <span class="status-badge setengah">Setengah (≥10rb)</span>
+                            <span class="status-badge belum">Belum</span>
                         </p>
                         <div class="table-wrap">
                             <table class="iuran-table" id="iuranTable">
                                 <thead>
                                     <tr>
-                                        <th style="width:30px;">#</th>
+                                        <th style="width:28px;">#</th>
                                         <th>Nama</th>
+                                        <th style="width:70px;">Dibayar</th>
                                         <th style="width:80px;">Status</th>
-                                        <th style="width:140px;">Aksi</th>
+                                        <th style="width:180px;">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="iuranTableBody"></tbody>
@@ -1239,11 +991,11 @@
         // ============================================================
         //  DATA / STATE
         // ============================================================
-        const STORAGE_KEY = 'harum_data_v2';
+        const STORAGE_KEY = 'harum_data_v3';
 
         const defaultData = {
             members: [
-                { id: 1, name: 'Ahmad Fauzi', paid: 0 }, // 0=belum, 10000=setengah, 20000=lunas
+                { id: 1, name: 'Ahmad Fauzi', paid: 0 },
                 { id: 2, name: 'M. Rofiq', paid: 0 },
                 { id: 3, name: 'Laily Maulida', paid: 0 },
                 { id: 4, name: 'Khoirul Anam', paid: 0 },
@@ -1283,7 +1035,6 @@
                     for (const key in defaultData) {
                         if (!(key in parsed)) parsed[key] = defaultData[key];
                     }
-                    // ensure members have paid as number
                     parsed.members.forEach(m => {
                         if (m.paid === undefined) m.paid = 0;
                         if (typeof m.paid === 'boolean') m.paid = m.paid ? 20000 : 0;
@@ -1622,13 +1373,13 @@
         });
 
         // ============================================================
-        //  RENDER: IURAN (TABEL SHEET)
+        //  RENDER: IURAN (TABEL dengan input bayar)
         // ============================================================
         function renderIuran() {
             const tbody = document.getElementById('iuranTableBody');
             if (data.members.length === 0) {
                 tbody.innerHTML =
-                    `<tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--text-light);">Belum ada anggota. Tambahkan di bawah.</td></tr>`;
+                    `<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-light);">Belum ada anggota. Tambahkan di bawah.</td></tr>`;
                 return;
             }
             let html = '';
@@ -1638,12 +1389,13 @@
                     <tr>
                         <td style="text-align:center;font-weight:600;color:var(--text-light);">${idx+1}</td>
                         <td><strong>${m.name}</strong></td>
+                        <td>${formatRupiah(m.paid)}</td>
                         <td><span class="status-badge ${status.cls}">${status.label}</span></td>
                         <td>
-                            <div class="btn-group">
-                                <button class="btn-lunas" onclick="setPaidStatus(${m.id}, 20000)" title="Lunas 20.000">Lunas</button>
-                                <button class="btn-setengah" onclick="setPaidStatus(${m.id}, 10000)" title="Setengah 10.000">½</button>
-                                <button class="btn-belum" onclick="setPaidStatus(${m.id}, 0)" title="Belum">×</button>
+                            <div class="pay-form">
+                                <input type="number" id="payAmount_${m.id}" value="5000" min="1000" step="1000" style="width:60px;" />
+                                <button onclick="addPayment(${m.id})">Bayar</button>
+                                <button class="btn-reset" onclick="resetPayment(${m.id})" title="Reset ke 0"><i class="fas fa-undo"></i></button>
                                 <button class="btn-hapus" onclick="deleteMember(${m.id})" title="Hapus"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>
@@ -1653,15 +1405,29 @@
             tbody.innerHTML = html;
         }
 
-        window.setPaidStatus = function(id, value) {
+        window.addPayment = function(id) {
+            const input = document.getElementById('payAmount_' + id);
+            let amount = parseInt(input.value);
+            if (isNaN(amount) || amount <= 0) { showToast('Masukkan nominal positif.'); return; }
             const m = data.members.find(x => x.id === id);
             if (m) {
-                m.paid = value;
+                m.paid = (m.paid || 0) + amount;
                 saveData();
                 renderIuran();
                 renderDashboard();
-                const label = getPaidLabel(value).label;
-                showToast(`${m.name} → ${label}`);
+                showToast(`${m.name} + ${formatRupiah(amount)} (total ${formatRupiah(m.paid)})`);
+            }
+        };
+
+        window.resetPayment = function(id) {
+            if (!confirm('Reset pembayaran anggota ini menjadi 0?')) return;
+            const m = data.members.find(x => x.id === id);
+            if (m) {
+                m.paid = 0;
+                saveData();
+                renderIuran();
+                renderDashboard();
+                showToast(`${m.name} direset.`);
             }
         };
 
@@ -1692,12 +1458,12 @@
         });
 
         document.getElementById('iuranResetBtn').addEventListener('click', () => {
-            if (confirm('Reset semua status iuran menjadi "Belum"?')) {
+            if (confirm('Reset semua status iuran menjadi 0?')) {
                 data.members.forEach(m => m.paid = 0);
                 saveData();
                 renderIuran();
                 renderDashboard();
-                showToast('Status iuran direset.');
+                showToast('Semua iuran direset.');
             }
         });
 
@@ -1832,7 +1598,7 @@
         loginPage.style.display = 'flex';
         mainApp.style.display = 'none';
 
-        console.log('🕌 HARUM v2 loaded');
+        console.log('🕌 HARUM v3 loaded (flexible payment)');
         console.log('📦 Data:', data);
         console.log('🔑 Akun: admin/harum123 | anggota/123456');
 
@@ -1852,4 +1618,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
