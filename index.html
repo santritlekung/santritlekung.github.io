@@ -12,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --primary: #1a6b3c;
             --primary-dark: #0f4a28;
@@ -28,9 +27,8 @@
             --radius: 18px;
             --transition: 0.3s ease;
         }
-
         body {
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
@@ -38,21 +36,17 @@
             justify-content: center;
             align-items: center;
         }
-
-        /* ===== APP CONTAINER ===== */
         #app {
             width: 100%;
-            max-width: 480px;
+            max-width: 520px;
             min-height: 100vh;
             background: var(--cream);
             box-shadow: 0 0 60px rgba(0, 0, 0, 0.08);
-            position: relative;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
         }
-
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -76,7 +70,6 @@
             position: relative;
             overflow: hidden;
         }
-
         #loginPage::before {
             content: '';
             position: absolute;
@@ -88,7 +81,6 @@
             border-radius: 50%;
             pointer-events: none;
         }
-
         .login-logo {
             font-size: 4.5rem;
             font-weight: 800;
@@ -102,12 +94,10 @@
             align-items: center;
             gap: 0.75rem;
         }
-
         .login-logo i {
             font-size: 3rem;
             color: var(--gold-light);
         }
-
         .login-sub {
             color: rgba(255, 255, 255, 0.7);
             font-size: 0.95rem;
@@ -117,7 +107,6 @@
             z-index: 1;
             font-weight: 300;
         }
-
         .login-box {
             background: rgba(255, 255, 255, 0.10);
             backdrop-filter: blur(16px);
@@ -130,7 +119,6 @@
             position: relative;
             z-index: 1;
         }
-
         .login-box h2 {
             color: #fff;
             font-size: 1.3rem;
@@ -138,7 +126,6 @@
             text-align: center;
             margin-bottom: 1.5rem;
         }
-
         .login-box label {
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.85rem;
@@ -146,7 +133,6 @@
             display: block;
             margin-bottom: 0.35rem;
         }
-
         .login-box input {
             width: 100%;
             padding: 0.8rem 1rem;
@@ -159,16 +145,13 @@
             margin-bottom: 1.2rem;
             outline: none;
         }
-
         .login-box input::placeholder {
             color: rgba(255, 255, 255, 0.4);
         }
-
         .login-box input:focus {
             background: rgba(255, 255, 255, 0.25);
             box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.3);
         }
-
         .login-btn {
             width: 100%;
             padding: 0.85rem;
@@ -182,13 +165,11 @@
             transition: var(--transition);
             letter-spacing: 1px;
         }
-
         .login-btn:hover {
             background: var(--gold-light);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(201, 168, 76, 0.35);
         }
-
         .login-error {
             color: #ffb3b3;
             font-size: 0.85rem;
@@ -196,26 +177,23 @@
             margin-top: 0.75rem;
             min-height: 1.5rem;
         }
-
         .login-register {
             text-align: center;
             margin-top: 1.2rem;
             color: rgba(255, 255, 255, 0.6);
             font-size: 0.9rem;
         }
-
         .login-register a {
             color: var(--gold-light);
             text-decoration: none;
             font-weight: 600;
             transition: var(--transition);
         }
-
         .login-register a:hover {
             color: #fff;
         }
 
-        /* ===== MAIN APP (logged in) ===== */
+        /* ===== MAIN APP ===== */
         #mainApp {
             display: none;
             flex-direction: column;
@@ -223,7 +201,7 @@
             background: var(--cream);
         }
 
-        /* ===== TOP HEADER ===== */
+        /* HEADER */
         .app-header {
             background: var(--primary-dark);
             padding: 1rem 1.25rem 0.85rem;
@@ -235,25 +213,21 @@
             z-index: 100;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.12);
         }
-
         .app-header .brand {
             display: flex;
             align-items: center;
             gap: 0.6rem;
             color: #fff;
         }
-
         .app-header .brand i {
             font-size: 1.8rem;
             color: var(--gold);
         }
-
         .app-header .brand span {
             font-weight: 700;
             font-size: 1.2rem;
             letter-spacing: 0.5px;
         }
-
         .app-header .brand small {
             font-weight: 300;
             font-size: 0.65rem;
@@ -261,13 +235,11 @@
             display: block;
             margin-top: -2px;
         }
-
         .header-actions {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-
         .header-actions .user-badge {
             color: rgba(255, 255, 255, 0.85);
             font-size: 0.8rem;
@@ -278,11 +250,9 @@
             align-items: center;
             gap: 0.4rem;
         }
-
         .header-actions .user-badge i {
             font-size: 0.8rem;
         }
-
         .logout-btn {
             background: rgba(255, 255, 255, 0.10);
             border: none;
@@ -297,12 +267,11 @@
             justify-content: center;
             font-size: 1rem;
         }
-
         .logout-btn:hover {
             background: rgba(255, 80, 80, 0.3);
         }
 
-        /* ===== CLOCK ROW ===== */
+        /* CLOCK ROW */
         .clock-row {
             background: var(--primary);
             padding: 0.6rem 1.25rem;
@@ -311,8 +280,9 @@
             align-items: center;
             color: #fff;
             font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 0.3rem;
         }
-
         .clock-row .digital-clock {
             font-family: 'Courier New', monospace;
             font-weight: 700;
@@ -322,7 +292,6 @@
             padding: 0.2rem 0.8rem;
             border-radius: 8px;
         }
-
         .clock-row .date-info {
             font-size: 0.75rem;
             opacity: 0.85;
@@ -330,7 +299,7 @@
             line-height: 1.3;
         }
 
-        /* ===== NAVIGATION ===== */
+        /* NAVIGATION */
         .nav-tabs {
             display: flex;
             background: var(--cream);
@@ -341,11 +310,9 @@
             flex-shrink: 0;
             scrollbar-width: none;
         }
-
         .nav-tabs::-webkit-scrollbar {
             display: none;
         }
-
         .nav-tab {
             flex: 0 0 auto;
             padding: 0.5rem 1rem;
@@ -362,38 +329,32 @@
             align-items: center;
             gap: 0.4rem;
         }
-
         .nav-tab i {
             font-size: 0.9rem;
         }
-
         .nav-tab:hover {
             background: rgba(26, 107, 60, 0.08);
             color: var(--primary);
         }
-
         .nav-tab.active {
             background: var(--primary);
             color: #fff;
             box-shadow: 0 4px 15px rgba(26, 107, 60, 0.25);
         }
 
-        /* ===== CONTENT AREA ===== */
+        /* CONTENT */
         .content {
             flex: 1;
             padding: 1.25rem 1rem 6rem;
             overflow-y: auto;
         }
-
         .page {
             display: none;
             animation: fadeUp 0.35s ease;
         }
-
         .page.active {
             display: block;
         }
-
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -405,7 +366,7 @@
             }
         }
 
-        /* ===== CARDS ===== */
+        /* CARDS */
         .card {
             background: var(--card);
             border-radius: var(--radius);
@@ -414,7 +375,6 @@
             margin-bottom: 1.25rem;
             border: 1px solid rgba(0, 0, 0, 0.03);
         }
-
         .card-title {
             font-size: 1.05rem;
             font-weight: 700;
@@ -424,19 +384,17 @@
             gap: 0.6rem;
             margin-bottom: 1rem;
         }
-
         .card-title i {
             color: var(--gold);
             font-size: 1.2rem;
         }
 
-        /* ===== DASHBOARD ===== */
+        /* DASHBOARD STATS */
         .stat-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0.8rem;
         }
-
         .stat-item {
             background: var(--cream);
             border-radius: 14px;
@@ -444,14 +402,12 @@
             text-align: center;
             border: 1px solid rgba(0, 0, 0, 0.04);
         }
-
         .stat-item .number {
             font-size: 1.6rem;
             font-weight: 800;
             color: var(--primary);
             display: block;
         }
-
         .stat-item .label {
             font-size: 0.7rem;
             color: var(--text-light);
@@ -459,11 +415,9 @@
             letter-spacing: 0.5px;
             margin-top: 2px;
         }
-
         .stat-item .number.gold {
             color: var(--gold);
         }
-
         .upcoming-badge {
             background: var(--primary);
             color: #fff;
@@ -474,7 +428,7 @@
             margin-top: 0.5rem;
         }
 
-        /* ===== CALENDAR ===== */
+        /* CALENDAR */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -482,7 +436,6 @@
             text-align: center;
             font-size: 0.8rem;
         }
-
         .calendar-grid .day-header {
             font-weight: 700;
             color: var(--text-light);
@@ -492,7 +445,6 @@
             background: var(--cream);
             border-radius: 6px;
         }
-
         .calendar-grid .day-cell {
             padding: 0.35rem 0;
             border-radius: 6px;
@@ -501,30 +453,25 @@
             cursor: default;
             font-size: 0.8rem;
         }
-
         .calendar-grid .day-cell.today {
             background: var(--gold);
             color: #fff;
             font-weight: 700;
         }
-
         .calendar-grid .day-cell.jumat-pahing {
             background: var(--primary-light);
             color: #fff;
             font-weight: 600;
         }
-
         .calendar-grid .day-cell.other-month {
             opacity: 0.3;
         }
-
         .calendar-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.8rem;
         }
-
         .calendar-nav button {
             background: var(--cream);
             border: none;
@@ -536,18 +483,15 @@
             transition: var(--transition);
             font-size: 0.85rem;
         }
-
         .calendar-nav button:hover {
             background: var(--primary);
             color: #fff;
         }
-
         .calendar-nav .month-label {
             font-weight: 700;
             font-size: 1rem;
             color: var(--primary-dark);
         }
-
         .hijri-date {
             font-size: 0.85rem;
             color: var(--text-light);
@@ -558,20 +502,11 @@
             border-radius: 8px;
         }
 
-        .javanese-pasaran {
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-weight: 600;
-            text-align: center;
-            margin-top: 0.3rem;
-        }
-
-        /* ===== JUMAT PAHING LIST ===== */
+        /* JUMAT PAHING LIST */
         .jp-list {
             list-style: none;
             padding: 0;
         }
-
         .jp-list li {
             display: flex;
             justify-content: space-between;
@@ -580,16 +515,13 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             font-size: 0.9rem;
         }
-
         .jp-list li:last-child {
             border-bottom: none;
         }
-
         .jp-list .jp-date {
             font-weight: 600;
             color: var(--primary-dark);
         }
-
         .jp-list .jp-badge {
             background: var(--gold-light);
             color: var(--primary-dark);
@@ -598,80 +530,122 @@
             font-size: 0.7rem;
             font-weight: 600;
         }
-
         .jp-list .jp-badge.upcoming {
             background: var(--primary);
             color: #fff;
         }
 
-        /* ===== IURAN / MEMBER LIST ===== */
-        .member-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.6rem 0.8rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-size: 0.9rem;
+        /* ===== TABEL IURAN (SHEET) ===== */
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
-
-        .member-item:last-child {
+        table.iuran-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 340px;
+        }
+        table.iuran-table th {
+            background: var(--primary-dark);
+            color: #fff;
+            padding: 0.6rem 0.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        table.iuran-table th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+        table.iuran-table th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+        table.iuran-table td {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            vertical-align: middle;
+        }
+        table.iuran-table tr:last-child td {
             border-bottom: none;
         }
-
-        .member-item .name {
-            font-weight: 600;
+        table.iuran-table tr:hover td {
+            background: rgba(26, 107, 60, 0.03);
         }
-
-        .member-item .status {
-            font-size: 0.75rem;
+        .status-badge {
+            display: inline-block;
             padding: 0.15rem 0.7rem;
             border-radius: 20px;
+            font-size: 0.7rem;
             font-weight: 600;
+            white-space: nowrap;
         }
-
-        .member-item .status.paid {
+        .status-badge.lunas {
             background: #c8f0d6;
             color: #1a6b3c;
         }
-
-        .member-item .status.unpaid {
-            background: #fdd;
-            color: #b33;
-        }
-
-        .member-item .status.pending {
+        .status-badge.setengah {
             background: #fff3cd;
             color: #856404;
         }
-
-        .member-actions {
+        .status-badge.belum {
+            background: #fdd;
+            color: #b33;
+        }
+        .btn-group {
             display: flex;
-            gap: 0.4rem;
+            gap: 0.3rem;
+            flex-wrap: wrap;
         }
-
-        .member-actions button {
+        .btn-group button {
             border: none;
-            background: var(--cream);
-            padding: 0.2rem 0.6rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 6px;
-            cursor: pointer;
             font-size: 0.7rem;
+            cursor: pointer;
             transition: var(--transition);
+            font-weight: 600;
         }
-
-        .member-actions button:hover {
-            background: var(--primary);
+        .btn-group .btn-lunas {
+            background: #1a6b3c;
             color: #fff;
         }
-
-        .add-member-form {
+        .btn-group .btn-lunas:hover {
+            background: #0f4a28;
+        }
+        .btn-group .btn-setengah {
+            background: #e6b800;
+            color: #fff;
+        }
+        .btn-group .btn-setengah:hover {
+            background: #c9a84c;
+        }
+        .btn-group .btn-belum {
+            background: #c0392b;
+            color: #fff;
+        }
+        .btn-group .btn-belum:hover {
+            background: #a93226;
+        }
+        .btn-group .btn-hapus {
+            background: #eee;
+            color: #888;
+        }
+        .btn-group .btn-hapus:hover {
+            background: #c0392b;
+            color: #fff;
+        }
+        .add-member-row {
             display: flex;
             gap: 0.6rem;
             margin-top: 0.8rem;
             flex-wrap: wrap;
         }
-
-        .add-member-form input {
+        .add-member-row input {
             flex: 1;
             padding: 0.6rem 0.9rem;
             border: 1px solid #ddd;
@@ -681,13 +655,11 @@
             transition: var(--transition);
             min-width: 120px;
         }
-
-        .add-member-form input:focus {
+        .add-member-row input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(26, 107, 60, 0.1);
         }
-
-        .add-member-form button {
+        .add-member-row button {
             padding: 0.6rem 1.2rem;
             border: none;
             border-radius: 10px;
@@ -697,14 +669,14 @@
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.85rem;
+            white-space: nowrap;
         }
-
-        .add-member-form button:hover {
+        .add-member-row button:hover {
             background: var(--primary-dark);
             transform: translateY(-1px);
         }
 
-        /* ===== KAS ===== */
+        /* KAS */
         .kas-total {
             font-size: 2.2rem;
             font-weight: 800;
@@ -712,17 +684,16 @@
             text-align: center;
             padding: 0.5rem 0;
         }
-
         .kas-total small {
             font-size: 1rem;
             font-weight: 400;
             color: var(--text-light);
         }
-
         .kas-entries {
             margin-top: 0.8rem;
+            max-height: 260px;
+            overflow-y: auto;
         }
-
         .kas-entry {
             display: flex;
             justify-content: space-between;
@@ -730,38 +701,52 @@
             padding: 0.5rem 0.8rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
             font-size: 0.85rem;
+            gap: 0.4rem;
         }
-
         .kas-entry .entry-desc {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex: 1;
+            min-width: 0;
         }
-
         .kas-entry .entry-desc i {
             width: 1.2rem;
             color: var(--text-light);
         }
-
+        .kas-entry .entry-desc span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
         .kas-entry .entry-amount {
             font-weight: 700;
+            white-space: nowrap;
         }
-
         .kas-entry .entry-amount.income {
             color: var(--primary);
         }
-
         .kas-entry .entry-amount.expense {
             color: #c0392b;
         }
-
+        .kas-entry .btn-hapus-kas {
+            background: transparent;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            padding: 0 0.2rem;
+        }
+        .kas-entry .btn-hapus-kas:hover {
+            color: #c0392b;
+        }
         .kas-form {
             display: flex;
             gap: 0.5rem;
             margin-top: 0.8rem;
             flex-wrap: wrap;
         }
-
         .kas-form input,
         .kas-form select {
             padding: 0.5rem 0.8rem;
@@ -771,15 +756,13 @@
             outline: none;
             transition: var(--transition);
             flex: 1;
-            min-width: 80px;
+            min-width: 70px;
         }
-
         .kas-form input:focus,
         .kas-form select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(26, 107, 60, 0.1);
         }
-
         .kas-form button {
             padding: 0.5rem 1.2rem;
             border: none;
@@ -790,37 +773,34 @@
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.85rem;
+            white-space: nowrap;
         }
-
         .kas-form button:hover {
             background: var(--gold-light);
             transform: translateY(-1px);
         }
 
-        /* ===== BUKU SABILUN NAJAH ===== */
+        /* BUKU */
         .book-content {
             background: var(--cream);
             border-radius: 12px;
             padding: 1rem;
-            min-height: 120px;
+            min-height: 100px;
             font-size: 0.9rem;
             line-height: 1.7;
             white-space: pre-wrap;
             border: 1px solid rgba(0, 0, 0, 0.05);
-            max-height: 300px;
+            max-height: 280px;
             overflow-y: auto;
         }
-
         .book-content:empty::before {
             content: 'Belum ada catatan. Tambahkan isi buku di bawah.';
             color: var(--text-light);
             font-style: italic;
         }
-
         .book-edit {
             margin-top: 0.8rem;
         }
-
         .book-edit textarea {
             width: 100%;
             padding: 0.8rem;
@@ -833,12 +813,10 @@
             outline: none;
             transition: var(--transition);
         }
-
         .book-edit textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(26, 107, 60, 0.1);
         }
-
         .book-edit button {
             margin-top: 0.5rem;
             padding: 0.5rem 1.5rem;
@@ -851,35 +829,30 @@
             transition: var(--transition);
             font-size: 0.85rem;
         }
-
         .book-edit button:hover {
             background: var(--primary-dark);
             transform: translateY(-1px);
         }
 
-        /* ===== REGISTER / WA ===== */
+        /* REGISTER WA */
         .wa-register {
             text-align: center;
-            padding: 1.5rem 0;
+            padding: 1rem 0;
         }
-
         .wa-register .wa-icon {
             font-size: 4rem;
             color: #25D366;
             margin-bottom: 0.5rem;
         }
-
         .wa-register h3 {
             color: var(--primary-dark);
             margin-bottom: 0.25rem;
         }
-
         .wa-register p {
             color: var(--text-light);
             font-size: 0.9rem;
             margin-bottom: 1.2rem;
         }
-
         .wa-btn {
             display: inline-flex;
             align-items: center;
@@ -896,27 +869,16 @@
             transition: var(--transition);
             box-shadow: 0 6px 25px rgba(37, 211, 102, 0.3);
         }
-
         .wa-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 35px rgba(37, 211, 102, 0.4);
         }
-
         .wa-btn i {
             font-size: 1.4rem;
         }
-
         .registered-users {
-            margin-top: 1.5rem;
-            text-align: left;
+            margin-top: 1rem;
         }
-
-        .registered-users h4 {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-
         .registered-users .user-chip {
             display: inline-block;
             background: var(--cream);
@@ -927,103 +889,7 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 480px) {
-            #app {
-                max-width: 100%;
-                border-radius: 0;
-            }
-
-            .app-header .brand span {
-                font-size: 1rem;
-            }
-
-            .app-header .brand small {
-                font-size: 0.55rem;
-            }
-
-            .clock-row .digital-clock {
-                font-size: 1.1rem;
-            }
-
-            .nav-tab {
-                font-size: 0.7rem;
-                padding: 0.4rem 0.7rem;
-            }
-
-            .stat-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.5rem;
-            }
-
-            .stat-item .number {
-                font-size: 1.2rem;
-            }
-
-            .login-logo {
-                font-size: 3.2rem;
-            }
-
-            .login-box {
-                padding: 1.5rem 1.25rem;
-            }
-
-            .content {
-                padding: 1rem 0.8rem 5rem;
-            }
-
-            .card {
-                padding: 1rem;
-            }
-        }
-
-        @media (min-width: 481px) and (max-width: 768px) {
-            #app {
-                max-width: 100%;
-                border-radius: 0;
-            }
-        }
-
-        /* ===== UTILITY ===== */
-        .text-center {
-            text-align: center;
-        }
-        .mt-1 {
-            margin-top: 0.5rem;
-        }
-        .mt-2 {
-            margin-top: 1rem;
-        }
-        .mb-1 {
-            margin-bottom: 0.5rem;
-        }
-        .gap-1 {
-            gap: 0.5rem;
-        }
-        .flex {
-            display: flex;
-        }
-        .flex-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 1.5rem 0;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .empty-state i {
-            font-size: 2.5rem;
-            opacity: 0.3;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        /* toast */
+        /* TOAST */
         .toast {
             position: fixed;
             bottom: 80px;
@@ -1043,18 +909,89 @@
             max-width: 90%;
             text-align: center;
         }
-
         .toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
             pointer-events: auto;
         }
 
-        /* logo SVG placeholder */
-        .logo-svg {
-            display: inline-block;
-            width: 48px;
-            height: 48px;
+        .text-center {
+            text-align: center;
+        }
+        .mt-2 {
+            margin-top: 1rem;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 1.5rem 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        .empty-state i {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .text-muted {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 480px) {
+            #app {
+                max-width: 100%;
+                border-radius: 0;
+            }
+            .app-header .brand span {
+                font-size: 1rem;
+            }
+            .clock-row .digital-clock {
+                font-size: 1.1rem;
+            }
+            .nav-tab {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.7rem;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+            .stat-item .number {
+                font-size: 1.2rem;
+            }
+            .login-logo {
+                font-size: 3.2rem;
+            }
+            .login-box {
+                padding: 1.5rem 1.25rem;
+            }
+            .content {
+                padding: 1rem 0.8rem 5rem;
+            }
+            .card {
+                padding: 1rem;
+            }
+            table.iuran-table {
+                font-size: 0.75rem;
+                min-width: 280px;
+            }
+            table.iuran-table th,
+            table.iuran-table td {
+                padding: 0.4rem 0.3rem;
+            }
+            .btn-group button {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.4rem;
+            }
+            .kas-form input,
+            .kas-form select {
+                min-width: 60px;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -1066,29 +1003,25 @@
     <!-- ===== APP ===== -->
     <div id="app">
 
-        <!-- ===== LOGIN PAGE ===== -->
+        <!-- ===== LOGIN ===== -->
         <div id="loginPage">
             <div class="login-logo">
                 <i class="fas fa-mosque"></i>
                 HARUM
             </div>
             <div class="login-sub">Himpunan Alumni Roudlotul Ulum Malang</div>
-
             <div class="login-box">
                 <h2><i class="fas fa-lock" style="margin-right:8px;opacity:0.6;"></i>Login Anggota</h2>
                 <form id="loginForm" autocomplete="off">
                     <label>Nama Pengguna</label>
                     <input type="text" id="loginUser" placeholder="Masukkan nama" required />
-
                     <label>Kata Sandi</label>
                     <input type="password" id="loginPass" placeholder="Masukkan sandi" required />
-
                     <button type="submit" class="login-btn">
                         <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Masuk
                     </button>
                     <div class="login-error" id="loginError"></div>
                 </form>
-
                 <div class="login-register">
                     Belum punya akun? <a href="#" id="goToRegisterLink">Daftar via WhatsApp</a>
                 </div>
@@ -1108,15 +1041,15 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Anggota</span></span>
+                    <span class="user-badge"><i class="fas fa-user"></i> <span id="userNameDisplay">Anggota</span></span>
                     <button class="logout-btn" id="logoutBtn" title="Keluar"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </header>
 
-            <!-- CLOCK ROW -->
+            <!-- CLOCK -->
             <div class="clock-row">
                 <div class="digital-clock" id="digitalClock">--:--:--</div>
-                <div class="date-info" id="dateInfo">
+                <div class="date-info">
                     <div id="gregDate">--</div>
                     <div id="hijriDateSmall">--</div>
                 </div>
@@ -1136,7 +1069,7 @@
             <!-- CONTENT -->
             <div class="content">
 
-                <!-- ===== DASHBOARD ===== -->
+                <!-- DASHBOARD -->
                 <div class="page active" id="page-dashboard">
                     <div class="card">
                         <div class="card-title"><i class="fas fa-gem"></i> Selamat Datang, <span id="dashUserName">Anggota</span>!</div>
@@ -1162,7 +1095,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="card">
                         <div class="card-title"><i class="fas fa-clock"></i> Jumat Pahing Mendatang</div>
                         <div id="dashNextJp" class="text-center" style="font-size:0.95rem;color:var(--text-light);">
@@ -1171,7 +1103,7 @@
                     </div>
                 </div>
 
-                <!-- ===== CALENDAR ===== -->
+                <!-- CALENDAR -->
                 <div class="page" id="page-calendar">
                     <div class="card">
                         <div class="card-title"><i class="fas fa-calendar-alt"></i> Kalender Jawa &amp; Hijriyah</div>
@@ -1182,7 +1114,7 @@
                         </div>
                         <div class="calendar-grid" id="calendarGrid"></div>
                         <div class="hijri-date" id="hijriDateDisplay">Hijriyah: --</div>
-                        <div class="javanese-pasaran" id="javanesePasaranDisplay">Pasaran: --</div>
+                        <div class="text-muted text-center mt-1" id="javanesePasaranDisplay">Pasaran: --</div>
                     </div>
                     <div class="card">
                         <div class="card-title"><i class="fas fa-info-circle"></i> Keterangan</div>
@@ -1196,13 +1128,13 @@
                     </div>
                 </div>
 
-                <!-- ===== JUMAT PAHING ===== -->
+                <!-- JUMAT PAHING -->
                 <div class="page" id="page-jumatpahing">
                     <div class="card">
                         <div class="card-title"><i class="fas fa-star-and-crescent"></i> Jadwal Jumat Pahing</div>
                         <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:0.8rem;">
                             <i class="fas fa-info-circle"></i> Setiap <strong>selapanan</strong> (35 hari sekali) pada hari Jumat Pahing.
-                            Iuran Rp 20.000 per anggota.
+                            Iuran <strong>Rp 20.000</strong> per anggota (bisa dicicil Rp 10.000).
                         </p>
                         <ul class="jp-list" id="jpList"></ul>
                         <div class="text-center mt-2">
@@ -1213,27 +1145,37 @@
                     </div>
                 </div>
 
-                <!-- ===== IURAN ===== -->
+                <!-- IURAN (TABEL SHEET) -->
                 <div class="page" id="page-iuran">
                     <div class="card">
-                        <div class="card-title"><i class="fas fa-hand-holding-usd"></i> Iuran Jumat Pahing</div>
-                        <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:0.8rem;">
-                            <i class="fas fa-info-circle"></i> Iuran per Jumat Pahing: <strong>Rp 20.000</strong>
+                        <div class="card-title"><i class="fas fa-table"></i> Tabel Iuran Jumat Pahing</div>
+                        <p class="text-muted" style="margin-bottom:0.5rem;">
+                            <i class="fas fa-info-circle"></i> Klik tombol status untuk mengubah: <span class="status-badge lunas">Lunas (20.000)</span> <span class="status-badge setengah">Setengah (10.000)</span> <span class="status-badge belum">Belum</span>
                         </p>
-                        <div id="iuranMemberList"></div>
-                        <div class="add-member-form">
-                            <input type="text" id="iuranNewName" placeholder="Nama anggota" />
-                            <button id="iuranAddBtn"><i class="fas fa-plus"></i> Tambah</button>
+                        <div class="table-wrap">
+                            <table class="iuran-table" id="iuranTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30px;">#</th>
+                                        <th>Nama</th>
+                                        <th style="width:80px;">Status</th>
+                                        <th style="width:140px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="iuranTableBody"></tbody>
+                            </table>
                         </div>
-                        <div class="text-center mt-2">
-                            <button id="iuranResetBtn" style="background:transparent;border:1px solid #ddd;padding:0.4rem 1.2rem;border-radius:8px;font-size:0.75rem;color:var(--text-light);cursor:pointer;">
-                                <i class="fas fa-undo"></i> Reset semua status
+                        <div class="add-member-row">
+                            <input type="text" id="iuranNewName" placeholder="Nama anggota baru" />
+                            <button id="iuranAddBtn"><i class="fas fa-plus"></i> Tambah</button>
+                            <button id="iuranResetBtn" style="background:transparent;border:1px solid #ddd;color:var(--text-light);">
+                                <i class="fas fa-undo"></i> Reset Semua
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- ===== KAS ===== -->
+                <!-- KAS -->
                 <div class="page" id="page-kas">
                     <div class="card">
                         <div class="card-title"><i class="fas fa-wallet"></i> Uang Kas</div>
@@ -1251,7 +1193,7 @@
                     </div>
                 </div>
 
-                <!-- ===== BUKU SABILUN NAJAH ===== -->
+                <!-- BUKU -->
                 <div class="page" id="page-buku">
                     <div class="card">
                         <div class="card-title"><i class="fas fa-book"></i> Buku Sabilun Najah</div>
@@ -1263,7 +1205,7 @@
                     </div>
                 </div>
 
-                <!-- ===== REGISTER / WA ===== -->
+                <!-- REGISTER WA -->
                 <div class="page" id="page-register">
                     <div class="card">
                         <div class="card-title"><i class="fab fa-whatsapp"></i> Daftar Anggota</div>
@@ -1289,8 +1231,6 @@
                 </div>
 
             </div><!-- end content -->
-
-            <!-- bottom spacer -->
             <div style="height:10px;"></div>
         </div><!-- end mainApp -->
     </div><!-- end app -->
@@ -1299,18 +1239,19 @@
         // ============================================================
         //  DATA / STATE
         // ============================================================
-        const STORAGE_KEY = 'harum_data';
+        const STORAGE_KEY = 'harum_data_v2';
 
         const defaultData = {
             members: [
-                { id: 1, name: 'Ahmad Fauzi', paid: false },
-                { id: 2, name: 'M. Rofiq', paid: false },
-                { id: 3, name: 'Laily Maulida', paid: false },
-                { id: 4, name: 'Khoirul Anam', paid: false },
-                { id: 5, name: 'Siti Fatimah', paid: false },
+                { id: 1, name: 'Ahmad Fauzi', paid: 0 }, // 0=belum, 10000=setengah, 20000=lunas
+                { id: 2, name: 'M. Rofiq', paid: 0 },
+                { id: 3, name: 'Laily Maulida', paid: 0 },
+                { id: 4, name: 'Khoirul Anam', paid: 0 },
+                { id: 5, name: 'Siti Fatimah', paid: 0 },
             ],
             kas: [
-                { id: 1, desc: 'Iuran Jumat Pahing', amount: 100000, type: 'income', date: Date.now() - 86400000 * 10 },
+                { id: 1, desc: 'Iuran Jumat Pahing (Ahmad)', amount: 20000, type: 'income', date: Date.now() - 86400000 *
+                        10 },
                 { id: 2, desc: 'Sumbangan', amount: 50000, type: 'income', date: Date.now() - 86400000 * 5 },
                 { id: 3, desc: 'Pembelian ATK', amount: 35000, type: 'expense', date: Date.now() - 86400000 * 3 },
             ],
@@ -1339,10 +1280,14 @@
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (raw) {
                     const parsed = JSON.parse(raw);
-                    // merge with defaults for new keys
                     for (const key in defaultData) {
                         if (!(key in parsed)) parsed[key] = defaultData[key];
                     }
+                    // ensure members have paid as number
+                    parsed.members.forEach(m => {
+                        if (m.paid === undefined) m.paid = 0;
+                        if (typeof m.paid === 'boolean') m.paid = m.paid ? 20000 : 0;
+                    });
                     return parsed;
                 }
             } catch (_) { /* ignore */ }
@@ -1372,15 +1317,13 @@
         }
 
         function toHijri(date) {
-            // approximate Hijri conversion using a fixed reference
-            // This is a simplified conversion for display purposes
             const g = new Date(date);
-            const ref = new Date(2000, 0, 1); // 1 Jan 2000 = 25 Ramadhan 1420 (approx)
+            const ref = new Date(2000, 0, 1);
             const diffDays = Math.floor((g - ref) / 86400000);
-            const hijriDay = (25 + diffDays) % 30 || 30;
+            let hijriDay = (25 + diffDays) % 30;
+            if (hijriDay < 1) hijriDay = 30;
             const hijriMonth = (8 + Math.floor((diffDays + 25) / 30)) % 12;
             const hijriYear = 1420 + Math.floor((diffDays + 25) / 360);
-
             const monthNames = [
                 'Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir',
                 'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban',
@@ -1390,36 +1333,28 @@
         }
 
         function getPasaran(date) {
-            // Javanese pasaran cycle: Legi(0), Pahing(1), Pon(2), Wage(3), Kliwon(4)
-            // Reference: 1 Januari 2000 = Kliwon (4)
             const ref = new Date(2000, 0, 1);
             const diff = Math.floor((date - ref) / 86400000);
-            const pasaranIndex = ((diff % 5) + 5) % 5;
             const names = ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'];
-            return names[pasaranIndex];
+            return names[((diff % 5) + 5) % 5];
         }
 
         function isJumatPahing(date) {
             const d = new Date(date);
-            const day = d.getDay(); // 5 = Jumat
-            if (day !== 5) return false;
-            const pasaran = getPasaran(d);
-            return pasaran === 'Pahing';
+            return d.getDay() === 5 && getPasaran(d) === 'Pahing';
         }
 
         function getJumatPahingDates(startYear, count = 20) {
             const result = [];
             const d = new Date(startYear, 0, 1);
-            // find first Jumat
             while (d.getDay() !== 5) d.setDate(d.getDate() + 1);
-            // then find first Jumat Pahing
-            let found = 0;
-            let attempts = 0;
+            let found = 0,
+                attempts = 0;
             while (found < count && attempts < 1000) {
                 if (isJumatPahing(d)) {
                     result.push(new Date(d));
                     found++;
-                    d.setDate(d.getDate() + 35); // selapan = 35 hari
+                    d.setDate(d.getDate() + 35);
                 } else {
                     d.setDate(d.getDate() + 7);
                 }
@@ -1431,13 +1366,17 @@
         function getNextJumatPahing(fromDate) {
             const d = new Date(fromDate);
             d.setHours(0, 0, 0, 0);
-            let attempts = 0;
-            while (attempts < 100) {
+            for (let i = 0; i < 100; i++) {
                 if (isJumatPahing(d)) return new Date(d);
                 d.setDate(d.getDate() + 1);
-                attempts++;
             }
             return null;
+        }
+
+        function getPaidLabel(paid) {
+            if (paid >= 20000) return { label: 'Lunas', cls: 'lunas' };
+            if (paid >= 10000) return { label: 'Setengah', cls: 'setengah' };
+            return { label: 'Belum', cls: 'belum' };
         }
 
         // ============================================================
@@ -1465,7 +1404,6 @@
             e.preventDefault();
             const username = document.getElementById('loginUser').value.trim();
             const password = document.getElementById('loginPass').value.trim();
-
             const found = data.users.find(u => u.username === username && u.password === password);
             if (found) {
                 currentUser = username;
@@ -1492,7 +1430,6 @@
 
         document.getElementById('goToRegisterLink').addEventListener('click', (e) => {
             e.preventDefault();
-            // switch to register page if logged in, else show info
             if (currentUser) {
                 switchPage('register');
             } else {
@@ -1519,7 +1456,6 @@
             Object.keys(pages).forEach(key => {
                 pages[key].classList.toggle('active', key === pageId);
             });
-            // re-render when switching to certain pages
             if (pageId === 'dashboard') renderDashboard();
             if (pageId === 'jumatpahing') renderJumatPahing();
             if (pageId === 'iuran') renderIuran();
@@ -1544,18 +1480,12 @@
             const m = String(now.getMinutes()).padStart(2, '0');
             const s = String(now.getSeconds()).padStart(2, '0');
             document.getElementById('digitalClock').textContent = `${h}:${m}:${s}`;
-
-            const greg = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            const greg = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long',
+            year: 'numeric' });
             document.getElementById('gregDate').textContent = greg;
-
-            const hijri = toHijri(now);
-            document.getElementById('hijriDateSmall').textContent = '🕌 ' + hijri;
-
-            // also update pasaran on calendar if visible
-            const pasaran = getPasaran(now);
-            document.getElementById('javanesePasaranDisplay').textContent = 'Pasaran: ' + pasaran;
+            document.getElementById('hijriDateSmall').textContent = '🕌 ' + toHijri(now);
+            document.getElementById('javanesePasaranDisplay').textContent = 'Pasaran hari ini: ' + getPasaran(now);
         }
-
         setInterval(updateClock, 1000);
         updateClock();
 
@@ -1566,14 +1496,12 @@
             const totalMembers = data.members.length;
             const totalKas = data.kas.reduce((sum, k) => sum + (k.type === 'income' ? k.amount : -k.amount), 0);
             const jpCount = data.jpDates.length || 0;
-            const paidCount = data.members.filter(m => m.paid).length;
-
+            const paidCount = data.members.filter(m => m.paid >= 20000).length;
             document.getElementById('dashTotalMembers').textContent = totalMembers;
             document.getElementById('dashTotalKas').textContent = formatRupiah(totalKas);
             document.getElementById('dashJpCount').textContent = jpCount;
             document.getElementById('dashPaidCount').textContent = paidCount;
 
-            // next Jumat Pahing
             const now = new Date();
             const nextJp = getNextJumatPahing(now);
             const el = document.getElementById('dashNextJp');
@@ -1594,29 +1522,22 @@
         //  RENDER: CALENDAR
         // ============================================================
         function renderCalendar() {
-            const year = currentCalYear;
-            const month = currentCalMonth;
+            const year = currentCalYear,
+                month = currentCalMonth;
             const grid = document.getElementById('calendarGrid');
-            const label = document.getElementById('calMonthLabel');
-            const hijriDisplay = document.getElementById('hijriDateDisplay');
-
-            label.textContent = new Date(year, month).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+            document.getElementById('calMonthLabel').textContent =
+                new Date(year, month).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
 
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const today = new Date();
-            const todayDate = today.getDate();
-            const todayMonth = today.getMonth();
-            const todayYear = today.getFullYear();
+            const todayDate = today.getDate(),
+                todayMonth = today.getMonth(),
+                todayYear = today.getFullYear();
 
-            // day headers
-            const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-            let html = dayNames.map(d => `<div class="day-header">${d}</div>`).join('');
-
-            // empty cells
-            for (let i = 0; i < firstDay; i++) {
-                html += `<div class="day-cell other-month"></div>`;
-            }
+            let html = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
+                .map(d => `<div class="day-header">${d}</div>`).join('');
+            for (let i = 0; i < firstDay; i++) html += `<div class="day-cell other-month"></div>`;
 
             for (let d = 1; d <= daysInMonth; d++) {
                 const dateObj = new Date(year, month, d);
@@ -1625,39 +1546,22 @@
                 let cls = 'day-cell';
                 if (isToday) cls += ' today';
                 if (isJp) cls += ' jumat-pahing';
-                const pasaran = getPasaran(dateObj);
-                const labelText = d + (isJp ? ' ⭐' : '');
-                html += `<div class="${cls}" title="${pasaran}">${labelText}</div>`;
+                html += `<div class="${cls}" title="${getPasaran(dateObj)}">${d}${isJp ? ' ⭐' : ''}</div>`;
             }
-
             grid.innerHTML = html;
 
-            // Hijri for the 1st of the month
-            const firstOfMonth = new Date(year, month, 1);
-            hijriDisplay.textContent = 'Hijriyah: ' + toHijri(firstOfMonth);
-
-            // Pasaran for today
-            const pasaranToday = getPasaran(today);
-            document.getElementById('javanesePasaranDisplay').textContent = 'Pasaran hari ini: ' + pasaranToday;
+            document.getElementById('hijriDateDisplay').textContent = 'Hijriyah: ' + toHijri(new Date(year, month, 1));
+            document.getElementById('javanesePasaranDisplay').textContent = 'Pasaran hari ini: ' + getPasaran(today);
         }
 
         document.getElementById('calPrev').addEventListener('click', () => {
-            if (currentCalMonth === 0) {
-                currentCalMonth = 11;
-                currentCalYear--;
-            } else {
-                currentCalMonth--;
-            }
+            if (currentCalMonth === 0) { currentCalMonth = 11;
+                currentCalYear--; } else { currentCalMonth--; }
             renderCalendar();
         });
-
         document.getElementById('calNext').addEventListener('click', () => {
-            if (currentCalMonth === 11) {
-                currentCalMonth = 0;
-                currentCalYear++;
-            } else {
-                currentCalMonth++;
-            }
+            if (currentCalMonth === 11) { currentCalMonth = 0;
+                currentCalYear++; } else { currentCalMonth++; }
             renderCalendar();
         });
 
@@ -1668,38 +1572,30 @@
             const list = document.getElementById('jpList');
             const now = new Date();
             let dates = data.jpDates.map(d => new Date(d));
-
             if (dates.length === 0) {
-                // generate some
                 dates = getJumatPahingDates(now.getFullYear() - 1, 12);
                 data.jpDates = dates.map(d => d.toISOString());
                 saveData();
             }
-
-            // sort and show next 10
             dates.sort((a, b) => a - b);
             const upcoming = dates.filter(d => d >= now);
             const past = dates.filter(d => d < now).slice(-5);
 
             let html = '';
-            // upcoming
             const showUpcoming = upcoming.slice(0, 8);
             if (showUpcoming.length) {
                 showUpcoming.forEach(d => {
                     const diff = Math.ceil((d - now) / 86400000);
-                    const badge = diff <= 0 ? 'Hari ini!' : `${diff} hari lagi`;
                     html += `
                         <li>
                             <span class="jp-date">${formatDate(d)}</span>
-                            <span class="jp-badge upcoming">${badge}</span>
+                            <span class="jp-badge upcoming">${diff <= 0 ? 'Hari ini!' : diff + ' hari lagi'}</span>
                         </li>
                     `;
                 });
             } else {
                 html += `<li style="justify-content:center;color:var(--text-light);">Tidak ada jadwal mendatang.</li>`;
             }
-
-            // separator
             if (past.length) {
                 html += `<li style="justify-content:center;color:var(--text-light);font-size:0.7rem;padding:0.4rem 0;border-bottom:1px solid #eee;border-top:1px solid #eee;margin-top:0.3rem;">
                     <i class="fas fa-history"></i> Jadwal sebelumnya
@@ -1713,7 +1609,6 @@
                     `;
                 });
             }
-
             list.innerHTML = html;
         }
 
@@ -1727,47 +1622,46 @@
         });
 
         // ============================================================
-        //  RENDER: IURAN
+        //  RENDER: IURAN (TABEL SHEET)
         // ============================================================
         function renderIuran() {
-            const container = document.getElementById('iuranMemberList');
+            const tbody = document.getElementById('iuranTableBody');
             if (data.members.length === 0) {
-                container.innerHTML = `<div class="empty-state"><i class="fas fa-users"></i> Belum ada anggota.</div>`;
+                tbody.innerHTML =
+                    `<tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--text-light);">Belum ada anggota. Tambahkan di bawah.</td></tr>`;
                 return;
             }
-
             let html = '';
-            data.members.forEach(m => {
-                const statusClass = m.paid ? 'paid' : 'unpaid';
-                const statusText = m.paid ? '✅ Lunas' : '⏳ Belum';
+            data.members.forEach((m, idx) => {
+                const status = getPaidLabel(m.paid);
                 html += `
-                    <div class="member-item">
-                        <span class="name">${m.name}</span>
-                        <div style="display:flex;align-items:center;gap:0.6rem;">
-                            <span class="status ${statusClass}">${statusText}</span>
-                            <div class="member-actions">
-                                <button onclick="togglePaid(${m.id})" title="Toggle status">
-                                    <i class="fas ${m.paid ? 'fa-times' : 'fa-check'}"></i>
-                                </button>
-                                <button onclick="deleteMember(${m.id})" title="Hapus" style="color:#c0392b;">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                    <tr>
+                        <td style="text-align:center;font-weight:600;color:var(--text-light);">${idx+1}</td>
+                        <td><strong>${m.name}</strong></td>
+                        <td><span class="status-badge ${status.cls}">${status.label}</span></td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn-lunas" onclick="setPaidStatus(${m.id}, 20000)" title="Lunas 20.000">Lunas</button>
+                                <button class="btn-setengah" onclick="setPaidStatus(${m.id}, 10000)" title="Setengah 10.000">½</button>
+                                <button class="btn-belum" onclick="setPaidStatus(${m.id}, 0)" title="Belum">×</button>
+                                <button class="btn-hapus" onclick="deleteMember(${m.id})" title="Hapus"><i class="fas fa-trash"></i></button>
                             </div>
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
                 `;
             });
-            container.innerHTML = html;
+            tbody.innerHTML = html;
         }
 
-        window.togglePaid = function(id) {
+        window.setPaidStatus = function(id, value) {
             const m = data.members.find(x => x.id === id);
             if (m) {
-                m.paid = !m.paid;
+                m.paid = value;
                 saveData();
                 renderIuran();
                 renderDashboard();
-                showToast(m.paid ? `${m.name} lunas!` : `${m.name} dibatalkan.`);
+                const label = getPaidLabel(value).label;
+                showToast(`${m.name} → ${label}`);
             }
         };
 
@@ -1784,15 +1678,12 @@
         document.getElementById('iuranAddBtn').addEventListener('click', () => {
             const input = document.getElementById('iuranNewName');
             const name = input.value.trim();
-            if (!name) {
-                showToast('Masukkan nama anggota.');
-                return;
-            }
+            if (!name) { showToast('Masukkan nama anggota.'); return; }
             if (data.members.some(m => m.name.toLowerCase() === name.toLowerCase())) {
                 showToast('Nama sudah ada.');
                 return;
             }
-            data.members.push({ id: generateId(data.members), name, paid: false });
+            data.members.push({ id: generateId(data.members), name, paid: 0 });
             input.value = '';
             saveData();
             renderIuran();
@@ -1802,7 +1693,7 @@
 
         document.getElementById('iuranResetBtn').addEventListener('click', () => {
             if (confirm('Reset semua status iuran menjadi "Belum"?')) {
-                data.members.forEach(m => m.paid = false);
+                data.members.forEach(m => m.paid = 0);
                 saveData();
                 renderIuran();
                 renderDashboard();
@@ -1811,7 +1702,7 @@
         });
 
         // ============================================================
-        //  RENDER: KAS
+        //  RENDER: KAS (dengan tombol hapus)
         // ============================================================
         function renderKas() {
             const total = data.kas.reduce((sum, k) => sum + (k.type === 'income' ? k.amount : -k.amount), 0);
@@ -1822,10 +1713,9 @@
                 container.innerHTML = `<div class="empty-state"><i class="fas fa-receipt"></i> Belum ada transaksi.</div>`;
                 return;
             }
-
             const sorted = [...data.kas].sort((a, b) => b.date - a.date);
             let html = '';
-            sorted.slice(0, 20).forEach(k => {
+            sorted.slice(0, 30).forEach(k => {
                 const isIncome = k.type === 'income';
                 const icon = isIncome ? 'fa-arrow-down' : 'fa-arrow-up';
                 const cls = isIncome ? 'income' : 'expense';
@@ -1834,33 +1724,33 @@
                     <div class="kas-entry">
                         <span class="entry-desc">
                             <i class="fas ${icon}"></i>
-                            ${k.desc || '—'}
-                            <span style="font-size:0.7rem;color:var(--text-light);">${formatDateShort(k.date)}</span>
+                            <span>${k.desc || '—'}</span>
+                            <span style="font-size:0.65rem;color:var(--text-light);flex-shrink:0;">${formatDateShort(k.date)}</span>
                         </span>
                         <span class="entry-amount ${cls}">${sign} ${formatRupiah(k.amount)}</span>
+                        <button class="btn-hapus-kas" onclick="deleteKasEntry(${k.id})" title="Hapus transaksi"><i class="fas fa-times"></i></button>
                     </div>
                 `;
             });
             container.innerHTML = html;
         }
 
+        window.deleteKasEntry = function(id) {
+            if (confirm('Hapus transaksi kas ini?')) {
+                data.kas = data.kas.filter(k => k.id !== id);
+                saveData();
+                renderKas();
+                renderDashboard();
+                showToast('Transaksi dihapus.');
+            }
+        };
+
         document.getElementById('kasAddBtn').addEventListener('click', () => {
             const desc = document.getElementById('kasDesc').value.trim() || 'Transaksi';
             const amount = parseInt(document.getElementById('kasAmount').value);
             const type = document.getElementById('kasType').value;
-
-            if (!amount || amount <= 0) {
-                showToast('Masukkan jumlah yang valid.');
-                return;
-            }
-
-            data.kas.push({
-                id: generateId(data.kas),
-                desc,
-                amount,
-                type,
-                date: Date.now()
-            });
+            if (!amount || amount <= 0) { showToast('Masukkan jumlah yang valid.'); return; }
+            data.kas.push({ id: generateId(data.kas), desc, amount, type, date: Date.now() });
             document.getElementById('kasDesc').value = '';
             document.getElementById('kasAmount').value = '';
             saveData();
@@ -1870,24 +1760,22 @@
         });
 
         // ============================================================
-        //  RENDER: BUKU SABILUN NAJAH
+        //  RENDER: BUKU
         // ============================================================
         function renderBuku() {
-            const content = document.getElementById('bookContent');
-            content.textContent = data.bookContent || 'Belum ada catatan.';
+            document.getElementById('bookContent').textContent = data.bookContent || 'Belum ada catatan.';
             document.getElementById('bookEditor').value = data.bookContent || '';
         }
 
         document.getElementById('bookSaveBtn').addEventListener('click', () => {
-            const val = document.getElementById('bookEditor').value;
-            data.bookContent = val;
+            data.bookContent = document.getElementById('bookEditor').value;
             saveData();
             renderBuku();
             showToast('Buku berhasil disimpan!');
         });
 
         // ============================================================
-        //  RENDER: REGISTER / WA
+        //  RENDER: REGISTER
         // ============================================================
         function renderRegister() {
             const container = document.getElementById('registeredUsersList');
@@ -1904,21 +1792,17 @@
 
         document.getElementById('waRegisterBtn').addEventListener('click', (e) => {
             e.preventDefault();
-            const phone = '6281234567890'; // ganti dengan nomor pengurus
+            const phone = '6281234567890';
             const msg = encodeURIComponent(
                 'Halo, saya ingin mendaftar sebagai anggota HARUM.\n\n' +
-                'Nama: [nama Anda]\n' +
-                'Alamat: [alamat]\n' +
-                'No HP: [no HP]\n\n' +
-                'Terima kasih.'
+                'Nama: [nama Anda]\nAlamat: [alamat]\nNo HP: [no HP]\n\nTerima kasih.'
             );
-            const url = `https://wa.me/${phone}?text=${msg}`;
-            window.open(url, '_blank');
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
             showToast('Buka WhatsApp untuk mendaftar.');
         });
 
         // ============================================================
-        //  RENDER ALL
+        //  RENDER ALL & INIT
         // ============================================================
         function renderAll() {
             renderDashboard();
@@ -1931,14 +1815,7 @@
             updateClock();
         }
 
-        // ============================================================
-        //  INIT
-        // ============================================================
-        // Check if already logged in (session persistence via localStorage)
-        // We'll keep it simple: on page load, show login.
-        // If you want to remember login, you can add a flag.
-
-        // Pre-fill JP dates if empty
+        // Init JP dates if empty
         if (data.jpDates.length === 0) {
             const now = new Date();
             const dates = getJumatPahingDates(now.getFullYear() - 1, 16);
@@ -1946,52 +1823,33 @@
             saveData();
         }
 
-        // Ensure members have paid field
+        // Ensure members have paid as number
         data.members.forEach(m => {
-            if (m.paid === undefined) m.paid = false;
+            if (m.paid === undefined) m.paid = 0;
+            if (typeof m.paid === 'boolean') m.paid = m.paid ? 20000 : 0;
         });
 
-        // Set default login page
         loginPage.style.display = 'flex';
         mainApp.style.display = 'none';
 
-        console.log('🕌 HARUM App loaded');
+        console.log('🕌 HARUM v2 loaded');
         console.log('📦 Data:', data);
+        console.log('🔑 Akun: admin/harum123 | anggota/123456');
 
-        // ============================================================
-        //  KEYBOARD SHORTCUT: ESC to logout (optional)
-        // ============================================================
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && currentUser) {
-                if (confirm('Keluar dari aplikasi?')) {
-                    document.getElementById('logoutBtn').click();
-                }
-            }
-        });
-
-        // ============================================================
-        //  PERIODIC REFRESH for clock & dashboard
-        // ============================================================
+        // Periodic refresh dashboard every 30s
         setInterval(() => {
             if (currentUser) {
-                // update clock is already running
-                // refresh dashboard every minute
-                const activePage = document.querySelector('.page.active');
-                if (activePage && activePage.id === 'page-dashboard') {
-                    renderDashboard();
-                }
+                const active = document.querySelector('.page.active');
+                if (active && active.id === 'page-dashboard') renderDashboard();
             }
-        }, 60000);
+        }, 30000);
 
-        // ============================================================
-        //  FIX for login after register link
-        // ============================================================
-        // If user clicks "Daftar via WhatsApp" from login page, we open the register page
-        // but they need to login first. The link now shows a toast.
-
-        console.log('✅ Aplikasi HARUM siap digunakan!');
-        console.log('🔑 Akun default: admin / harum123 | anggota / 123456');
+        // Keyboard: Esc logout
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && currentUser) {
+                if (confirm('Keluar dari aplikasi?')) document.getElementById('logoutBtn').click();
+            }
+        });
     </script>
-
 </body>
-</html>
+    </html>
