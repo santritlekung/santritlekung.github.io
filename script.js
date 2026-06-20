@@ -1,7 +1,7 @@
 // ============================================================
 //  DATA / STATE
 // ============================================================
-const STORAGE_KEY = 'harum_data_v4';
+const STORAGE_KEY = 'harum_data_v5';
 
 const defaultData = {
     members: [
@@ -16,7 +16,7 @@ const defaultData = {
         { id: 2, desc: 'Sumbangan', amount: 50000, type: 'income', date: Date.now() - 86400000 * 5 },
         { id: 3, desc: 'Pembelian ATK', amount: 35000, type: 'expense', date: Date.now() - 86400000 * 3 },
     ],
-    bookContent: 'Bismillah...\n\nCatatan Sabilun Najah:\n- Bab 1: Ikhlas\n- Bab 2: Taqwa\n- Bab 3: Tawakal',
+    bookContent: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\n\nCatatan Sabilun Najah:\n- Bab 1: Ikhlas\n- Bab 2: Taqwa\n- Bab 3: Tawakal',
     jpDates: [],
     registeredUsers: [
         { name: 'Ahmad Fauzi', phone: '08123456789' },
@@ -30,7 +30,7 @@ const defaultData = {
 
 let data = loadData();
 let currentUser = null;
-let currentUserRole = 'anggota'; // 'admin' or 'anggota'
+let currentUserRole = 'anggota';
 let currentCalMonth = new Date().getMonth();
 let currentCalYear = new Date().getFullYear();
 
@@ -172,7 +172,6 @@ loginForm.addEventListener('submit', (e) => {
         document.getElementById('dashUserName').textContent = username;
         loginPage.style.display = 'none';
         mainApp.style.display = 'flex';
-        // Tampilkan/sembunyikan kontrol admin
         applyRole();
         renderAll();
         showToast('Selamat datang, ' + username + '!');
@@ -206,7 +205,6 @@ document.getElementById('goToRegisterLink').addEventListener('click', (e) => {
 // ============================================================
 function applyRole() {
     const isAdmin = (currentUserRole === 'admin');
-    // Elemen yang hanya boleh diakses admin
     const adminElements = [
         document.getElementById('adminControls'),
         document.getElementById('kasForm'),
@@ -216,7 +214,6 @@ function applyRole() {
     adminElements.forEach(el => {
         if (el) el.style.display = isAdmin ? 'flex' : 'none';
     });
-    // Sembunyikan tombol aksi di tabel iuran (akan di-render ulang)
 }
 
 // ============================================================
@@ -561,12 +558,11 @@ document.getElementById('kasAddBtn').addEventListener('click', () => {
 });
 
 // ============================================================
-//  RENDER: BUKU
+//  RENDER: BUKU (dengan font Amiri)
 // ============================================================
 function renderBuku() {
     document.getElementById('bookContent').textContent = data.bookContent || 'Belum ada catatan.';
     document.getElementById('bookEditor').value = data.bookContent || '';
-    // Tampilkan/sembunyikan editor berdasarkan role
     const isAdmin = (currentUserRole === 'admin');
     document.getElementById('bookEdit').style.display = isAdmin ? 'block' : 'none';
 }
@@ -637,7 +633,7 @@ data.members.forEach(m => {
 loginPage.style.display = 'flex';
 mainApp.style.display = 'none';
 
-console.log('🕌 HARUM v4 (role-based) loaded');
+console.log('🕌 HARUM v5 (dengan font Amiri untuk Buku)');
 console.log('📦 Data:', data);
 console.log('🔑 Akun: admin/harum123 | anggota/123456');
 
