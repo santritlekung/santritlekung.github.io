@@ -79,10 +79,12 @@ body { font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif; background: va
 /* CALENDAR */
 .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: 0.8rem; }
 .calendar-grid .day-header { font-weight: 700; color: var(--text-light); font-size: 0.65rem; text-transform: uppercase; padding: 0.3rem 0; background: var(--cream); border-radius: 6px; }
-.calendar-grid .day-cell { padding: 0.35rem 0; border-radius: 6px; background: var(--cream); transition: var(--transition); cursor: default; font-size: 0.8rem; }
+.calendar-grid .day-cell { padding: 0.35rem 0; border-radius: 6px; background: var(--cream); transition: var(--transition); cursor: default; font-size: 0.8rem; position: relative; }
 .calendar-grid .day-cell.today { background: var(--gold); color: #fff; font-weight: 700; }
 .calendar-grid .day-cell.jumat-pahing { background: var(--primary-light); color: #fff; font-weight: 600; }
 .calendar-grid .day-cell.other-month { opacity: 0.3; }
+.calendar-grid .day-cell .hijri-tooltip { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; white-space: nowrap; z-index: 10; }
+.calendar-grid .day-cell:hover .hijri-tooltip { display: block; }
 .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
 .calendar-nav button { background: var(--cream); border: none; padding: 0.4rem 0.9rem; border-radius: 8px; font-weight: 600; color: var(--text); cursor: pointer; transition: var(--transition); font-size: 0.85rem; }
 .calendar-nav button:hover { background: var(--primary); color: #fff; }
@@ -128,18 +130,55 @@ table.iuran-table tr:hover td { background: rgba(26,107,60,0.03); }
 .add-member-row button { padding: 0.6rem 1.2rem; border: none; border-radius: 10px; background: var(--primary); color: #fff; font-weight: 600; cursor: pointer; transition: var(--transition); font-size: 0.85rem; white-space: nowrap; }
 .add-member-row button:hover { background: var(--primary-dark); transform: translateY(-1px); }
 
-/* KAS */
+/* ===== KAS (diperbaiki agar teks panjang terbaca) ===== */
 .kas-total { font-size: 2.2rem; font-weight: 800; color: var(--primary-dark); text-align: center; padding: 0.5rem 0; }
 .kas-total small { font-size: 1rem; font-weight: 400; color: var(--text-light); }
 .kas-entries { margin-top: 0.8rem; max-height: 260px; overflow-y: auto; }
-.kas-entry { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.8rem; border-bottom: 1px solid rgba(0,0,0,0.04); font-size: 0.85rem; gap: 0.4rem; }
-.kas-entry .entry-desc { display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 0; }
-.kas-entry .entry-desc i { width: 1.2rem; color: var(--text-light); }
-.kas-entry .entry-desc span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.kas-entry .entry-amount { font-weight: 700; white-space: nowrap; }
+.kas-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    font-size: 0.85rem;
+    gap: 0.4rem;
+}
+.kas-entry .entry-desc {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+.kas-entry .entry-desc i {
+    width: 1.2rem;
+    color: var(--text-light);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.kas-entry .entry-desc span {
+    word-break: break-word;
+    white-space: normal;
+    flex: 1;
+}
+.kas-entry .entry-amount {
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
 .kas-entry .entry-amount.income { color: var(--primary); }
 .kas-entry .entry-amount.expense { color: #c0392b; }
-.kas-entry .btn-hapus-kas { background: transparent; border: none; color: #ccc; cursor: pointer; transition: var(--transition); font-size: 0.9rem; padding: 0 0.2rem; }
+.kas-entry .btn-hapus-kas {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    padding: 0 0.2rem;
+    flex-shrink: 0;
+}
 .kas-entry .btn-hapus-kas:hover { color: #c0392b; }
 
 .kas-form { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
@@ -148,7 +187,7 @@ table.iuran-table tr:hover td { background: rgba(26,107,60,0.03); }
 .kas-form button { padding: 0.5rem 1.2rem; border: none; border-radius: 10px; background: var(--gold); color: var(--primary-dark); font-weight: 700; cursor: pointer; transition: var(--transition); font-size: 0.85rem; white-space: nowrap; }
 .kas-form button:hover { background: var(--gold-light); transform: translateY(-1px); }
 
-/* ===== BUKU SABILUN NAJAH (dengan font Amiri) ===== */
+/* ===== BUKU SABILUN NAJAH ===== */
 .book-content {
     background: var(--cream);
     border-radius: 12px;
@@ -161,7 +200,7 @@ table.iuran-table tr:hover td { background: rgba(26,107,60,0.03); }
     max-height: 280px;
     overflow-y: auto;
     font-family: 'Amiri', 'Times New Roman', serif;
-    direction: rtl; /* untuk teks Arab, biar rapi */
+    direction: rtl;
 }
 .book-content:empty::before {
     content: 'Belum ada catatan. Tambahkan isi buku di bawah.';
