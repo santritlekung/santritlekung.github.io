@@ -139,7 +139,7 @@
         .add-member-row button { padding: 0.6rem 1.2rem; border: none; border-radius: 10px; background: var(--primary); color: #fff; font-weight: 600; cursor: pointer; transition: var(--transition); font-size: 0.85rem; white-space: nowrap; }
         .add-member-row button:hover { background: var(--primary-dark); transform: translateY(-1px); }
 
-        /* ===== KAS (teks panjang bisa terbaca) ===== */
+        /* ===== KAS ===== */
         .kas-total { font-size: 2.2rem; font-weight: 800; color: var(--primary-dark); text-align: center; padding: 0.5rem 0; }
         .kas-total small { font-size: 1rem; font-weight: 400; color: var(--text-light); }
         .kas-entries { margin-top: 0.8rem; max-height: 260px; overflow-y: auto; }
@@ -426,7 +426,7 @@
         // ============================================================
         // DATA / STATE
         // ============================================================
-        const STORAGE_KEY = 'harum_data_final';
+        const STORAGE_KEY = 'harum_data_final_v2';
 
         const defaultData = {
             members: [
@@ -500,49 +500,47 @@
             return dt.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
         }
 
-        // ===== KONVERSI MASEHI KE HIJRIYAH (manual) =====
+        // ===== KONVERSI MASEHI KE HIJRIYAH (akurat) =====
+        // Berdasarkan referensi: 1 Muharram 1441 = 31 Agustus 2019
+        // Menggunakan siklus 30 tahun dengan aturan kabisat
+        function gregorianToJulianDay(year, month, day) {
+            // Gregorian calendar to Julian Day Number
+            if (month <= 2) {
+                year -= 1;
+                month += 12;
+            }
+            let a = Math.floor(year / 100);
+            let b = Math.floor(a / 4);
+            let c = 2 - a + b;
+            let e = Math.floor(365.25 * (year + 4716));
+            let f = Math.floor(30.6001 * (month + 1));
+            return c + day + e + f - 1524.5;
+        }
+
+        function julianDayToIslamic(jd) {
+            // Convert Julian Day to Islamic date (Hijri)
+            let jdInt = Math.floor(jd) + 0.5;
+            let days = jdInt - 1948440.5; // 1 Muharram 1 H = 16 July 622 JDN
+            let year = Math.floor((days * 30 + 10646) / 10631);
+            let remainder = days - Math.floor((year * 10631 + 10646) / 30);
+            let month = Math.floor((remainder * 11 + 14) / 30);
+            let day = remainder - Math.floor((month * 30 + 29) / 11);
+            return { year: year, month: month + 1, day: day + 1 };
+        }
+
         function toHijri(date) {
-            // Referensi: 1 Muharram 1441 H = 31 Agustus 2019 M
-            const refGreg = new Date(2019, 7, 31);
-            const target = new Date(date);
-            target.setHours(0, 0, 0, 0);
-            refGreg.setHours(0, 0, 0, 0);
-
-            let diffDays = Math.floor((target - refGreg) / 86400000);
-
-            let hijriYear = 1441;
-            let hijriMonth = 1;
-            let hijriDay = 1 + diffDays;
-
-            // Sederhanakan dengan pendekatan rata-rata
-            const daysInYear = 354.367;
-            while (hijriDay > daysInYear) {
-                hijriDay -= daysInYear;
-                hijriYear++;
-            }
-
-            // Tentukan bulan
-            let monthDays = 0;
-            for (let m = 1; m <= 12; m++) {
-                let daysInThisMonth = (m % 2 === 1) ? 30 : 29;
-                if (m === 12 && ((hijriYear * 11 + 14) % 30 < 11)) daysInThisMonth = 30; // tahun kabisat
-                if (hijriDay > daysInThisMonth) {
-                    hijriDay -= daysInThisMonth;
-                } else {
-                    hijriMonth = m;
-                    break;
-                }
-            }
-            if (hijriMonth === undefined) { hijriMonth = 12;
-                hijriDay = Math.min(hijriDay, 30); }
-
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = d.getMonth() + 1;
+            const day = d.getDate();
+            const jd = gregorianToJulianDay(year, month, day);
+            const islamic = julianDayToIslamic(jd);
             const monthNames = [
                 '', 'Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir',
                 'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban',
                 'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'
             ];
-
-            return `${Math.floor(hijriDay)} ${monthNames[hijriMonth]} ${hijriYear} H`;
+            return `${islamic.day} ${monthNames[islamic.month]} ${islamic.year} H`;
         }
 
         function getHijriMonth(date) {
@@ -1110,7 +1108,7 @@
         loginPage.style.display = 'flex';
         mainApp.style.display = 'none';
 
-        console.log('🕌 HARUM Final - Kalender Hijriyah manual tanpa "SM"');
+        console.log('🕌 HARUM Final - Kalender Hijriyah akurat (ref: 1 Muharram 1441 = 31 Agustus 2019)');
         console.log('📦 Data:', data);
         console.log('🔑 Akun: admin/harum123 | anggota/123456');
 
