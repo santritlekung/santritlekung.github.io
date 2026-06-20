@@ -1,7 +1,7 @@
 // ============================================================
 //  DATA / STATE
 // ============================================================
-const STORAGE_KEY = 'harum_data_v5';
+const STORAGE_KEY = 'harum_data_v6';
 
 const defaultData = {
     members: [
@@ -77,20 +77,46 @@ function formatDateShort(d) {
     return dt.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-function toHijri(date) {
-    const g = new Date(date);
-    const ref = new Date(2000, 0, 1);
-    const diffDays = Math.floor((g - ref) / 86400000);
-    let hijriDay = (25 + diffDays) % 30;
-    if (hijriDay < 1) hijriDay = 30;
-    const hijriMonth = (8 + Math.floor((diffDays + 25) / 30)) % 12;
-    const hijriYear = 1420 + Math.floor((diffDays + 25) / 360);
-    const monthNames = [
-        'Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir',
-        'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban',
-        'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'
-    ];
-    return `${hijriDay} ${monthNames[hijriMonth]} ${hijriYear} H`;
+// ===== PERBAIKAN: KALENDER HIJRIYAH MENGGUNAKAN Intl =====
+function toHijri(date, format = 'full') {
+    const d = new Date(date);
+    if (format === 'full') {
+        return new Intl.DateTimeFormat('id-u-ca-islamic', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(d);
+    } else if (format === 'short') {
+        return new Intl.DateTimeFormat('id-u-ca-islamic', {
+            day: 'numeric',
+            month: 'numeric',
+            year: 'numeric'
+        }).format(d);
+    }
+    return new Intl.DateTimeFormat('id-u-ca-islamic', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(d);
+}
+
+// Fungsi untuk mendapatkan bulan Hijriyah dari tanggal
+function getHijriMonth(date) {
+    const d = new Date(date);
+    const parts = new Intl.DateTimeFormat('id-u-ca-islamic', { month: 'long' }).formatToParts(d);
+    for (let p of parts) {
+        if (p.type === 'month') return p.value;
+    }
+    return '';
+}
+
+function getHijriYear(date) {
+    const d = new Date(date);
+    const parts = new Intl.DateTimeFormat('id-u-ca-islamic', { year: 'numeric' }).formatToParts(d);
+    for (let p of parts) {
+        if (p.type === 'year') return p.value;
+    }
+    return '';
 }
 
 function getPasaran(date) {
@@ -261,6 +287,7 @@ function updateClock() {
     document.getElementById('digitalClock').textContent = `${h}:${m}:${s}`;
     const greg = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     document.getElementById('gregDate').textContent = greg;
+    // Hijriyah sekarang pakai Intl
     document.getElementById('hijriDateSmall').textContent = '🕌 ' + toHijri(now);
     document.getElementById('javanesePasaranDisplay').textContent = 'Pasaran hari ini: ' + getPasaran(now);
 }
@@ -297,7 +324,7 @@ function renderDashboard() {
 }
 
 // ============================================================
-//  RENDER: CALENDAR
+//  RENDER: CALENDAR (dengan tooltip Hijriyah)
 // ============================================================
 function renderCalendar() {
     const year = currentCalYear, month = currentCalMonth;
@@ -321,11 +348,22 @@ function renderCalendar() {
         let cls = 'day-cell';
         if (isToday) cls += ' today';
         if (isJp) cls += ' jumat-pahing';
-        html += `<div class="${cls}" title="${getPasaran(dateObj)}">${d}${isJp ? ' ⭐' : ''}</div>`;
+        // Hijriyah untuk tooltip
+        const hijri = toHijri(dateObj, 'full');
+        html += `
+            <div class="${cls}" title="${hijri}">
+                ${d}${isJp ? ' ⭐' : ''}
+                <span class="hijri-tooltip">${hijri}</span>
+            </div>
+        `;
     }
     grid.innerHTML = html;
 
-    document.getElementById('hijriDateDisplay').textContent = 'Hijriyah: ' + toHijri(new Date(year, month, 1));
+    // Tampilkan Hijriyah untuk tanggal 1 bulan ini
+    const firstOfMonth = new Date(year, month, 1);
+    const hijriMonth = getHijriMonth(firstOfMonth);
+    const hijriYear = getHijriYear(firstOfMonth);
+    document.getElementById('hijriDateDisplay').textContent = `Hijriyah: ${hijriMonth} ${hijriYear}`;
     document.getElementById('javanesePasaranDisplay').textContent = 'Pasaran hari ini: ' + getPasaran(today);
 }
 
@@ -633,7 +671,7 @@ data.members.forEach(m => {
 loginPage.style.display = 'flex';
 mainApp.style.display = 'none';
 
-console.log('🕌 HARUM v5 (dengan font Amiri untuk Buku)');
+console.log('🕌 HARUM v6 (Hijriah akurat pakai Intl)');
 console.log('📦 Data:', data);
 console.log('🔑 Akun: admin/harum123 | anggota/123456');
 
