@@ -1,7 +1,7 @@
 // ============================================================
 //  DATA / STATE
 // ============================================================
-const STORAGE_KEY = 'harum_data_v6';
+const STORAGE_KEY = 'harum_data_v7';
 
 const defaultData = {
     members: [
@@ -77,33 +77,25 @@ function formatDateShort(d) {
     return dt.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ===== PERBAIKAN: KALENDER HIJRIYAH MENGGUNAKAN Intl =====
+// ===== PERBAIKAN: KALENDER HIJRIYAH MENGGUNAKAN calendar: 'islamic' =====
 function toHijri(date, format = 'full') {
     const d = new Date(date);
-    if (format === 'full') {
-        return new Intl.DateTimeFormat('id-u-ca-islamic', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        }).format(d);
-    } else if (format === 'short') {
-        return new Intl.DateTimeFormat('id-u-ca-islamic', {
-            day: 'numeric',
-            month: 'numeric',
-            year: 'numeric'
-        }).format(d);
-    }
-    return new Intl.DateTimeFormat('id-u-ca-islamic', {
+    const options = {
         day: 'numeric',
         month: 'long',
-        year: 'numeric'
-    }).format(d);
+        year: 'numeric',
+        calendar: 'islamic'
+    };
+    if (format === 'short') {
+        options.month = 'numeric';
+    }
+    const formatter = new Intl.DateTimeFormat('id', options);
+    return formatter.format(d);
 }
 
-// Fungsi untuk mendapatkan bulan Hijriyah dari tanggal
 function getHijriMonth(date) {
     const d = new Date(date);
-    const parts = new Intl.DateTimeFormat('id-u-ca-islamic', { month: 'long' }).formatToParts(d);
+    const parts = new Intl.DateTimeFormat('id', { month: 'long', calendar: 'islamic' }).formatToParts(d);
     for (let p of parts) {
         if (p.type === 'month') return p.value;
     }
@@ -112,7 +104,7 @@ function getHijriMonth(date) {
 
 function getHijriYear(date) {
     const d = new Date(date);
-    const parts = new Intl.DateTimeFormat('id-u-ca-islamic', { year: 'numeric' }).formatToParts(d);
+    const parts = new Intl.DateTimeFormat('id', { year: 'numeric', calendar: 'islamic' }).formatToParts(d);
     for (let p of parts) {
         if (p.type === 'year') return p.value;
     }
@@ -287,7 +279,6 @@ function updateClock() {
     document.getElementById('digitalClock').textContent = `${h}:${m}:${s}`;
     const greg = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     document.getElementById('gregDate').textContent = greg;
-    // Hijriyah sekarang pakai Intl
     document.getElementById('hijriDateSmall').textContent = '🕌 ' + toHijri(now);
     document.getElementById('javanesePasaranDisplay').textContent = 'Pasaran hari ini: ' + getPasaran(now);
 }
@@ -348,7 +339,6 @@ function renderCalendar() {
         let cls = 'day-cell';
         if (isToday) cls += ' today';
         if (isJp) cls += ' jumat-pahing';
-        // Hijriyah untuk tooltip
         const hijri = toHijri(dateObj, 'full');
         html += `
             <div class="${cls}" title="${hijri}">
@@ -671,7 +661,7 @@ data.members.forEach(m => {
 loginPage.style.display = 'flex';
 mainApp.style.display = 'none';
 
-console.log('🕌 HARUM v6 (Hijriah akurat pakai Intl)');
+console.log('🕌 HARUM v7 (Hijriah akurat pakai calendar: islamic)');
 console.log('📦 Data:', data);
 console.log('🔑 Akun: admin/harum123 | anggota/123456');
 
