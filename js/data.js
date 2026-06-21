@@ -1,12 +1,18 @@
 // Data default untuk inisialisasi
 const DEFAULT_DATA = {
-    amalan: [
-        { id: 1, judul: 'Tawasul', teks: 'Teks tawasul ...' },
-        { id: 2, judul: 'Yasin', teks: 'Surat Yasin ...' },
-        { id: 3, judul: 'Tahlil', teks: 'Tahlil ...' },
-        { id: 4, judul: 'Hizib Bahar', teks: 'Hizib Bahar ...' },
-        { id: 5, judul: 'Hizib Nashor', teks: 'Hizib Nashor ...' }
-    ],
+amalan: [
+    { 
+        id: 1, 
+        judul: 'Tawasul', 
+        teks: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nاللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ وَعَلَى آلِ سَيِّدِنَا مُحَمَّدٍ\n... (teks tawasul lengkap)' 
+    },
+    { 
+        id: 2, 
+        judul: 'Yasin', 
+        teks: 'يسٓ ۝١ وَالْقُرْآنِ الْحَكِيمِ ۝٢ إِنَّكَ لَمِنَ الْمُرْسَلِينَ ۝٣ ...' 
+    },
+    // ... lainnya
+]
     anggota: [
         { id: 1, nama: 'Ahmad Fauzi', status: 'Lunas' },
         { id: 2, nama: 'Budi Santoso', status: 'Belum' },
