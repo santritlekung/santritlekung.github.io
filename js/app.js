@@ -1,284 +1,151 @@
-/* ==========================================================================
-   APP CORE LOGIC - ROUTER, AUTHENTICATION (RBAC), & CRUD INTERACTIONS
-   ========================================================================== */
+document.addEventListener('DOMContentLoaded', function() {
+    const loginOverlay = document.getElementById('loginOverlay');
+    const loginForm = document.getElementById('loginForm');
+    const loginPhone = document.getElementById('loginPhone');
+    const mainNav = document.getElementById('mainNav');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageContent = document.getElementById('pageContent');
+    const greetingText = document.getElementById('greetingText');
+    const userName = document.getElementById('userName');
+    const userRole = document.getElementById('userRole');
+    const userAvatar = document.getElementById('userAvatar');
+    const btnLogout = document.getElementById('btnLogout');
+    const btnToggle = document.getElementById('btnToggleSidebar');
+    const sidebar = document.getElementById('sidebar');
 
-const HARUM_App = {
-    
-    // 1. INISIALISASI AWAL APLIKASI
-    init() {
-        this.bindEvents();
-        this.renderAuthStatus();
-        this.routeChange(); // Jalankan router untuk halaman pertama kali dimuat
-        this.updateTopbarQuote();
-    },
+    // Menu definisi
+    const menuItems = [
+        { id: 'dashboard', label: 'Dashboard', icon: 'fa-gauge-high' },
+        { id: 'sabilun', label: 'Sabilun Najah', icon: 'fa-book-quran' },
+        { id: 'kalender', label: 'Kalender Hijriyah', icon: 'fa-calendar' },
+        { id: 'iuran', label: 'Iuran Jumat Pahing', icon: 'fa-hand-holding-dollar' },
+        { id: 'kas', label: 'Uang Kas', icon: 'fa-coins' },
+        { id: 'quote', label: 'Quote Ayat', icon: 'fa-quote-right' },
+        { id: 'pengumuman', label: 'Pengumuman', icon: 'fa-bullhorn' },
+        { id: 'agenda-putri', label: 'Agenda Putri', icon: 'fa-people-arrows' },
+        { id: 'agenda-haul', label: 'Haul Akbar', icon: 'fa-flag' },
+        { id: 'iuran-malang', label: 'Iuran Malang', icon: 'fa-bus' }
+    ];
 
-    // 2. EVENT BINDING (MANAJEMEN EVENT TOMBOL & WINDOW)
-    bindEvents() {
-        // Router listener
-        window.addEventListener('hashchange', () => this.routeChange());
-        
-        // Listener jika data di database berubah, re-render halaman aktif saat itu juga
-        window.addEventListener('dbUpdated', () => this.routeChange());
-
-        // Sidebar responsive toggle
-        document.getElementById('toggle-sidebar').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.add('active');
+    // Render navigasi
+    function renderNav(activeId) {
+        mainNav.innerHTML = '';
+        menuItems.forEach(item => {
+            const a = document.createElement('a');
+            a.href = '#';
+            a.dataset.page = item.id;
+            a.innerHTML = `<i class="fas ${item.icon}"></i> ${item.label}`;
+            if (item.id === activeId) a.classList.add('active');
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigate(item.id);
+            });
+            mainNav.appendChild(a);
         });
-        document.getElementById('close-sidebar').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.remove('active');
-        });
+    }
 
-        // Modal Auth toggles
-        document.getElementById('auth-btn').addEventListener('click', () => this.handleAuthClick());
-        document.getElementById('close-login').addEventListener('click', () => {
-            document.getElementById('login-modal').classList.remove('active');
-        });
+    // Navigasi
+    function navigate(pageId) {
+        // update title
+        const menu = menuItems.find(m => m.id === pageId);
+        pageTitle.textContent = menu ? menu.label : 'Halaman';
+        // update active nav
+        document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+        const activeLink = document.querySelector(`.sidebar-nav a[data-page="${pageId}"]`);
+        if (activeLink) activeLink.classList.add('active');
 
-        // Form Login submit
-        document.getElementById('login-form').addEventListener('submit', (e) => this.handleLoginSubmit(e));
-    },
-
-    // 3. HANDLER SYSTEM: ROUTING SINGLE PAGE APPLICATION (SPA)
-    routeChange() {
-        const hash = window.location.hash || '#dashboard';
-        const contentArea = document.getElementById('app-content');
-        const pageTitle = document.getElementById('page-title');
-        
-        // Tutup sidebar otomatis di mobile setelah klik menu
-        document.getElementById('sidebar').classList.remove('active');
-
-        // Manajemen Status Navigasi Active
-        document.querySelectorAll('.nav-item').forEach(item => {
-            if (item.getAttribute('href') === hash) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        });
-
-        // Map Route ke Komponen HTML Dinamis
-        switch (hash) {
-            case '#dashboard':
-                pageTitle.innerText = "Dashboard Utama";
-                contentArea.innerHTML = HARUM_Components.dashboard();
-                break;
-            case '#sabilun-najah':
-                pageTitle.innerText = "Sabilun Najah (Amalan)";
-                contentArea.innerHTML = HARUM_Components.sabilunNajah();
-                break;
-            case '#kalender':
-                pageTitle.innerText = "Kalender Hijriyah & Pasaran";
-                contentArea.innerHTML = HARUM_Components.kalender();
-                break;
-            case '#iuran-jumat':
-                pageTitle.innerText = "Iuran Jumat Pahing";
-                contentArea.innerHTML = HARUM_Components.iuranJumat();
-                break;
-            case '#uang-kas':
-                pageTitle.innerText = "Buku Jurnal Kas";
-                contentArea.innerHTML = HARUM_Components.uangKas();
-                break;
-            case '#pengumuman':
-                pageTitle.innerText = "Papan Pengumuman";
-                contentArea.innerHTML = HARUM_Components.pengumuman();
-                break;
-            case '#agenda-putri':
-                pageTitle.innerText = "Agenda: Kedatangan Putri Syaikhuna";
-                contentArea.innerHTML = HARUM_Components.agendaPutri();
-                break;
-            case '#agenda-haul':
-                pageTitle.innerText = "Agenda: Haul Akbar Syaikhuna";
-                contentArea.innerHTML = HARUM_Components.agendaHaul();
-                break;
-            case '#iuran-malang':
-                pageTitle.innerText = "Rombongan Haul Malang";
-                contentArea.innerHTML = HARUM_Components.iuranMalang();
-                break;
-            default:
-                contentArea.innerHTML = `<h2>Halaman Tidak Ditemukan</h2>`;
+        // Render konten sesuai halaman
+        switch (pageId) {
+            case 'dashboard': renderDashboard(); break;
+            case 'sabilun': renderSabilun(); break;
+            case 'kalender': renderKalender(); break;
+            case 'iuran': renderIuran(); break;
+            case 'kas': renderKas(); break;
+            case 'quote': renderQuote(); break;
+            case 'pengumuman': renderPengumuman(); break;
+            case 'agenda-putri': renderAgendaPutri(); break;
+            case 'agenda-haul': renderAgendaHaul(); break;
+            case 'iuran-malang': renderIuranMalang(); break;
+            default: renderDashboard();
         }
-    },
 
-    // 4. AUTHENTICATION SYSTEM (RBAC - ROLE BASED ACCESS CONTROL)
-    handleAuthClick() {
-        const currentRole = localStorage.getItem('harum_role');
-        if (currentRole) {
-            // Jika sudah masuk, tombol berfungsi sebagai LOGOUT
-            localStorage.removeItem('harum_role');
-            localStorage.removeItem('harum_phone');
-            alert("Anda telah keluar dari sistem.");
-            this.renderAuthStatus();
-            this.routeChange();
+        // Tutup sidebar di mobile
+        if (window.innerWidth <= 768) sidebar.classList.remove('open');
+    }
+
+    // Dashboard
+    function renderDashboard() {
+        const amalan = loadData('amalan');
+        const anggota = loadData('anggota');
+        const kas = loadData('kas');
+        const totalMasuk = kas.filter(k => k.tipe === 'masuk').reduce((s, k) => s + k.jumlah, 0);
+        const totalKeluar = kas.filter(k => k.tipe === 'keluar').reduce((s, k) => s + k.jumlah, 0);
+        const saldo = totalMasuk - totalKeluar;
+        pageContent.innerHTML = `
+            <div class="row">
+                <div class="stat-card"><div class="num">${amalan.length}</div><div class="label">Amalan</div></div>
+                <div class="stat-card"><div class="num">${anggota.length}</div><div class="label">Anggota</div></div>
+                <div class="stat-card"><div class="num">Rp ${saldo.toLocaleString()}</div><div class="label">Saldo Kas</div></div>
+                <div class="stat-card"><div class="num">${kas.length}</div><div class="label">Transaksi</div></div>
+            </div>
+            <p style="color:#64748b;">Selamat datang di aplikasi HARUM. Pilih menu di samping.</p>
+        `;
+    }
+
+    // inisialisasi user
+    function initUser() {
+        const user = getCurrentUser();
+        if (user) {
+            userName.textContent = user.name;
+            userRole.textContent = user.role === 'admin' ? 'Admin' : 'User';
+            userAvatar.textContent = user.name.charAt(0).toUpperCase();
+            greetingText.textContent = `Selamat datang, ${user.name}`;
+            loginOverlay.style.display = 'none';
+            renderNav('dashboard');
+            navigate('dashboard');
         } else {
-            // Jika belum masuk, buka MODAL LOGIN
-            document.getElementById('login-modal').classList.add('active');
+            loginOverlay.style.display = 'flex';
         }
-    },
+    }
 
-    handleLoginSubmit(e) {
+    // Login
+    loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const phoneInput = document.getElementById('phone-number').value.trim();
-        
-        if (!phoneInput) return;
-
-        // KETENTUAN RBAC: Jika diawali 0811 dianggap ADMIN, sisanya USER BIASA
-        if (phoneInput.startsWith('0811')) {
-            localStorage.setItem('harum_role', 'admin');
-            localStorage.setItem('harum_phone', phoneInput);
-            alert("Login Berhasil! Selamat Datang Admin HARUM.");
+        const phone = loginPhone.value.trim();
+        if (login(phone)) {
+            initUser();
         } else {
-            localStorage.setItem('harum_role', 'user');
-            localStorage.setItem('harum_phone', phoneInput);
-            alert("Login Berhasil! Anda masuk sebagai Anggota (Read-Only).");
+            alert('Nomor HP tidak terdaftar! Gunakan 08123456789 (Admin) atau 08123456788 (User)');
         }
+    });
 
-        // Reset form & tutup modal
-        document.getElementById('login-form').reset();
-        document.getElementById('login-modal').classList.remove('active');
-        
-        this.renderAuthStatus();
-        this.routeChange(); // Perbarui halaman agar tombol CRUD muncul/hilang
-    },
+    // Logout
+    btnLogout.addEventListener('click', function() {
+        logout();
+        loginOverlay.style.display = 'flex';
+        pageContent.innerHTML = '';
+        mainNav.innerHTML = '';
+    });
 
-    renderAuthStatus() {
-    const role = localStorage.getItem('harum_role');
-    const phone = localStorage.getItem('harum_phone');
-    const statusBox = document.getElementById('user-status-box');
-    const authBtn = document.getElementById('auth-btn');
+    // Toggle sidebar
+    btnToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
 
-    if (role) {
-        const badgeClass = role === 'admin' ? 'role-admin' : 'role-user';
-        const roleName = role === 'admin' ? 'Administrator' : 'Anggota';
-        
-        statusBox.innerHTML = `
-            <div><i class="fas fa-user-circle"></i> HP: <strong>${phone}</strong></div>
-            <span class="role-badge ${badgeClass}">${roleName}</span>
-        `;
-        authBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Keluar`;
-    } else {
-        statusBox.innerHTML = `
-            <p style="color: rgba(255,255,255,0.6); font-style: italic;">Anda belum masuk. Masuk untuk akses pencatatan.</p>
-        `;
-        authBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Login`;
-    }
-}
-
-
-    // ==========================================================================
-    // LOGIKA OPERASI DATA (CRUD UTILITIES KHUSUS ADMIN)
-    // ==========================================================================
-    
-    // Fungsi untuk memicu input form interaktif (Menggunakan Prompt bawaan agar simpel, clean & handal)
-    showActionModal(type) {
-        if (!HARUM_Components.isAdmin()) return;
-
-        const db = HARUM_DB.getAll();
-        const id = Date.now().toString(); // Generate ID unik berbasis timestamp
-
-        if (type === 'amalan') {
-            const judul = prompt("Masukkan Judul Amalan Baru:");
-            const deskripsi = prompt("Masukkan Deskripsi/Keterangan Amalan:");
-            const teks = prompt("Masukkan Teks Bacaan Amalan (Teks Arab/Latin):");
-            if (judul && teks) {
-                db.amalan.push({ id, judul, deskripsi, teks });
-                HARUM_DB.save(db);
-            }
-        } 
-        else if (type === 'iuranJumat') {
-            const nama = prompt("Masukkan Nama Anggota Baru:");
-            if (nama) {
-                db.iuranJumat.push({ id, nama, status: "Belum", nominal: 0, tanggal: "-" });
-                HARUM_DB.save(db);
-            }
-        } 
-        else if (type === 'uangKas') {
-            const keterangan = prompt("Keterangan Transaksi:");
-            const tipe = prompt("Ketik 'masuk' atau 'keluar':").toLowerCase();
-            const nominal = parseInt(prompt("Masukkan Nominal Rupiah (Angka saja):"), 10);
-            const tanggal = new Date().toISOString().split('T')[0];
-            
-            if (keterangan && (tipe === 'masuk' || tipe === 'keluar') && nominal) {
-                db.uangKas.push({ id, keterangan, tipe, nominal, tanggal });
-                HARUM_DB.save(db);
-            } else {
-                alert("Input tidak valid!");
-            }
-        } 
-        else if (type === 'pengumuman') {
-            const judul = prompt("Judul Pengumuman:");
-            const isi = prompt("Isi lengkap pengumuman informasi:");
-            const tanggal = new Date().toISOString().split('T')[0];
-            if (judul && isi) {
-                db.pengumuman.unshift({ id, judul, isi, tanggal }); // Masuk di urutan teratas
-                HARUM_DB.save(db);
-            }
-        } 
-        else if (type === 'agendaPutri') {
-            const kegiatan = prompt("Nama Kebutuhan Logistik/Acara:");
-            const penanggungJawab = prompt("Nama Penanggung Jawab / Divisi:");
-            if (kegiatan && penanggungJawab) {
-                db.agendaPutri.push({ id, kegiatan, penanggungJawab, status: "Belum" });
-                HARUM_DB.save(db);
-            }
-        } 
-        else if (type === 'iuranMalang') {
-            const nama = prompt("Nama Jamaah Pendaftar:");
-            const jumlahKursi = parseInt(prompt("Jumlah Kursi Pesanan (Angka):"), 10);
-            const totalBayar = parseInt(prompt("Jumlah Nominal Pembayaran Awal/DP (Angka):"), 10);
-            const status = prompt("Ketik Status Keuangan: 'Lunas' atau 'DP':");
-            
-            if (nama && jumlahKursi && totalBayar) {
-                db.iuranMalang.push({ id, nama, jumlahKursi, totalBayar, status });
-                HARUM_DB.save(db);
+    // Tutup sidebar jika klik di luar (mobile)
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            const isSidebar = sidebar.contains(e.target);
+            const isToggle = btnToggle.contains(e.target);
+            if (!isSidebar && !isToggle) {
+                sidebar.classList.remove('open');
             }
         }
-    },
+    });
 
-    // Fungsi Global Hapus Data (Delete)
-    deleteItem(key, id) {
-        if (!HARUM_Components.isAdmin()) return;
-        if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-            const db = HARUM_DB.getAll();
-            db[key] = db[key].filter(item => item.id !== id);
-            HARUM_DB.save(db);
-        }
-    },
+    // Init
+    initUser();
 
-    // Fungsi Khusus: Mengubah status iuran jumat pahing menjadi Lunas
-    lunasiIuranJumat(id) {
-        if (!HARUM_Components.isAdmin()) return;
-        const db = HARUM_DB.getAll();
-        const item = db.iuranJumat.find(i => i.id === id);
-        if (item) {
-            item.status = "Lunas";
-            item.nominal = 20000; // Contoh tarif iuran standard
-            item.tanggal = new Date().toISOString().split('T')[0];
-            HARUM_DB.save(db);
-        }
-    },
-
-    // Fungsi Khusus: Mengubah checklist Logistik Putri menjadi Selesai
-    updateStatusPutri(id) {
-        if (!HARUM_Components.isAdmin()) return;
-        const db = HARUM_DB.getAll();
-        const item = db.agendaPutri.find(i => i.id === id);
-        if (item) {
-            item.status = item.status === 'Belum' ? 'Proses' : 'Selesai';
-            HARUM_DB.save(db);
-        }
-    },
-
-    // Fungsi Khusus: Melunasi Biaya Kursi Bus Malang
-    lunasiMalang(id) {
-        if (!HARUM_Components.isAdmin()) return;
-        const db = HARUM_DB.getAll();
-        const item = db.iuranMalang.find(m => m.id === id);
-        if (item) {
-            item.status = "Lunas";
-            HARUM_DB.save(db);
-        }
-    }
-};
-
-// Jalankan sistem saat file ini dieksekusi oleh browser
-document.addEventListener('DOMContentLoaded', () => HARUM_App.init());
+    // Expose navigate ke global agar bisa dipanggil dari komponen
+    window.navigate = navigate;
+});
