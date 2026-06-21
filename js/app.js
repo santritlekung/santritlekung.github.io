@@ -149,3 +149,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Expose navigate ke global agar bisa dipanggil dari komponen
     window.navigate = navigate;
 });
+
+// ========== MODAL GLOBAL ==========
+function showModal(title, bodyHTML, onSave) {
+    const overlay = document.getElementById('modalOverlay');
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalBody').innerHTML = bodyHTML;
+    const footer = document.getElementById('modalFooter');
+    footer.innerHTML = `
+        <button class="btn btn-outline" onclick="closeModal()">Batal</button>
+        <button class="btn btn-primary" id="modalSaveBtn">Simpan</button>
+    `;
+    overlay.classList.add('show');
+    document.getElementById('modalSaveBtn').onclick = function() {
+        if (onSave) onSave();
+    };
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('show');
+}
+
+// Event close modal
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+// Expose ke global
+window.showModal = showModal;
+window.closeModal = closeModal;
