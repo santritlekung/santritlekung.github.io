@@ -141,33 +141,28 @@ const HARUM_App = {
     },
 
     renderAuthStatus() {
-        const role = localStorage.getItem('harum_role');
-        const phone = localStorage.getItem('harum_phone');
-        const statusBox = document.getElementById('user-status-box');
-        const authBtn = document.getElementById('auth-btn');
+    const role = localStorage.getItem('harum_role');
+    const phone = localStorage.getItem('harum_phone');
+    const statusBox = document.getElementById('user-status-box');
+    const authBtn = document.getElementById('auth-btn');
 
-        if (role) {
-            const badgeClass = role === 'admin' ? 'role-admin' : 'role-user';
-            const roleName = role === 'admin' ? 'Administrator' : 'Anggota';
-            
-            statusBox.innerHTML = `
-                <div><i class="fas fa-user-circle"></i> HP: <strong>${phone}</strong></div>
-                <span class="role-badge ${badgeClass}">${roleName}</span>
-            `;
-            authBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Keluar`;
-        } else {
-            statusBox.innerHTML = `
-                <p style="color: rgba(255,255,255,0.6); font-style: italic;">Anda belum masuk. Masuk untuk akses pencatatan.</p>
-            `;
-            authBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Login`;
-        }
-    },
+    if (role) {
+        const badgeClass = role === 'admin' ? 'role-admin' : 'role-user';
+        const roleName = role === 'admin' ? 'Administrator' : 'Anggota';
+        
+        statusBox.innerHTML = `
+            <div><i class="fas fa-user-circle"></i> HP: <strong>${phone}</strong></div>
+            <span class="role-badge ${badgeClass}">${roleName}</span>
+        `;
+        authBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Keluar`;
+    } else {
+        statusBox.innerHTML = `
+            <p style="color: rgba(255,255,255,0.6); font-style: italic;">Anda belum masuk. Masuk untuk akses pencatatan.</p>
+        `;
+        authBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Login`;
+    }
+}
 
-    updateTopbarQuote() {
-        const db = HARUM_DB.getAll();
-        const randomQuote = db.quotes[Math.floor(Math.random() * db.quotes.length)];
-        document.getElementById('quote-topbar').innerText = randomQuote;
-    },
 
     // ==========================================================================
     // LOGIKA OPERASI DATA (CRUD UTILITIES KHUSUS ADMIN)
