@@ -1,100 +1,105 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HARUM - Aplikasi Amalan & Organisasi</title>
-    <!-- Google Fonts & Font Awesome untuk Icon -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Style Utama -->
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HARUM — Aplikasi Santri</title>
+    <!-- Font & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Style -->
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-    <!-- SIDEBAR NAVIGATION -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <!-- Integrasi Logo HARUM dari file Penghapusan Pintar (1).jpg -->
-            <div class="brand-logo-container">
-                <img src="Penghapusan Pintar (1).jpg" alt="Logo HARUM" class="brand-logo">
-                <div class="brand-text">
-                    <h3>HARUM</h3>
-                    <small>Alumni Roudlotul Ulum</small>
+    <!-- ===== SHELL ===== -->
+    <div id="app">
+
+        <!-- SIDEBAR / NAV -->
+        <aside id="sidebar">
+            <div class="sidebar-brand">
+                <img src="assets/logo.jpg" alt="Logo HARUM" class="brand-logo" />
+                <span class="brand-name">HARUM</span>
+            </div>
+            <nav class="sidebar-nav" id="mainNav">
+                <!-- dinamis dari JS -->
+            </nav>
+            <div class="sidebar-user">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">User</span>
+                    <span class="user-role" id="userRole">role</span>
                 </div>
+                <button class="btn-logout" id="btnLogout"><i class="fas fa-sign-out-alt"></i></button>
             </div>
-            <button id="close-sidebar" class="mobile-only"><i class="fas fa-times"></i></button>
-        </div>
-        
-        <!-- Status Login Singkat -->
-        <div class="user-status-box" id="user-status-box">
-            <!-- Akan diisi via JS (Nama/Role) -->
-        </div>
+        </aside>
 
-        <ul class="nav-links">
-            <li><a href="#dashboard" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="#sabilun-najah" class="nav-item"><i class="fas fa-book-open"></i> Sabilun Najah</a></li>
-            <li><a href="#kalender" class="nav-item"><i class="fas fa-calendar-alt"></i> Kalender Hijriyah</a></li>
-            <li><a href="#iuran-jumat" class="nav-item"><i class="fas fa-hand-holding-usd"></i> Iuran Jumat Pahing</a></li>
-            <li><a href="#uang-kas" class="nav-item"><i class="fas fa-wallet"></i> Uang Kas</a></li>
-            <li><a href="#pengumuman" class="nav-item"><i class="fas fa-bullhorn"></i> Pengumuman</a></li>
-            
-            <li class="nav-divider">Agenda Khusus</li>
-            <li><a href="#agenda-putri" class="nav-item"><i class="fas fa-user-clock"></i> Kedatangan Putri Syaikhuna</a></li>
-            <li><a href="#agenda-haul" class="nav-item"><i class="fas fa-mosque"></i> Haul Akbar Syaikhuna</a></li>
-            <li><a href="#iuran-malang" class="nav-item"><i class="fas fa-bus"></i> Rombongan Malang</a></li>
-        </ul>
-        
-        <div class="sidebar-footer">
-            <button id="auth-btn" class="btn-auth"><i class="fas fa-sign-in-alt"></i> Login</button>
-        </div>
-    </nav>
-
-    <!-- MAIN CONTENT AREA -->
-    <div class="main-container">
-        <!-- Topbar untuk Mobile & Info Ringkas -->
-        <header class="topbar">
-            <button id="toggle-sidebar" class="toggle-btn"><i class="fas fa-bars"></i></button>
-            <div class="topbar-title">
-                <span id="page-title">Dashboard</span>
-            </div>
-            <div class="quote-widget-mini" id="quote-topbar">
-                <!-- Quote Al-Qur'an Berjalan / Ringkas -->
-            </div>
-        </header>
-
-        <!-- Konten Dinamis (Inject via JS) -->
-        <main class="content" id="app-content">
-            <!-- Halaman akan di-render di sini oleh app.js -->
+        <!-- MAIN CONTENT -->
+        <main id="mainContent">
+            <header class="main-header">
+                <button class="btn-toggle-sidebar" id="btnToggleSidebar"><i class="fas fa-bars"></i></button>
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <span class="greeting" id="greetingText">Selamat datang!</span>
+                </div>
+            </header>
+            <section class="page-content" id="pageContent">
+                <!-- konten dinamis dari JS -->
+            </section>
         </main>
-    </div>
 
-    <!-- MODAL LOGIN (Sistem Login Nomor HP) -->
-    <div class="modal" id="login-modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-login">&times;</span>
-            
-            <!-- Logo juga ditampilkan di dalam Modal Login agar lebih profesional -->
-            <div class="login-logo-container">
-                <img src="Penghapusan Pintar (1).jpg" alt="Logo HARUM" class="login-logo">
-            </div>
-            
-            <h2>Login HARUM</h2>
-            <p>Masukkan Nomor HP Anda untuk masuk ke sistem.</p>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="phone-number">Nomor HP</label>
-                    <input type="tel" id="phone-number" placeholder="Contoh: 08123456789" required>
-                    <small class="form-note">*Gunakan nomor admin khusus untuk akses Admin, nomor lain sebagai User Biasa.</small>
+        <!-- MODAL OVERLAY -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-box" id="modalBox">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Modal</h3>
+                    <button class="modal-close" id="modalClose">&times;</button>
                 </div>
-                <button type="submit" class="btn-block">Masuk</button>
-            </form>
+                <div class="modal-body" id="modalBody">
+                    <!-- konten modal -->
+                </div>
+                <div class="modal-footer" id="modalFooter">
+                    <!-- tombol aksi -->
+                </div>
+            </div>
         </div>
+
+        <!-- LOGIN OVERLAY -->
+        <div class="login-overlay" id="loginOverlay">
+            <div class="login-card">
+                <div class="login-brand">
+                    <img src="assets/logo.jpg" alt="Logo HARUM" class="login-logo" />
+                    <h2>HARUM</h2>
+                    <p>Hidayah & Rahmat untuk Umat</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Nomor HP</label>
+                        <input type="tel" id="loginPhone" placeholder="08123456789" value="08123456789" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+                    <p class="login-hint">Gunakan <strong>08123456789</strong> (Admin) atau <strong>08123456788</strong> (User)</p>
+                </form>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Script Aplikasi (Modular) -->
-    <script src="js/data-store.js"></script>
-    <script src="js/components.js"></script>
+    <!-- ===== SCRIPTS ===== -->
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/components/sabilun.js"></script>
+    <script src="js/components/kalender.js"></script>
+    <script src="js/components/iuran.js"></script>
+    <script src="js/components/kas.js"></script>
+    <script src="js/components/quote.js"></script>
+    <script src="js/components/pengumuman.js"></script>
+    <script src="js/components/agenda-putri.js"></script>
+    <script src="js/components/agenda-haul.js"></script>
+    <script src="js/components/iuran-malang.js"></script>
     <script src="js/app.js"></script>
+
 </body>
 </html>
