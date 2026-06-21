@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HARUM - Himpunan Alumni Roudlotul Ulum</title>
+    <!-- Link ke CSS Utama -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Library untuk Konversi Tanggal Hijriyah (Client-side) -->
+    <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.0/moment-hijri.min.js"></script>
+</head>
+<body>
+
+    <!-- SIDEBAR / NAVIGASI -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <!-- Logo disimpan di assets, pastikan nama filenya sesuai -->
+            <img src="assets/logo.svg" alt="Logo HARUM" class="logo-img">
+            <h1>HARUM</h1>
+            <p>Himpunan Alumni Roudlotul Ulum</p>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+            <li class="active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</li>
+            <li data-page="sabilun"><i class="fas fa-book-open"></i> Sabilun Najah</li>
+            <li data-page="kalender"><i class="fas fa-calendar-alt"></i> Kalender Hijriyah</li>
+            <li data-page="iuran"><i class="fas fa-hand-holding-usd"></i> Iuran Jumat Pahing</li>
+            <li data-page="kas"><i class="fas fa-coins"></i> Uang Kas</li>
+            <li data-page="rombongan"><i class="fas fa-bus"></i> Rombongan Malang</li>
+            <li data-page="agenda"><i class="fas fa-calendar-check"></i> Agenda Haul & Putri</li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div id="userInfo" class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="userDisplayName">Guest</span>
+                <span id="roleBadge" class="badge user-badge">User</span>
+            </div>
+            <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+        </div>
+    </nav>
+
+    <!-- OVERLAY (Untuk Mobile saat sidebar terbuka) -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- KONTEN UTAMA -->
+    <main id="mainContent" class="main-content">
+        <!-- HEADER APLIKASI -->
+        <header class="top-header">
+            <button id="menuToggle" class="menu-btn"><i class="fas fa-bars"></i></button>
+            <div class="header-title">
+                <h2 id="pageTitle">Dashboard</h2>
+            </div>
+            <div class="header-actions">
+                <!-- Widget Quote akan di-render oleh JS di sini -->
+                <div id="quoteWidget" class="quote-widget"></div>
+            </div>
+        </header>
+
+        <!-- AREA KONTEN DINAMIS -->
+        <section id="contentArea" class="content-wrapper">
+            <!-- Semua halaman akan di-render oleh app.js atau component js ke dalam div ini -->
+            <div id="pageContainer">
+                <!-- Default: Loading Screen atau Login Screen (JS akan handle ini) -->
+                <div class="loading-screen">Memuat Aplikasi HARUM...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL LOGIN -->
+    <div id="loginModal" class="modal-overlay active">
+        <div class="modal-content login-box">
+            <div class="login-header">
+                <img src="assets/logo.svg" alt="Logo" class="login-logo">
+                <h2>Selamat Datang</h2>
+                <p>Himpunan Alumni Roudlotul Ulum</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="phoneInput">Nomor HP (Login)</label>
+                    <input type="tel" id="phoneInput" placeholder="08xxxxxxxxxx" required>
+                </div>
+                <button type="submit" class="btn-primary btn-block">Masuk Aplikasi</button>
+                <small class="helper-text">*Akun Admin: 08123456789 (Password kosong)</small>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Utama Aplikasi -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
