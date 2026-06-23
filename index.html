@@ -1,168 +1,160 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HARUM - Majelis Ta'lim</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HARUM - Aplikasi Jemaah & Organisasi</title>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Google Fonts: Amiri (untuk Teks Arab Naskhi) & Inter (untuk Teks Latin/Modern) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Font Awesome untuk Icon Menu & Tombol -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Style -->
-    <link rel="stylesheet" href="style.css" />
+    <!-- File CSS Utama -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <!-- Loading Screen -->
-        <div id="loading-screen" class="loading-screen">
-            <div class="loader"></div>
-            <p>Loading HARUM...</p>
-        </div>
 
-        <!-- Login Screen -->
-        <div id="login-screen" class="login-screen hidden">
-            <div class="login-container">
-                <div class="login-card">
-                    <div class="login-header">
-                        <img src="assets/logo.png" alt="Logo HARUM" class="login-logo" />
-                        <h1>HARUM</h1>
-                        <p class="subtitle">Majelis Ta'lim & Organisasi</p>
-                    </div>
-                    
-                    <div class="login-body">
-                        <form id="login-form">
-                            <div class="form-group">
-                                <label for="login-phone">
-                                    <i class="fas fa-phone"></i> Nomor HP
-                                </label>
-                                <input 
-                                    type="tel" 
-                                    id="login-phone" 
-                                    placeholder="Contoh: 081234567890"
-                                    required
-                                />
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="login-password">
-                                    <i class="fas fa-lock"></i> Password
-                                </label>
-                                <input 
-                                    type="password" 
-                                    id="login-password" 
-                                    placeholder="Masukkan password"
-                                    required
-                                />
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-block">
-                                <i class="fas fa-sign-in-alt"></i> Masuk
-                            </button>
-                            
-                            <div id="login-error" class="login-error hidden">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span>Nomor HP atau password salah!</span>
-                            </div>
-                            
-                            <div class="login-footer">
-                                <p>Demo Account:</p>
-                                <small>Admin: 081234567890 / admin123</small><br />
-                                <small>User: 089876543210 / user123</small>
-                            </div>
-                        </form>
-                    </div>
+    <!-- Layout Utama Aplikasi -->
+    <div class="app-container">
+        
+        <!-- HEADER UTAMA -->
+        <header class="app-header">
+            <div class="header-left">
+                <!-- Tombol Toggle Sidebar untuk Mobile -->
+                <button id="sidebar-toggle" class="btn-icon" aria-label="Buka Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <!-- Area Logo dan Nama Aplikasi -->
+                <div class="app-logo-area">
+                    <img src="placeholder-logo.png" alt="Logo HARUM" id="app-logo" class="logo-img">
+                    <span class="app-title">HARUM</span>
                 </div>
             </div>
-        </div>
+            
+            <div class="header-right">
+                <!-- Status Hak Akses & Tombol Auth -->
+                <div id="auth-status-area">
+                    <span id="user-role-badge" class="badge badge-user">Tamu</span>
+                    <button id="btn-login-trigger" class="btn btn-primary">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </button>
+                    <button id="btn-logout" class="btn btn-danger hidden">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                    </button>
+                </div>
+            </div>
+        </header>
 
-        <!-- Main Application -->
-        <div id="main-app" class="main-app hidden">
-            <!-- Sidebar -->
-            <aside id="sidebar" class="sidebar">
-                <div class="sidebar-header">
-                    <img src="assets/logo.png" alt="Logo" class="sidebar-logo" />
-                    <h2>HARUM</h2>
-                </div>
-                
+        <div class="app-body">
+            <!-- SIDEBAR / NAVIGASI (Responsif) -->
+            <aside id="app-sidebar" class="app-sidebar">
                 <nav class="sidebar-nav">
-                    <button class="nav-item active" data-page="dashboard">
-                        <i class="fas fa-home"></i>
-                        <span>Beranda</span>
-                    </button>
-                    <button class="nav-item" data-page="sabilun-najah">
-                        <i class="fas fa-book-quran"></i>
-                        <span>Sabilun Najah</span>
-                    </button>
-                    <button class="nav-item" data-page="kalender">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Kalender</span>
-                    </button>
-                    <button class="nav-item" data-page="iuran-jumat">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <span>Iuran Jumat Pahing</span>
-                    </button>
-                    <button class="nav-item" data-page="uang-kas">
-                        <i class="fas fa-wallet"></i>
-                        <span>Uang Kas</span>
-                    </button>
-                    <button class="nav-item" data-page="quote">
-                        <i class="fas fa-quote-right"></i>
-                        <span>Quote Ayat</span>
-                    </button>
-                    <button class="nav-item" data-page="pengumuman">
-                        <i class="fas fa-bullhorn"></i>
-                        <span>Pengumuman</span>
-                    </button>
-                    <button class="nav-item" data-page="agenda-putri">
-                        <i class="fas fa-user-graduate"></i>
-                        <span>Agenda Putri</span>
-                    </button>
-                    <button class="nav-item" data-page="haul-akbar">
-                        <i class="fas fa-users"></i>
-                        <span>Haul Akbar</span>
-                    </button>
-                    <button class="nav-item" data-page="iuran-malang">
-                        <i class="fas fa-bus"></i>
-                        <span>Iuran Malang</span>
-                    </button>
+                    <ul>
+                        <li>
+                            <a href="#beranda" class="nav-link active" data-page="beranda">
+                                <i class="fa-solid fa-house"></i> <span>Beranda</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#sabilun-najah" class="nav-link" data-page="sabilunNajah">
+                                <i class="fa-solid fa-book-quran"></i> <span>Sabilun Najah</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#kalender" class="nav-link" data-page="kalender">
+                                <i class="fa-solid fa-calendar-days"></i> <span>Kalender & Pasaran</span>
+                            </a>
+                        </li>
+                        <li class="nav-divider">Keuangan</li>
+                        <li>
+                            <a href="#iuran-jumat" class="nav-link" data-page="iuranJumat">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> <span>Iuran Jumat Pahing</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#uang-kas" class="nav-link" data-page="uangKas">
+                                <i class="fa-solid fa-wallet"></i> <span>Uang Kas</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#iuran-malang" class="nav-link" data-page="iuranMalang">
+                                <i class="fa-solid fa-bus"></i> <span>Rombongan Malang</span>
+                            </a>
+                        </li>
+                        <li class="nav-divider">Informasi & Agenda</li>
+                        <li>
+                            <a href="#pengumuman" class="nav-link" data-page="pengumuman">
+                                <i class="fa-solid fa-bullhorn"></i> <span>Pengumuman</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#agenda-putri" class="nav-link" data-page="agendaPutri">
+                                <i class="fa-solid fa-calendar-check"></i> <span>Persiapan Putri Syaikhuna</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#agenda-haul" class="nav-link" data-page="agendaHaul">
+                                <i class="fa-solid fa-star-and-crescent"></i> <span>Haul Akbar</span>
+                            </a>
+                        </li>
+                    </ul>
                 </nav>
-                
-                <div class="sidebar-footer">
-                    <div class="user-info">
-                        <i class="fas fa-user-circle"></i>
-                        <span id="user-display">User</span>
-                    </div>
-                    <button id="logout-btn" class="btn btn-danger btn-sm">
-                        <i class="fas fa-sign-out-alt"></i> Keluar
-                    </button>
-                </div>
             </aside>
 
-            <!-- Main Content -->
-            <main id="main-content" class="main-content">
-                <header class="content-header">
-                    <button id="toggle-sidebar" class="toggle-sidebar">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <h1 id="page-title">Beranda</h1>
-                    <div class="header-actions">
-                        <span id="role-badge" class="badge">User</span>
+            <!-- Overlay Sidebar saat Aktif di Mobile -->
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+            <!-- AREA KONTEN UTAMA (Tempat Komponen JS Dirender) -->
+            <main class="app-main">
+                <div id="app-content">
+                    <!-- Komponen halaman akan dimuat di sini secara otomatis melalui router JS -->
+                    <div class="loading-spinner">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> Memuat halaman...
                     </div>
-                </header>
-                
-                <section id="content-area" class="content-area">
-                    <!-- Dynamic content will be loaded here -->
-                </section>
+                </div>
             </main>
         </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Aplikasi HARUM. All Rights Reserved.</p>
+        </footer>
     </div>
 
-    <!-- JavaScript Modules -->
+    <!-- MODAL DIALOG: FORM LOGIN NOMOR HP -->
+    <div id="login-modal" class="modal-container hidden">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Login Anggota / Admin</h3>
+                <button id="btn-close-modal" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-phone">Nomor HP / WhatsApp</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="tel" id="login-phone" placeholder="Contoh: 081234567xxx" required autocomplete="tel">
+                        </div>
+                        <small class="form-help">Masukkan nomor HP aktif yang terdaftar di sistem.</small>
+                    </div>
+                    <div id="login-error-msg" class="alert alert-danger hidden">
+                        Nomor HP tidak terdaftar atau terjadi kesalahan jaringan.
+                    </div>
+                    <button type="submit" id="btn-submit-login" class="btn btn-block btn-success">
+                        <i class="fa-solid fa-right-to-bracket"></i> Masuk Aplikasi
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="modal-backdrop"></div>
+    </div>
+
+    <!-- SCRIPT UTAMA (Menggunakan type="module" untuk arsitektur modular JS) -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
