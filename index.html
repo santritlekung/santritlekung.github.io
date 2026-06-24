@@ -36,7 +36,7 @@
             <div class="overflow-y-auto flex-1">
                 <div class="p-5 bg-emerald-800 text-white">
                     <h3 class="font-bold text-lg">Menu Navigasi</h3>
-                    <p class="text-xs text-emerald-200">Mode Akses: Terbuka & Real-time</p>
+                    <p class="text-xs text-emerald-200">Aplikasi Alumni Korwil Demak</p>
                 </div>
                 <nav class="p-2 space-y-1" id="menuKonten"></nav>
             </div>
@@ -125,8 +125,27 @@
             <section id="hal-nyai" class="menu-halaman hidden"><h2 class="text-xl font-bold">👩 Kedatangan Nyai</h2></section>
             <section id="hal-profil" class="menu-halaman hidden"><h2 class="text-xl font-bold">👤 Profil</h2></section>
 
-            <section id="hal-admin" class="menu-halaman hidden space-y-4">
-                <h2 class="text-xl font-bold text-gray-800">⚙️ Admin Panel Panel (Input Real-time)</h2>
+            <section id="hal-admin-auth" class="menu-halaman hidden max-w-sm mx-auto pt-10 space-y-4">
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-lg text-center space-y-4">
+                    <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto text-amber-600 text-xl">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800">Verifikasi PIN Admin</h3>
+                        <p class="text-xs text-gray-400 mt-1">Masukkan password khusus pengurus untuk mengedit isi database.</p>
+                    </div>
+                    <input type="password" id="inputPinAdmin" placeholder="••••••" class="w-full p-3 border border-gray-200 rounded-xl text-center text-xl tracking-widest focus:outline-emerald-600">
+                    <button onclick="verifikasiSandiAdmin()" class="w-full bg-emerald-700 text-white p-3 rounded-xl text-xs font-bold hover:bg-emerald-800 transition shadow">
+                        Buka Akses Admin <i class="fas fa-unlock ml-1"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section id="hal-admin-panel" class="menu-halaman hidden space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800">⚙️ Admin Panel Panel (Akses Terkunci)</h2>
+                    <button onclick="kunciUlangAdmin()" class="bg-red-100 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold">Kunci Kembali</button>
+                </div>
                 
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
                     <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider">✍️ Buat / Tambah Pengumuman Baru</h3>
@@ -154,7 +173,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Konfigurasi Proyek Firebase Anda
         const firebaseConfig = {
             databaseURL: "https://harum-app-default-rtdb.firebaseio.com/"
         };
@@ -164,19 +182,18 @@
 
         // --- AMBIL DATA REAL-TIME DARI FIREBASE ---
         function inisialisasiDataRealtime() {
-            // 1. Sinkronisasi Halaman & Dashboard Pengumuman
             onValue(ref(db, 'harum-app/pengumuman'), (snapshot) => {
                 const data = snapshot.val();
                 const box = document.getElementById('box-pengumuman');
                 const dash = document.getElementById('dash-pengumuman');
                 if (data) {
                     box.innerHTML = '';
-                    let keys = Object.keys(data).reverse(); // Yang terbaru di atas
+                    let keys = Object.keys(data).reverse();
                     dash.innerText = data[keys[0]].judul;
                     
                     keys.forEach(key => {
                         box.innerHTML += `
-                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs relative">
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
                                 <h3 class="font-bold text-emerald-800 text-sm">${data[key].judul}</h3>
                                 <p class="text-[10px] text-gray-400 mt-0.5">${data[key].tanggal}</p>
                                 <p class="text-xs text-gray-600 mt-2">${data[key].isi}</p>
@@ -188,7 +205,6 @@
                 }
             });
 
-            // 2. Sinkronisasi Tabel Jumat Pahing & Total Saldo Kas
             onValue(ref(db, 'harum-app/jumatpahing'), (snapshot) => {
                 const data = snapshot.val();
                 const tabel = document.getElementById('table-jumatpahing');
@@ -220,7 +236,7 @@
             });
         }
 
-        // --- FUNGSI ADMIN: MENAMBAH DATA KE FIREBASE ---
+        // --- INTERAKSI TOMBOL PENGURUS ---
         window.adminTambahPengumuman = function() {
             const judul = document.getElementById('admJudulPengumuman').value.trim();
             const isi = document.getElementById('admIsiPengumuman').value.trim();
@@ -253,7 +269,6 @@
             });
         };
 
-        // Jalankan sinkronisasi database saat aplikasi dimulai
         inisialisasiDataRealtime();
     </script>
 
@@ -265,7 +280,7 @@
             { id: 'jumatpahing', nama: 'Jumat Pahing', ikon: 'fa-calendar-check' },
             { id: 'uangkas', nama: 'Uang Kas', ikon: 'fa-wallet' },
             { id: 'kalender', nama: 'Kalender', ikon: 'fa-calendar-alt' },
-            { id: 'admin', nama: 'Admin Panel Panel', ikon: 'fa-cog' }
+            { id: 'admin-auth', nama: 'Admin Panel Panel', ikon: 'fa-cog' }
         ];
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -273,7 +288,14 @@
             menus.forEach(m => {
                 const btn = document.createElement('button');
                 btn.className = `w-full flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium text-sm text-left transition`;
-                btn.onclick = () => { bukaHalaman(m.id); kendaliSidebar(); };
+                btn.onclick = () => { 
+                    if(m.id === 'admin-auth' && sessionStorage.getItem('admin_authenticated') === 'true') {
+                        bukaHalaman('admin-panel');
+                    } else {
+                        bukaHalaman(m.id); 
+                    }
+                    kendaliSidebar(); 
+                };
                 btn.innerHTML = `<i class="fas ${m.ikon} w-6 text-center text-emerald-600"></i> <span>${m.nama}</span>`;
                 menuKonten.appendChild(btn);
             });
@@ -296,6 +318,28 @@
             document.querySelectorAll('.menu-halaman').forEach(h => h.classList.add('hidden'));
             const target = document.getElementById(`hal-${idHalaman}`);
             if (target) target.classList.remove('hidden');
+        }
+
+        // --- LOGIKA CEK PASSWORD PIN ---
+        window.verifikasiSandiAdmin = function() {
+            const pin = document.getElementById('inputPinAdmin').value.trim();
+            
+            // Silakan ganti sandi '808080' dengan password rahasia pilihan Abah sendiri
+            if (pin === '123456') { 
+                alert("Verifikasi Sukses! Akses Admin Terbuka.");
+                sessionStorage.setItem('admin_authenticated', 'true');
+                document.getElementById('inputPinAdmin').value = '';
+                bukaHalaman('admin-panel');
+            } else {
+                alert("PIN Salah! Akses ditolak.");
+                document.getElementById('inputPinAdmin').value = '';
+            }
+        }
+
+        window.kunciUlangAdmin = function() {
+            sessionStorage.removeItem('admin_authenticated');
+            bukaHalaman('dashboard');
+            alert("Akses admin berhasil dikunci kembali.");
         }
     </script>
 </body>
