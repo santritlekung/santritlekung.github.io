@@ -61,8 +61,8 @@
                         <div class="text-xs text-gray-700 mt-2 font-medium line-clamp-2" id="dash-pengumuman">Memuat...</div>
                     </div>
                     <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('kalender')">
-                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender</span>
-                        <div class="text-xs font-bold text-gray-800 mt-2" id="dash-kalender">Memuat tanggal...</div>
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender Lengkap</span>
+                        <div class="text-[11px] text-gray-800 mt-2 leading-relaxed font-medium" id="dash-kalender">Memuat tanggal...</div>
                     </div>
                     <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('jumatpahing')">
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-check text-emerald-600 mr-1"></i> Jumat Pahing</span>
@@ -125,11 +125,20 @@
 
             <!-- Halaman 6: Kalender -->
             <section id="hal-kalender" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">📆 Kalender Informasi</h2>
-                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs space-y-3 text-sm">
-                    <p><strong>Hari / Tanggal Masehi:</strong></p>
-                    <p id="tgl-lengkap-page" class="text-emerald-700 font-bold text-base bg-emerald-50 p-3 rounded-lg">Memuat...</p>
-                    <p class="text-xs text-gray-400">Kalender disinkronkan otomatis secara real-time dengan waktu perangkat Anda.</p>
+                <h2 class="text-xl font-bold text-gray-800">📆 Kalender Sistem Real-time</h2>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs space-y-4 text-sm">
+                    <div class="border-b border-gray-100 pb-2">
+                        <p class="text-xs text-gray-400 font-bold uppercase">Tanggal Masehi</p>
+                        <p id="page-kal-masehi" class="text-base font-bold text-gray-800 mt-0.5">Memuat...</p>
+                    </div>
+                    <div class="border-b border-gray-100 pb-2">
+                        <p class="text-xs text-gray-400 font-bold uppercase">Tanggal Hijriyah</p>
+                        <p id="page-kal-hijriyah" class="text-base font-bold text-emerald-700 mt-0.5">Memuat...</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold uppercase">Hari / Pasaran Jawa</p>
+                        <p id="page-kal-pasaran" class="text-base font-bold text-amber-700 mt-0.5">Memuat...</p>
+                    </div>
                 </div>
             </section>
 
@@ -168,7 +177,6 @@
                         <button id="btnSimpanAnn" onclick="adminTambahPengumuman()" class="flex-1 bg-emerald-700 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-emerald-800 transition">Simpan Pengumuman</button>
                     </div>
                     
-                    <!-- DAFTAR PENGUMUMAN UNTUK DIEDIT / DIHAPUS -->
                     <div class="mt-4 pt-4 border-t border-gray-100">
                         <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase">Daftar Pengumuman Aktif (Bisa Di-edit/Hapus):</p>
                         <div id="adm-list-pengumuman" class="space-y-2 max-h-48 overflow-y-auto"></div>
@@ -216,12 +224,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Map lokal untuk menaruh cache data pengumuman agar bisa ditarik ke form edit
         let pengumumanCache = {};
 
         // --- AMBIL DATA DARI FIREBASE DAN TAMPILKAN DI WEB ---
         function muatDataFirebase() {
-            // 1. Pengumuman + Setup Panel Edit & Hapus
+            // 1. Pengumuman
             onValue(ref(db, 'harum-app/pengumuman'), (snapshot) => {
                 const data = snapshot.val();
                 const box = document.getElementById('box-pengumuman');
@@ -236,7 +243,6 @@
                     dash.innerText = data[keys[0]].judul;
                     
                     keys.forEach(key => {
-                        // Tampilan halaman publik
                         box.innerHTML += `
                             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
                                 <h3 class="font-bold text-emerald-800 text-sm">${data[key].judul}</h3>
@@ -244,7 +250,6 @@
                                 <p class="text-xs text-gray-600 mt-2 whitespace-pre-wrap">${data[key].isi}</p>
                             </div>`;
                             
-                        // Tampilan baris manajemen di Admin Panel
                         admList.innerHTML += `
                             <div class="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-100 text-xs">
                                 <div class="truncate pr-2 flex-1">
@@ -260,7 +265,7 @@
                 } else {
                     dash.innerText = "Belum ada pengumuman.";
                     box.innerHTML = "<p class='text-xs text-gray-400'>Kosong.</p>";
-                    admList.innerHTML = "<p class='text-[10px] text-gray-400 italic'>Tidak ada pengumuman untuk diedit.</p>";
+                    admList.innerHTML = "<p class='text-[10px] text-gray-400 italic'>Tidak ada pengumuman.</p>";
                 }
             });
 
@@ -321,14 +326,52 @@
                 }
             });
             
-            // 5. Setup Kalender Otomatis Real-time Hari Ini
-            const opsiTgl = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            const tglSekarang = new Date().toLocaleDateString('id-ID', opsiTgl);
-            if (document.getElementById('dash-kalender')) document.getElementById('dash-kalender').innerText = tglSekarang;
-            if (document.getElementById('tgl-lengkap-page')) document.getElementById('tgl-lengkap-page').innerText = tglSekarang;
+            // 5. PENYUSUNAN KALENDER OTOMATIS (MASEHI, HIJRIYAH, PASARAN)
+            hitungKalenderLengkap();
         }
 
-        // --- SISTEM AKSI WRITE / INPUT & EDIT FORM KE FIREBASE ---
+        function hitungKalenderLengkap() {
+            const sekarang = new Date();
+            
+            // A. Format Masehi
+            const opsiMasehi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const txtMasehi = sekarang.toLocaleDateString('id-ID', opsiMasehi);
+            
+            // B. Hitung Hijriyah Pendekatan Akurat (Formula Intl)
+            const opsiHijriyah = { day: 'numeric', month: 'long', year: 'numeric' };
+            let txtHijriyah = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', opsiHijriyah).format(sekarang);
+            txtHijriyah = txtHijriyah.replace('AH', 'H'); // Rapikan tanda AH jadi H
+
+            // C. Hitung Pasaran Jawa Otomatis berdasarkan Selisih Hari Batas Jangka Lama
+            const daftarPasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+            const daftarHariJawa = ["Akad", "Senen", "Seloso", "Rebo", "Kemis", "Jumat", "Setu"];
+            
+            // Patokan tanggal 1 Januari 1970 adalah Kamis Wage (Indeks Pasaran Wage = 3)
+            const selisihMilidetik = sekarang.getTime() - new Date("1970-01-01").getTime();
+            const selisihHari = Math.floor(selisihMilidetik / (1000 * 60 * 60 * 24));
+            
+            const indeksPasaran = (selisihHari + 3) % 5;
+            const namaPasaran = daftarPasaran[indeksPasaran < 0 ? indeksPasaran + 5 : indeksPasaran];
+            const namaHariJawa = daftarHariJawa[sekarang.getDay()];
+            const txtPasaran = `${namaHariJawa} ${namaPasaran}`;
+
+            // Tampilkan ke Dashboard Depan
+            const dashKal = document.getElementById('dash-kalender');
+            if (dashKal) {
+                dashKal.innerHTML = `
+                    <div class="text-gray-800 font-bold">${txtPasaran}</div>
+                    <div class="text-[10px] text-gray-500 mt-0.5">${txtMasehi}</div>
+                    <div class="text-[10px] text-emerald-700 font-semibold">${txtHijriyah}</div>
+                `;
+            }
+
+            // Tampilkan ke Halaman Menu Kalender Khusus
+            if (document.getElementById('page-kal-masehi')) document.getElementById('page-kal-masehi').innerText = txtMasehi;
+            if (document.getElementById('page-kal-hijriyah')) document.getElementById('page-kal-hijriyah').innerText = txtHijriyah;
+            if (document.getElementById('page-kal-pasaran')) document.getElementById('page-kal-pasaran').innerText = txtPasaran;
+        }
+
+        // --- SISTEM AKSI PANEL ADMIN ---
         window.picuEditPengumuman = function(id) {
             const item = pengumumanCache[id];
             if(!item) return;
@@ -355,35 +398,22 @@
             const id = document.getElementById('admIdPengumuman').value.trim();
             const judul = document.getElementById('admJudulPengumuman').value.trim();
             const isi = document.getElementById('admIsiPengumuman').value.trim();
-            if (!judul || !isi) return alert("Lengkapi judul & isi pengumuman!");
+            if (!judul || !isi) return alert("Lengkapi data!");
             
             if(id) {
-                // Mode Update/Edit Data Lama
                 set(ref(db, `harum-app/pengumuman/${id}`), {
                     judul, isi, tanggal: pengumumanCache[id].tanggal || new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-                }).then(() => { 
-                    alert("Pengumuman berhasil diperbarui!"); 
-                    resetFormPengumuman();
-                    bukaHalaman('pengumuman'); 
-                });
+                }).then(() => { alert("Berhasil diperbarui!"); resetFormPengumuman(); bukaHalaman('pengumuman'); });
             } else {
-                // Mode Tambah Baru
                 push(ref(db, 'harum-app/pengumuman'), {
                     judul, isi, tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-                }).then(() => { 
-                    alert("Pengumuman baru disimpan!"); 
-                    resetFormPengumuman();
-                    bukaHalaman('pengumuman'); 
-                });
+                }).then(() => { alert("Disimpan!"); resetFormPengumuman(); bukaHalaman('pengumuman'); });
             }
         };
 
         window.picuHapusPengumuman = function(id) {
-            if(confirm("Apakah Anda yakin ingin menghapus pengumuman ini?")) {
-                remove(ref(db, `harum-app/pengumuman/${id}`)).then(() => {
-                    alert("Pengumuman berhasil dihapus!");
-                    resetFormPengumuman();
-                });
+            if(confirm("Hapus pengumuman ini?")) {
+                remove(ref(db, `harum-app/pengumuman/${id}`)).then(() => { alert("Dihapus!"); resetFormPengumuman(); });
             }
         };
 
@@ -391,9 +421,9 @@
             const judul = document.getElementById('admJudulArtikel').value.trim().toUpperCase();
             const arab = document.getElementById('admIsiArab').value.trim();
             const arti = document.getElementById('admIsiArti').value.trim();
-            if (!judul || !arti) return alert("Judul dan isi deskripsi wajib diisi!");
+            if (!judul || !arti) return alert("Wajib diisi!");
             push(ref(db, 'harum-app/artikel'), { judul, arab, arti }).then(() => {
-                alert("Artikel/Do'a berhasil ditambahkan!");
+                alert("Sukses!");
                 document.getElementById('admJudulArtikel').value = '';
                 document.getElementById('admIsiArab').value = '';
                 document.getElementById('admIsiArti').value = '';
@@ -406,7 +436,7 @@
             const iuran = document.getElementById('admNominalIuran').value.trim();
             if (!nama || !iuran) return alert("Lengkapi data!");
             push(ref(db, 'harum-app/jumatpahing'), { nama, iuran }).then(() => { 
-                alert("Data iuran ditambahkan!"); 
+                alert("Sukses!"); 
                 document.getElementById('admNamaAnggota').value = '';
                 document.getElementById('admNominalIuran').value = '';
                 bukaHalaman('jumatpahing'); 
@@ -416,9 +446,9 @@
         window.adminUpdateKas = function() {
             const total = document.getElementById('admTotalKas').value.trim();
             const keterangan = document.getElementById('admKetKas').value.trim();
-            if (!total) return alert("Input nominal kas!");
+            if (!total) return alert("Input nominal!");
             set(ref(db, 'harum-app/uangkas'), { total, keterangan }).then(() => { 
-                alert("Uang Kas Di-update!"); 
+                alert("Kas Di-update!"); 
                 document.getElementById('admTotalKas').value = '';
                 document.getElementById('admKetKas').value = '';
                 bukaHalaman('uangkas'); 
