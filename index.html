@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; margin: 0 !important; padding: 0 !important; bg-color: #f9fafb; }
+        body { font-family: 'Inter', sans-serif; margin: 0 !important; padding: 0 !important; background-color: #f9fafb; }
         .font-arab { font-family: 'Amiri', serif; }
         .line-clamp-2 {
             display: -webkit-box;
@@ -16,7 +16,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        /* Memaksa elemen menempel ke atas secara mutlak tanpa celah hantu */
         main { display: block !important; margin-top: 0 !important; padding-top: 12px !important; }
         section { margin-top: 0 !important; padding-top: 0 !important; }
     </style>
@@ -29,8 +28,7 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="flex items-center space-x-2 cursor-pointer" onclick="bukaHalaman('dashboard')">
-                <img src="logo.jpg" alt="Logo" class="h-9 w-9 rounded-full object-cover border-2 border-amber-300 shadow-sm" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
-                <div id="logoFallback" class="hidden h-9 w-9 rounded-full bg-emerald-600 border-2 border-amber-300 items-center justify-center font-bold text-xs text-amber-300">H</div>
+                <img id="logoUtama" src="logo.jpg" alt="Logo" class="h-9 w-9 rounded-full object-cover border-2 border-amber-300 shadow-sm" onerror="tanganiLogoError()">
                 <span class="font-bold text-lg tracking-wider">HARUM</span>
             </div>
         </div>
@@ -243,10 +241,6 @@
     <div id="ai-chat-container" class="fixed bottom-6 right-4 z-50 flex flex-col items-end">
         <button onclick="toggleAiChat()" class="bg-emerald-600 text-white w-12 h-12 rounded-full shadow-xl flex items-center justify-center relative transform active:scale-95 transition">
             <i class="fas fa-robot text-lg" id="ai-icon-toggle"></i>
-            <span class="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5" id="ai-notif-ping">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
-            </span>
         </button>
 
         <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[380px] bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden mt-2">
@@ -255,14 +249,14 @@
                     <div class="w-7 h-7 bg-emerald-600 rounded-full flex items-center justify-center border border-emerald-500 text-amber-300 text-[10px]"><i class="fas fa-brain"></i></div>
                     <div>
                         <h4 class="text-xs font-bold">Asisten AI HARUM</h4>
-                        <p class="text-[8px] text-emerald-200 flex items-center gap-0.5"><span class="w-1 h-1 bg-green-400 rounded-full inline-block animate-pulse"></span> Online • Memahami Data</p>
+                        <p class="text-[8px] text-emerald-200 flex items-center gap-0.5"><span class="w-1 h-1 bg-green-400 rounded-full inline-block"></span> Online • Memahami Data</p>
                     </div>
                 </div>
                 <button onclick="toggleAiChat()" class="text-white p-1 text-xs"><i class="fas fa-times"></i></button>
             </div>
             <div id="ai-chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3 bg-gray-50 text-xs">
                 <div class="flex items-start space-x-2">
-                    <div class="bg-emerald-100 text-emerald-800 p-2.5 rounded-xl rounded-tl-none max-w-[85%]">Assalamualaikum! Saya **Asisten AI HARUM**. Saya mempelajari seluruh data di sistem. Ada yang bisa saya bantu jawab?</div>
+                    <div class="bg-emerald-100 text-emerald-800 p-2.5 rounded-xl rounded-tl-none max-w-[85%]">Assalamualaikum! Saya **Asisten AI HARUM**. Ada yang bisa saya bantu?</div>
                 </div>
             </div>
             <div class="p-2 bg-white border-t border-gray-100 flex items-center space-x-1">
@@ -297,6 +291,14 @@
             { id: 'admin-auth', nama: 'Admin Panel', ikon: 'fa-cog' }
         ];
 
+        // FUNGSI PENANGAN ERROR LOGO JIKA PROTOKOL FILE LOKAL MEMBLOKIR ASSET NYATA
+        window.tanganiLogoError = function() {
+            const img = document.getElementById('logoUtama');
+            // Jika logo.jpg gagal diakses secara lokal, paksa isi dengan ikon font-awesome atau svg text
+            img.onerror = null; 
+            img.src = "https://ui-avatars.com/api/?name=HARUM&background=047857&color=fff&rounded=true";
+        };
+
         window.kendaliSidebar = function() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
             document.getElementById('sidebarOverlay').classList.toggle('hidden');
@@ -319,7 +321,7 @@
 
         window.hapusNode = function(path, key) {
             if (confirm("Hapus data secara permanen?")) {
-                remove(ref(db, `harum-app/${path}/${key}`)).then(() => alert("Terhapus!"));
+                remove(ref(db, `harum-app/${path}/${key}`));
             }
         };
 
@@ -448,8 +450,8 @@
                 if(adm) adm.innerHTML = '';
                 if (data) {
                     Object.keys(data).reverse().forEach(k => {
-                        // FORCED FALLBACK: Menggunakan format no-referrer embed untuk bypass pembatasan browser lokal offline
-                        user.innerHTML += `<div class="bg-white p-2 rounded-xl border border-gray-100 shadow-xs mt-3"><div class="relative w-full aspect-video rounded-lg overflow-hidden bg-black"><iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${data[k].ytId}?autoplay=0&hl=id&cc_lang_pref=id" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><h3 class="font-bold text-xs text-gray-800 mt-1.5 px-0.5">${data[k].judul}</h3></div>`;
+                        // FORCE FIXED BYPASS FOR LOCAL PROTOCOLS: Ditambahkan enablejsapi=1 & membuang kontrol asal
+                        user.innerHTML += `<div class="bg-white p-2 rounded-xl border border-gray-100 shadow-xs mt-3"><div class="relative w-full aspect-video rounded-lg overflow-hidden bg-black"><iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${data[k].ytId}?enablejsapi=1&autoplay=0&controls=1&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><h3 class="font-bold text-xs text-gray-800 mt-1.5 px-0.5">${data[k].judul}</h3></div>`;
                         adm.innerHTML += `<div class="flex items-center justify-between bg-gray-50 p-1 rounded text-[10px]"><span>${data[k].judul}</span><div class="flex space-x-1"><button onclick="adminEditVideo('${k}','${data[k].judul}','${data[k].link}')" class="text-emerald-600 px-1"><i class="fas fa-edit"></i></button><button onclick="hapusNode('video','${k}')" class="text-red-600 px-1"><i class="fas fa-trash"></i></button></div></div>`;
                     });
                 }
@@ -520,8 +522,6 @@
         window.toggleAiChat = function() {
             const w = document.getElementById('ai-chat-window');
             w.classList.toggle('hidden');
-            document.getElementById('ai-icon-toggle').className = w.classList.contains('hidden') ? "fas fa-robot text-lg" : "fas fa-chevron-down text-lg";
-            if (document.getElementById('ai-notif-ping')) document.getElementById('ai-notif-ping').remove();
         };
 
         window.handleAiKeyPress = function(e) { if (e.key === 'Enter') kirimPesanKeAi(); };
@@ -536,11 +536,7 @@
             input.value = '';
             box.scrollTop = box.scrollHeight;
 
-            const loadId = "load-" + Date.now();
-            box.innerHTML += `<div class="flex items-start space-x-2 animate-pulse" id="${loadId}"><div class="bg-gray-200 text-gray-500 p-2 rounded-xl text-[10px]">AI membaca data...</div></div>`;
-            
             setTimeout(() => {
-                if(document.getElementById(loadId)) document.getElementById(loadId).remove();
                 const kas = document.getElementById('dash-kas').innerText;
                 const jumat = document.getElementById('dash-jumat').innerText;
                 const pengumuman = document.getElementById('dash-pengumuman').innerText;
@@ -554,7 +550,7 @@
 
                 box.innerHTML += `<div class="flex items-start space-x-2"><div class="bg-emerald-100 text-gray-800 p-2.5 rounded-xl rounded-tl-none max-w-[85%] whitespace-pre-line">${ans}</div></div>`;
                 box.scrollTop = box.scrollHeight;
-            }, 600);
+            }, 500);
         };
 
         document.addEventListener("DOMContentLoaded", () => {
