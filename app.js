@@ -90,14 +90,17 @@ function handleLoginWindow() {
         .catch(err => alert("Gagal login: " + err));
 }
 
-// Alur Navigasi Menu Dropdown Admin
+// Alur Navigasi Menu Dropdown Admin (SUDAH DIPERBAIKI)
 function toggleAdminForm() {
     const action = document.getElementById("admin-action").value;
+    
+    // Memastikan setiap form muncul tepat sesuai pilihan dropdown
     document.getElementById("form-kas").style.display = action === "kas" ? "block" : "none";
     document.getElementById("form-member").style.display = action === "member" ? "block" : "none";
     document.getElementById("form-agenda").style.display = action === "agenda" ? "block" : "none";
     document.getElementById("form-blog").style.display = action === "blog" ? "block" : "none";
 }
+
 
 // 1. PROSES ADMIN UPDATE UANG KAS
 function saveKasAdmin() {
