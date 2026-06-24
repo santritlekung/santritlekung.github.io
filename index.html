@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HARUM</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Ditambahkan ?v=2 agar browser terpaksa memuat CSS terbaru -->
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="logo-side">
-            <img src="logo.jpg" class="brand-logo">
-            <span class="app-title">HARUM</span>
+    <!-- Header dengan pengaturan ukuran langsung (Inline Style) agar logo pasti mengecil -->
+    <header class="main-header" style="background: #0b5e32; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; color: white;">
+        <div class="logo-side" style="display: flex; align-items: center; gap: 10px;">
+            <img src="logo.jpg" class="brand-logo" style="height: 40px; width: 40px; border-radius: 5px; object-fit: cover; display: inline-block; vertical-align: middle;">
+            <span class="app-title" style="font-weight: bold; font-size: 1.2rem;">HARUM</span>
         </div>
         <button id="btn-login" class="btn-login" onclick="handleLoginWindow()">Login</button>
     </header>
