@@ -1,12 +1,13 @@
 // Firebase Configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "harum-app.firebaseapp.com",
-    databaseURL: "https://harum-app-default-rtdb.firebaseio.com",
-    projectId: "harum-app",
-    storageBucket: "harum-app.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAnVJfyb7qv2ekQGrxvWF6Jj4rMdmXb-UY",
+  authDomain: "harum-app.firebaseapp.com",
+  databaseURL: "https://harum-app-default-rtdb.firebaseio.com",
+  projectId: "harum-app",
+  storageBucket: "harum-app.firebasestorage.app",
+  messagingSenderId: "962611577620",
+  appId: "1:962611577620:web:ead2e21e23541af01ab801",
+  measurementId: "G-3920D4E9HJ"
 };
 
 // Initialize Firebase
