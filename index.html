@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HARUM - Aplikasi Alumni</title>
+    <title>HARUM - Alumni Roudlotul Ulum</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,144 +11,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .arabic-text { font-family: 'Amiri', serif; direction: rtl; }
+        .font-arab { font-family: 'Amiri', serif; direction: rtl; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased h-screen flex flex-col overflow-hidden">
 
+    <div id="layarLogin" class="fixed inset-0 bg-emerald-900 z-50 flex flex-col justify-center items-center p-6 text-white">
+        <div class="w-full max-w-sm text-center space-y-6">
+            <div class="space-y-2">
+                <img src="logo.jpg" alt="Logo HARUM" class="w-20 h-20 rounded-full mx-auto bg-white object-cover border-2 border-emerald-500" onerror="this.src='https://via.placeholder.com/150'">
+                <h1 class="text-2xl font-bold tracking-wider">Aplikasi HARUM</h1>
+                <p class="text-xs text-emerald-200">Korwil Demak & Sekitarnya</p>
+            </div>
+            
+            <div id="boxInputHP" class="bg-white text-gray-800 p-5 rounded-2xl shadow-xl space-y-4 text-left">
+                <div>
+                    <label class="text-xs font-bold text-gray-400 block mb-1">NOMOR WHATSAPP</label>
+                    <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                        <span class="bg-gray-100 px-3 py-2.5 text-xs font-semibold text-gray-500">+62</span>
+                        <input type="tel" id="inputNoHP" value="081330386625" class="w-full p-2.5 text-xs focus:outline-none">
+                    </div>
+                </div>
+                <button onclick="prosesLoginDemo()" class="w-full bg-emerald-700 text-white p-3 rounded-xl text-xs font-bold hover:bg-emerald-800 transition">
+                    Masuk (Mode Uji Coba) <i class="fas fa-sign-in-alt ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <header class="bg-emerald-700 text-white h-16 px-4 flex items-center justify-between shadow-md z-30 shrink-0">
         <div class="flex items-center space-x-3">
-            <button id="menuBtn" class="text-2xl p-1 focus:outline-none hover:text-emerald-200 transition">
+            <button id="btnHamburger" class="text-2xl p-1 hover:text-emerald-200 transition">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="flex items-center space-x-2 cursor-pointer" onclick="switchPage('dashboard')">
-                <img src="logo.jpg" alt="Logo" class="w-8 h-8 rounded-full bg-white object-cover" onerror="this.src='https://via.placeholder.com/150'">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="bukaHalaman('dashboard')">
+                <img src="logo.jpg" class="w-8 h-8 rounded-full bg-white object-cover" onerror="this.src='https://via.placeholder.com/150'">
                 <span class="font-bold text-lg tracking-wider">HARUM</span>
             </div>
         </div>
-        <div id="digitalClock" class="font-mono text-sm bg-emerald-800 px-3 py-1 rounded shadow-inner">
-            00:00:00
-        </div>
+        <div id="jamDigital" class="font-mono text-sm bg-emerald-800 px-3 py-1 rounded">00:00:00</div>
     </header>
 
     <div class="flex flex-1 relative overflow-hidden">
-        
-        <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300 opacity-0"></div>
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"></div>
         <aside id="sidebar" class="absolute inset-y-0 left-0 w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between">
             <div class="overflow-y-auto flex-1">
                 <div class="p-5 bg-emerald-800 text-white">
                     <h3 class="font-bold text-lg">Menu Navigasi</h3>
-                    <p class="text-xs text-emerald-200" id="userPhoneDisplay">Memuat status login...</p>
+                    <p class="text-xs text-emerald-200" id="userPhoneDisplay">User: -</p>
                 </div>
-                <nav class="p-2 space-y-1" id="navMenu">
-                    </nav>
+                <nav class="p-2 space-y-1" id="menuKonten"></nav>
             </div>
             <div class="p-4 border-t border-gray-100 bg-gray-50">
-                <button onclick="handleLogout()" class="w-full flex items-center space-x-3 text-red-600 p-2 rounded-lg hover:bg-red-50 font-medium transition">
+                <button onclick="logoutAplikasi()" class="w-full flex items-center space-x-3 text-red-600 p-2 rounded-lg hover:bg-red-50 font-medium transition">
                     <i class="fas fa-sign-out-alt w-6 text-center"></i>
                     <span>Keluar (Logout)</span>
                 </button>
             </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-4" id="mainContent">
-            
-            <section id="page-dashboard" class="page-view space-y-4">
-                <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 rounded-xl text-white shadow-md">
-                    <h2 class="text-xl font-bold">Selamat Datang di HARUM</h2>
-                    <p class="text-xs text-emerald-100 mt-1">Sistem Informasi Real-time Korwil Demak & Sekitarnya.</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3" id="dashboardGrid">
-                    <div class="bg-white p-3 rounded-xl shadow-xs border border-gray-100 flex flex-col justify-between" onclick="switchPage('kalender')">
-                        <span class="text-xs text-gray-500 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender</span>
-                        <div id="dash-kalender" class="text-sm font-bold text-gray-800 mt-2">Loading...</div>
-                    </div>
-                    <div class="bg-white p-3 rounded-xl shadow-xs border border-gray-100 flex flex-col justify-between" onclick="switchPage('uangkas')">
-                        <span class="text-xs text-gray-500 font-semibold"><i class="fas fa-wallet text-emerald-600 mr-1"></i> Uang Kas</span>
-                        <div id="dash-kas" class="text-lg font-bold text-emerald-600 mt-2">Rp 0</div>
-                    </div>
-                </div>
-
-                <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl shadow-xs text-center">
-                    <p class="arabic-text text-xl text-amber-900 mb-2" id="dash-quote-arab">Loading...</p>
-                    <p class="text-xs italic text-gray-600" id="dash-quote-arti">Loading...</p>
-                </div>
-            </section>
-
-            <section id="page-pengumuman" class="page-view hidden">
-                <h2 class="text-xl font-bold mb-4">📢 Pengumuman Terbaru</h2>
-                <div id="list-pengumuman" class="space-y-3"></div>
-            </section>
-
+        <main class="flex-1 overflow-y-auto p-4" id="kontenHalaman">
+            <p class="text-center text-xs text-gray-400 mt-10">Memuat komponen halaman...</p>
         </main>
     </div>
 
-    <script type="module">
-        // Import Firebase modules yang dibutuhkan disini
-        // Serta logika untuk Firebase Realtime Database v10 SDK
-    </script>
-
-    <script>
-        // Logika Interaksi Sidebar & Navigasi Antar-Halaman
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-
-        function toggleSidebar() {
-            const isOpen = !sidebar.classList.contains('-translate-x-full');
-            if (isOpen) {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-                overlay.classList.remove('opacity-100');
-            } else {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.add('opacity-100'), 10);
-            }
-        }
-
-        menuBtn.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar);
-
-        // Data List Menu Sidebar
-        const menus = [
-            { id: 'dashboard', label: 'Beranda', icon: 'fa-home' },
-            { id: 'pengumuman', label: 'Pengumuman', icon: 'fa-bullhorn' },
-            { id: 'artikel', label: 'Buku Artikel/Blog', icon: 'fa-book-open' },
-            { id: 'jumatpahing', label: 'Jumat Pahing', icon: 'fa-calendar-check' },
-            { id: 'uangkas', label: 'Uang Kas', icon: 'fa-wallet' },
-            { id: 'kalender', label: 'Kalender', icon: 'fa-calendar-alt' },
-            { id: 'haul', label: 'Haul Akbar', icon: 'fa-mosque' },
-            { id: 'donasi', label: 'Donasi Haul', icon: 'fa-hands-helping' },
-            { id: 'rombongan', label: 'Rombongan Malang', icon: 'fa-bus' },
-            { id: 'nyai', label: 'Kedatangan Nyai', icon: 'fa-user-grace' },
-            { id: 'profil', label: 'Profil Saya', icon: 'fa-user' },
-            { id: 'admin', label: 'Admin Panel', icon: 'fa-cog', adminOnly: true }
-        ];
-
-        // Render Menu ke Sidebar
-        const navMenu = document.getElementById('navMenu');
-        menus.forEach(m => {
-            const btn = document.createElement('button');
-            btn.className = `w-full flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition font-medium text-sm text-left`;
-            btn.onclick = () => { switchPage(m.id); toggleSidebar(); };
-            btn.innerHTML = `<i class="fas ${m.icon} w-6 text-center text-emerald-600"></i> <span>${m.label}</span>`;
-            navMenu.appendChild(btn);
-        });
-
-        // Handler Pindah Halaman Berbasis SPA
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
-            const activePage = document.getElementById(`page-${pageId}`);
-            if(activePage) activePage.classList.remove('hidden');
-        }
-
-        // Digital Clock Real-time
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('digitalClock').innerText = now.toLocaleTimeString('id-ID');
-        }, 1000);
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
