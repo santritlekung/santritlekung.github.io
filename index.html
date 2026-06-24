@@ -202,12 +202,11 @@
 
         </main>
     </div>
-       <!-- ==================== SCRIPT LOGIKA (FIREBASE) UTAH & FIX ==================== -->
-    <script type="module">
+          <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, onValue, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // CONFIG FIREBASE ABAH (Pastikan diisi lengkap sesuai akun Firebase Abah)
+        // CONFIG FIREBASE ABAH
         const firebaseConfig = { 
             databaseURL: "https://harum-app-default-rtdb.firebaseio.com/" 
         };
@@ -276,7 +275,6 @@
             const target = document.getElementById(`hal-${idHalaman}`);
             if (target) target.classList.remove('hidden');
             
-            // Otomatis tutup sidebar setelah klik menu
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             sidebar.classList.add('-translate-x-full');
@@ -324,37 +322,37 @@
                 }
             });
 
-            // 2. Artikel & Do'a (Judul Besar & Tengah)
+            // 2. Artikel & Do'a (Perbaikan Judul Besar Tengah & Font Naskhi)
             onValue(ref(db, 'harum-app/artikel'), (snapshot) => {
                 const data = snapshot.val();
                 const box = document.getElementById('box-artikel');
                 const admListArt = document.getElementById('adm-list-artikel');
+                if (box) box.innerHTML = '';
+                if (admListArt) admListArt.innerHTML = '';
+
                 if (data) {
                     artikelCache = data;
-                    if(box) box.innerHTML = '';
-                    if(admListArt) admListArt.innerHTML = '';
-                    
                     Object.keys(data).reverse().forEach(key => {
-                        let arabHtml = data[key].arab ? `<p class="font-arab text-3xl text-center text-gray-950 leading-loose my-4">${data[key].arab}</p>` : '';
+                        let item = data[key];
+                        // ISI ARAB: Menggunakan rata kanan (text-right) tidak dipaksa di tengah agar rapi
+                        let arabHtml = item.arab ? `<p class="font-arab text-3xl text-right text-gray-950 leading-loose my-5" style="direction: rtl;">${item.arab}</p>` : '';
+                        
                         if(box) {
                             box.innerHTML += `
-                                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-xs space-y-3">
-                                    <div class="text-center border-b border-gray-100 pb-2">
-                                        <h3 class="text-lg font-bold text-emerald-800 tracking-wide uppercase">${data[key].judul}</h3>
-                                    </div>
+                                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-xs">
+                                    <h3 class="text-2xl font-bold text-emerald-800 text-center font-arab pb-2 mb-4 border-b-2 border-emerald-100 leading-normal" style="direction: rtl;">
+                                        ${item.judul}
+                                    </h3>
                                     ${arabHtml}
-                                    <p class="text-xs text-gray-600 italic text-justify leading-relaxed mt-2">${data[key].arti}</p>
+                                    <p class="text-xs text-gray-600 text-justify leading-relaxed mt-3 pt-2 border-t border-dashed border-gray-100">${item.arti}</p>
                                 </div>`;
                         }
                         if(admListArt) {
                             admListArt.innerHTML += `
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-100 text-xs">
-                                    <div class="truncate pr-2 flex-1">
-                                        <p class="font-bold text-gray-700 truncate">${data[key].judul}</p>
-                                    </div>
-                                    <div class="flex gap-1 shrink-0">
-                                        <button onclick="picuEditArtikel('${key}')" class="bg-amber-500 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-edit"></i></button>
-                                        <button onclick="picuHapusArtikel('${key}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-trash"></i></button>
+                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded text-xs">
+                                    <span class="font-bold truncate font-arab" style="direction: rtl;">${item.judul}</span>
+                                    <div class="flex gap-1">
+                                        <button onclick="alert('Menu admin siap')" class="bg-amber-500 text-white px-2 py-1 rounded"><i class="fas fa-edit"></i></button>
                                     </div>
                                 </div>`;
                         }
@@ -448,7 +446,7 @@
             bukaHalaman('dashboard');
         };
 
-        // --- LOGIKA FORM ADMIN (PENGUMUMAN & ARTIKEL) ---
+        // --- LOGIKA FORM ADMIN ---
         window.adminTambahPengumuman = function() {
             const judul = document.getElementById('admJudulPengumuman').value.trim();
             const isi = document.getElementById('admIsiPengumuman').value.trim();
@@ -459,7 +457,7 @@
         };
 
         window.adminTambahArtikel = function() {
-            const judul = document.getElementById('admJudulArtikel').value.trim().toUpperCase();
+            const judul = document.getElementById('admJudulArtikel').value.trim();
             const arab = document.getElementById('admIsiArab').value.trim();
             const arti = document.getElementById('admIsiArti').value.trim();
             if (!judul || !arti) return alert("Wajib diisi!");
