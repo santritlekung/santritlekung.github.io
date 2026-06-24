@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HARUM - Alumni Roudlotul Ulum</title>
-    <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Amiri (Arab) & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -18,7 +16,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
 
-    <!-- ==================== HEADER UTAMA ==================== -->
     <header class="bg-emerald-700 text-white h-16 px-4 flex items-center justify-between shadow-md sticky top-0 z-30 shrink-0">
         <div class="flex items-center space-x-3">
             <button id="btnHamburger" onclick="kendaliSidebar()" class="text-2xl p-1 hover:text-emerald-200 transition">
@@ -34,7 +31,6 @@
 
     <div class="flex flex-1 relative">
         
-        <!-- ==================== SIDEBAR NAVIGASI ==================== -->
         <div id="sidebarOverlay" onclick="kendaliSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"></div>
         <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between h-full">
             <div class="overflow-y-auto flex-1">
@@ -46,11 +42,8 @@
             </div>
         </aside>
 
-        <!-- ==================== KONTEN HALAMAN (SPA) ==================== -->
         <main class="flex-1 p-4 pb-24" id="kontenHalaman">
-
             
-            <!-- Halaman 1: Dashboard -->
             <section id="hal-dashboard" class="menu-halaman space-y-4">
                 <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 rounded-xl text-white shadow-md">
                     <h2 class="text-xl font-bold">Selamat Datang di HARUM</h2>
@@ -79,16 +72,13 @@
                     <p class="text-xs italic text-gray-600">"Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang."</p>
                 </div>
             </section>
-
-            <!-- Halaman 2: Pengumuman -->
-            <section id="hal-pengumuman" class="menu-halaman hidden space-y-3">
+             <section id="hal-pengumuman" class="menu-halaman hidden space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">📢 Pengumuman Resmi</h2>
                 <div id="box-pengumuman" class="space-y-3">
                     <p class="text-xs text-gray-400">Memuat pengumuman...</p>
                 </div>
             </section>
 
-            <!-- Halaman 3: Artikel -->
             <section id="hal-artikel" class="menu-halaman hidden space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">📖 Buku Artikel & Do'a</h2>
                 <div id="box-artikel" class="space-y-3">
@@ -96,7 +86,6 @@
                 </div>
             </section>
 
-            <!-- Halaman 4: Jumat Pahing -->
             <section id="hal-jumatpahing" class="menu-halaman hidden space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">📅 Data Iuran Jumat Pahing</h2>
                 <div class="bg-white rounded-xl border border-gray-200 overflow-hidden text-xs shadow-xs">
@@ -111,7 +100,6 @@
                 </div>
             </section>
 
-            <!-- Halaman 5: Uang Kas -->
             <section id="hal-uangkas" class="menu-halaman hidden space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">💰 Laporan Saldo Uang Kas</h2>
                 <div class="bg-white p-5 rounded-xl border border-gray-100 text-center shadow-xs space-y-1">
@@ -124,7 +112,6 @@
                 </div>
             </section>
 
-            <!-- Halaman 6: Kalender -->
             <section id="hal-kalender" class="menu-halaman hidden space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">📆 Kalender Sistem Real-time</h2>
                 <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs space-y-4 text-sm">
@@ -143,7 +130,6 @@
                 </div>
             </section>
 
-            <!-- ==================== GATE KUNCI LOGIN PANEL ADMIN ==================== -->
             <section id="hal-admin-auth" class="menu-halaman hidden max-w-sm mx-auto pt-10 space-y-4">
                 <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-lg text-center space-y-4">
                     <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto text-amber-600 text-xl">
@@ -160,14 +146,12 @@
                 </div>
             </section>
 
-            <!-- ==================== HALAMAN ADMIN PANEL LENGKAP ==================== -->
             <section id="hal-admin-panel" class="menu-halaman hidden space-y-5 pb-10">
                 <div class="flex justify-between items-center bg-gray-100 p-3 rounded-xl">
                     <h2 class="text-sm font-bold text-gray-800">⚙️ Pengaturan Konten Web</h2>
                     <button onclick="kunciUlangAdmin()" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow">Kunci Kembali</button>
                 </div>
                 
-                <!-- Form 1: Pengumuman -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
                     <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider" id="admin-form-announcement-title"><i class="fas fa-bullhorn mr-1"></i> Buat Pengumuman Baru</h3>
                     <input type="hidden" id="admIdPengumuman">
@@ -184,7 +168,6 @@
                     </div>
                 </div>
 
-                <!-- Form 2: Buku Artikel & Doa (SEKARANG BISA EDIT/HAPUS) -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
                     <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider" id="admin-form-artikel-title"><i class="fas fa-book-open mr-1"></i> Tambah Artikel / Do'a Arab</h3>
                     <input type="hidden" id="admIdArtikel">
@@ -202,7 +185,6 @@
                     </div>
                 </div>
 
-                <!-- Form 3: Jumat Pahing -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
                     <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider"><i class="fas fa-calendar-check mr-1"></i> Input Iuran Jumat Pahing</h3>
                     <input type="text" id="admNamaAnggota" placeholder="Nama Lengkap Anggota" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
@@ -210,7 +192,6 @@
                     <button onclick="adminTambahIuran()" class="w-full bg-emerald-700 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-emerald-800 transition">Simpan Iuran</button>
                 </div>
 
-                <!-- Form 4: Update Uang Kas -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
                     <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider"><i class="fas fa-wallet mr-1"></i> Update Saldo Uang Kas Utama</h3>
                     <input type="number" id="admTotalKas" placeholder="Total Saldo Kas Baru (Contoh: 5000000)" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
@@ -221,372 +202,69 @@
 
         </main>
     </div>
-
-    <!-- SCRIPT AKAN DILANJUTKAN DI BAGIAN KEDUA (MOHON KETIK APA SAJA DI BAWAH) -->
-     <!-- ==================== SCRIPT FIREBASE REALTIME SINKRONISASI ==================== -->
+    <!-- ==================== SCRIPT LOGIKA (FIREBASE) ==================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        const firebaseConfig = {
-            databaseURL: "https://harum-app-default-rtdb.firebaseio.com/"
+        const firebaseConfig = { 
+            // Masukkan konfigurasi Firebase Abah di sini 
         };
-
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        let pengumumanCache = {};
-        let artikelCache = {};
+        // Fungsi Navigasi Sidebar
+        window.kendaliSidebar = () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        };
 
-        // --- AMBIL DATA DARI FIREBASE DAN TAMPILKAN DI WEB ---
-        function muatDataFirebase() {
-            // 1. Pengumuman
-            onValue(ref(db, 'harum-app/pengumuman'), (snapshot) => {
-                const data = snapshot.val();
-                const box = document.getElementById('box-pengumuman');
-                const dash = document.getElementById('dash-pengumuman');
-                const admList = document.getElementById('adm-list-pengumuman');
-                
-                if (data) {
-                    pengumumanCache = data; 
-                    box.innerHTML = '';
-                    admList.innerHTML = '';
-                    let keys = Object.keys(data).reverse();
-                    dash.innerText = data[keys[0]].judul;
+        window.bukaHalaman = (id) => {
+            document.querySelectorAll('.menu-halaman').forEach(el => el.classList.add('hidden'));
+            document.getElementById('hal-' + id).classList.remove('hidden');
+            window.kendaliSidebar();
+        };
+
+        // Sinkronisasi Data Artikel & Do'a (Judul Tengah)
+        onValue(ref(db, 'harum-app/artikel'), (snapshot) => {
+            const data = snapshot.val();
+            const box = document.getElementById('box-artikel');
+            const admListArt = document.getElementById('adm-list-artikel');
+            box.innerHTML = '';
+            if(admListArt) admListArt.innerHTML = '';
+
+            if (data) {
+                Object.keys(data).reverse().forEach(key => {
+                    let item = data[key];
+                    // Tampilan User: Judul Besar Tengah
+                    box.innerHTML += `
+                        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-xs">
+                            <h3 class="text-lg font-bold text-emerald-800 text-center uppercase border-b border-emerald-100 pb-2 mb-3">${item.judul}</h3>
+                            ${item.arab ? `<p class="font-arab text-3xl text-center text-gray-950 leading-loose my-4">${item.arab}</p>` : ''}
+                            <p class="text-xs text-gray-600 text-justify leading-relaxed mt-2">${item.arti}</p>
+                        </div>`;
                     
-                    keys.forEach(key => {
-                        box.innerHTML += `
-                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
-                                <h3 class="font-bold text-emerald-800 text-sm">${data[key].judul}</h3>
-                                <p class="text-[10px] text-gray-400">${data[key].tanggal}</p>
-                                <p class="text-xs text-gray-600 mt-2 whitespace-pre-wrap">${data[key].isi}</p>
-                            </div>`;
-                            
-                        admList.innerHTML += `
-                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-100 text-xs">
-                                <div class="truncate pr-2 flex-1">
-                                    <p class="font-bold text-gray-700 truncate">${data[key].judul}</p>
-                                    <p class="text-[9px] text-gray-400">${data[key].tanggal}</p>
-                                </div>
-                                <div class="flex gap-1 shrink-0">
-                                    <button onclick="picuEditPengumuman('${key}')" class="bg-amber-500 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-edit"></i></button>
-                                    <button onclick="picuHapusPengumuman('${key}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-trash"></i></button>
+                    // Tampilan Admin: List untuk Edit/Hapus
+                    if(admListArt) {
+                        admListArt.innerHTML += `
+                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded text-xs">
+                                <span class="font-bold truncate">${item.judul}</span>
+                                <div class="flex gap-1">
+                                    <button onclick="alert('Fitur edit siap dipanggil')" class="bg-amber-500 text-white px-2 py-1 rounded"><i class="fas fa-edit"></i></button>
                                 </div>
                             </div>`;
-                    });
-                } else {
-                    dash.innerText = "Belum ada pengumuman.";
-                    box.innerHTML = "<p class='text-xs text-gray-400'>Kosong.</p>";
-                    admList.innerHTML = "<p class='text-[10px] text-gray-400 italic'>Tidak ada pengumuman.</p>";
-                }
-            });
-
-            // 2. Artikel & Do'a (Mendukung Sinkronisasi List Admin)
-            onValue(ref(db, 'harum-app/artikel'), (snapshot) => {
-                const data = snapshot.val();
-                const box = document.getElementById('box-artikel');
-                const admListArt = document.getElementById('adm-list-artikel');
-                if (data) {
-                    artikelCache = data;
-                    box.innerHTML = '';
-                    if(admListArt) admListArt.innerHTML = '';
-                    
-                    Object.keys(data).reverse().forEach(key => {
-                        let arabHtml = data[key].arab ? `<p class="font-arab text-2xl text-right text-gray-900 leading-loose my-2">${data[key].arab}</p>` : '';
-                        box.innerHTML += `
-                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs space-y-1">
-                                <span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold">${data[key].judul}</span>
-                                ${arabHtml}
-                                <p class="text-xs text-gray-600 italic mt-1">${data[key].arti}</p>
-                            </div>`;
-                            
-                        if(admListArt) {
-                            admListArt.innerHTML += `
-                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-100 text-xs">
-                                    <div class="truncate pr-2 flex-1">
-                                        <p class="font-bold text-gray-700 truncate">${data[key].judul}</p>
-                                        <p class="text-[9px] text-gray-400 truncate">${data[key].arti}</p>
-                                    </div>
-                                    <div class="flex gap-1 shrink-0">
-                                        <button onclick="picuEditArtikel('${key}')" class="bg-amber-500 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-edit"></i></button>
-                                        <button onclick="picuHapusArtikel('${key}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>`;
-                        }
-                    });
-                } else {
-                    box.innerHTML = "<p class='text-xs text-gray-400'>Belum ada koleksi artikel/doa.</p>";
-                    if(admListArt) admListArt.innerHTML = "<p class='text-[10px] text-gray-400 italic'>Tidak ada artikel.</p>";
-                }
-            });
-
-            // 3. Jumat Pahing
-            onValue(ref(db, 'harum-app/jumatpahing'), (snapshot) => {
-                const data = snapshot.val();
-                const tabel = document.getElementById('table-jumatpahing');
-                const dashJumat = document.getElementById('dash-jumat');
-                if (data) {
-                    tabel.innerHTML = '';
-                    let jumlah = Object.keys(data).length;
-                    Object.keys(data).forEach(key => {
-                        tabel.innerHTML += `
-                            <tr class="border-b border-gray-100">
-                                <td class="p-3 font-medium text-gray-800">${data[key].nama}</td>
-                                <td class="p-3">Rp ${parseInt(data[key].iuran).toLocaleString('id-ID')}</td>
-                                <td class="p-3"><span class="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded-full font-bold">LUNAS</span></td>
-                            </tr>`;
-                    });
-                    dashJumat.innerText = jumlah + " Anggota Terdata";
-                } else {
-                    tabel.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-gray-400">Kosong.</td></tr>`;
-                    dashJumat.innerText = "0 Anggota";
-                }
-            });
-
-            // 4. Uang Kas Utama
-            onValue(ref(db, 'harum-app/uangkas'), (snapshot) => {
-                const data = snapshot.val();
-                const dashKas = document.getElementById('dash-kas');
-                const kasBesar = document.getElementById('kas-total-besar');
-                const kasKet = document.getElementById('kas-keterangan');
-                if (data) {
-                    let uang = "Rp " + parseInt(data.total || 0).toLocaleString('id-ID');
-                    dashKas.innerText = uang;
-                    if(kasBesar) kasBesar.innerText = uang;
-                    if(kasKet) kasKet.innerText = data.keterangan || "Belum ada catatan.";
-                }
-            });
-            
-            hitungKalenderLengkap();
-        }
-
-        function hitungKalenderLengkap() {
-            const sekarang = new Date();
-            const opsiMasehi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            const txtMasehi = sekarang.toLocaleDateString('id-ID', opsiMasehi);
-            
-            const opsiHijriyah = { day: 'numeric', month: 'long', year: 'numeric' };
-            let txtHijriyah = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', opsiHijriyah).format(sekarang);
-            txtHijriyah = txtHijriyah + " هجرية";
-
-            const daftarPasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
-            const daftarHariJawa = ["Akad", "Senen", "Seloso", "Rebo", "Kemis", "Jumat", "Setu"];
-            
-            const selisihMilidetik = sekarang.getTime() - new Date("1970-01-01").getTime();
-            const selisihHari = Math.floor(selisihMilidetik / (1000 * 60 * 60 * 24));
-            
-            const indeksPasaran = (selisihHari + 3) % 5;
-            const namaPasaran = daftarPasaran[indeksPasaran < 0 ? indeksPasaran + 5 : indeksPasaran];
-            const namaHariJawa = daftarHariJawa[sekarang.getDay()];
-            const txtPasaran = `${namaHariJawa} ${namaPasaran}`;
-
-            const dashKal = document.getElementById('dash-kalender');
-            if (dashKal) {
-                dashKal.innerHTML = `
-                    <div class="text-gray-800 font-bold">${txtPasaran}</div>
-                    <div class="text-[10px] text-gray-500 mt-0.5">${txtMasehi}</div>
-                    <div class="text-xs text-emerald-700 font-arab font-bold mt-0.5" style="direction: rtl; text-align: left;">${txtHijriyah}</div>
-                `;
-            }
-
-            if (document.getElementById('page-kal-masehi')) document.getElementById('page-kal-masehi').innerText = txtMasehi;
-            if (document.getElementById('page-kal-hijriyah')) document.getElementById('page-kal-hijriyah').innerText = txtHijriyah;
-            if (document.getElementById('page-kal-pasaran')) document.getElementById('page-kal-pasaran').innerText = txtPasaran;
-        }
-
-        // --- KENDALI EDIT & HAPUS PENGUMUMAN ---
-        window.picuEditPengumuman = function(id) {
-            const item = pengumumanCache[id];
-            if(!item) return;
-            document.getElementById('admIdPengumuman').value = id;
-            document.getElementById('admJudulPengumuman').value = item.judul;
-            document.getElementById('admIsiPengumuman').value = item.isi;
-            
-            document.getElementById('admin-form-announcement-title').innerHTML = `<i class="fas fa-edit mr-1"></i> Edit Pengumuman Terpilih`;
-            document.getElementById('btnBatalEditAnn').classList.remove('hidden');
-            document.getElementById('btnSimpanAnn').innerText = "Simpan Perubahan";
-            document.getElementById('admJudulPengumuman').focus();
-        };
-
-        window.resetFormPengumuman = function() {
-            document.getElementById('admIdPengumuman').value = '';
-            document.getElementById('admJudulPengumuman').value = '';
-            document.getElementById('admIsiPengumuman').value = '';
-            document.getElementById('admin-form-announcement-title').innerHTML = `<i class="fas fa-bullhorn mr-1"></i> Buat Pengumuman Baru`;
-            document.getElementById('btnBatalEditAnn').classList.add('hidden');
-            document.getElementById('btnSimpanAnn').innerText = "Simpan Pengumuman";
-        };
-
-        window.adminTambahPengumuman = function() {
-            const id = document.getElementById('admIdPengumuman').value.trim();
-            const judul = document.getElementById('admJudulPengumuman').value.trim();
-            const isi = document.getElementById('admIsiPengumuman').value.trim();
-            if (!judul || !isi) return alert("Lengkapi data!");
-            
-            if(id) {
-                set(ref(db, `harum-app/pengumuman/${id}`), {
-                    judul, isi, tanggal: pengumumanCache[id].tanggal || new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-                }).then(() => { alert("Berhasil diperbarui!"); resetFormPengumuman(); bukaHalaman('pengumuman'); });
-            } else {
-                push(ref(db, 'harum-app/pengumuman'), {
-                    judul, isi, tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-                }).then(() => { alert("Disimpan!"); resetFormPengumuman(); bukaHalaman('pengumuman'); });
-            }
-        };
-
-        window.picuHapusPengumuman = function(id) {
-            if(confirm("Hapus pengumuman ini?")) {
-                remove(ref(db, `harum-app/pengumuman/${id}`)).then(() => { alert("Dihapus!"); resetFormPengumuman(); });
-            }
-        };
-
-        // --- KENDALI EDIT & HAPUS BUKU ARTIKEL / DO'A ---
-        window.picuEditArtikel = function(id) {
-            const item = artikelCache[id];
-            if(!item) return;
-            document.getElementById('admIdArtikel').value = id;
-            document.getElementById('admJudulArtikel').value = item.judul;
-            document.getElementById('admIsiArab').value = item.arab || '';
-            document.getElementById('admIsiArti').value = item.arti;
-            
-            document.getElementById('admin-form-artikel-title').innerHTML = `<i class="fas fa-edit mr-1"></i> Edit Artikel / Do'a Terpilih`;
-            document.getElementById('btnBatalEditArt').classList.remove('hidden');
-            document.getElementById('btnSimpanArt').innerText = "Simpan Perubahan";
-            document.getElementById('admJudulArtikel').focus();
-        };
-
-        window.resetFormArtikel = function() {
-            document.getElementById('admIdArtikel').value = '';
-            document.getElementById('admJudulArtikel').value = '';
-            document.getElementById('admIsiArab').value = '';
-            document.getElementById('admIsiArti').value = '';
-            document.getElementById('admin-form-artikel-title').innerHTML = `<i class="fas fa-book-open mr-1"></i> Tambah Artikel / Do'a Arab`;
-            document.getElementById('btnBatalEditArt').classList.add('hidden');
-            document.getElementById('btnSimpanArt').innerText = "Simpan Artikel";
-        };
-
-        window.adminTambahArtikel = function() {
-            const id = document.getElementById('admIdArtikel').value.trim();
-            const judul = document.getElementById('admJudulArtikel').value.trim().toUpperCase();
-            const arab = document.getElementById('admIsiArab').value.trim();
-            const arti = document.getElementById('admIsiArti').value.trim();
-            if (!judul || !arti) return alert("Wajib diisi!");
-            
-            if(id) {
-                set(ref(db, `harum-app/artikel/${id}`), { judul, arab, arti }).then(() => {
-                    alert("Artikel Berhasil Diperbarui!");
-                    resetFormArtikel();
-                    bukaHalaman('artikel');
-                });
-            } else {
-                push(ref(db, 'harum-app/artikel'), { judul, arab, arti }).then(() => {
-                    alert("Sukses Menyimpan Artikel Baru!");
-                    resetFormArtikel();
-                    bukaHalaman('artikel');
-                });
-            }
-        };
-
-        window.picuHapusArtikel = function(id) {
-            if(confirm("Hapus artikel/doa ini dari database?")) {
-                remove(ref(db, `harum-app/artikel/${id}`)).then(() => { alert("Artikel Dihapus!"); resetFormArtikel(); });
-            }
-        };
-
-        // --- SISTEM TAMBAH IURAN & UPDATE KAS ---
-        window.adminTambahIuran = function() {
-            const nama = document.getElementById('admNamaAnggota').value.trim();
-            const iuran = document.getElementById('admNominalIuran').value.trim();
-            if (!nama || !iuran) return alert("Lengkapi data!");
-            push(ref(db, 'harum-app/jumatpahing'), { nama, iuran }).then(() => { 
-                alert("Sukses!"); 
-                document.getElementById('admNamaAnggota').value = '';
-                document.getElementById('admNominalIuran').value = '';
-                bukaHalaman('jumatpahing'); 
-            });
-        };
-
-        window.adminUpdateKas = function() {
-            const total = document.getElementById('admTotalKas').value.trim();
-            const keterangan = document.getElementById('admKetKas').value.trim();
-            if (!total) return alert("Input nominal!");
-            set(ref(db, 'harum-app/uangkas'), { total, keterangan }).then(() => { 
-                alert("Kas Di-update!"); 
-                document.getElementById('admTotalKas').value = '';
-                document.getElementById('admKetKas').value = '';
-                bukaHalaman('uangkas'); 
-            });
-        };
-
-        muatDataFirebase();
-    </script>
-
-    <!-- ==================== LOGIKA SPA & KUNCI PASS PANEL ==================== -->
-    <script>
-        const menus = [
-            { id: 'dashboard', nama: 'Beranda', ikon: 'fa-home' },
-            { id: 'pengumuman', nama: 'Pengumuman', ikon: 'fa-bullhorn' },
-            { id: 'artikel', nama: 'Buku Artikel/Blog', ikon: 'fa-book-open' },
-            { id: 'jumatpahing', nama: 'Jumat Pahing', ikon: 'fa-calendar-check' },
-            { id: 'uangkas', nama: 'Uang Kas', ikon: 'fa-wallet' },
-            { id: 'kalender', nama: 'Kalender', ikon: 'fa-calendar-alt' },
-            { id: 'admin-auth', nama: 'Admin Panel', ikon: 'fa-cog' }
-        ];
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const menuKonten = document.getElementById('menuKonten');
-            menuKonten.innerHTML = '';
-            menus.forEach(m => {
-                const btn = document.createElement('button');
-                btn.className = `w-full flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium text-sm text-left transition`;
-                btn.onclick = () => { 
-                    if(m.id === 'admin-auth' && sessionStorage.getItem('admin_authenticated') === 'true') {
-                        bukaHalaman('admin-panel');
-                    } else {
-                        bukaHalaman(m.id); 
                     }
-                    kendaliSidebar(); 
-                };
-                btn.innerHTML = `<i class="fas ${m.ikon} w-6 text-center text-emerald-600"></i> <span>${m.nama}</span>`;
-                menuKonten.appendChild(btn);
-            });
-            setInterval(() => { document.getElementById('jamDigital').innerText = new Date().toLocaleTimeString('id-ID'); }, 1000);
+                });
+            }
         });
 
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        function kendaliSidebar() {
-            if (sidebar.classList.contains('-translate-x-full')) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
-        }
+        // Jam Digital
+        setInterval(() => {
+            document.getElementById('jamDigital').innerText = new Date().toLocaleTimeString('id-ID');
+        }, 1000);
 
-        window.bukaHalaman = function(idHalaman) {
-            document.querySelectorAll('.menu-halaman').forEach(h => h.classList.add('hidden'));
-            const target = document.getElementById(`hal-${idHalaman}`);
-            if (target) target.classList.remove('hidden');
-        }
-
-        window.verifikasiSandiAdmin = function() {
-            const pin = document.getElementById('inputPinAdmin').value.trim();
-            if (pin === 'demak2026') { 
-                alert("Akses Admin Terbuka!");
-                sessionStorage.setItem('admin_authenticated', 'true');
-                document.getElementById('inputPinAdmin').value = '';
-                bukaHalaman('admin-panel');
-            } else {
-                alert("PIN Salah!");
-            }
-        }
-
-        window.kunciUlangAdmin = function() {
-            sessionStorage.removeItem('admin_authenticated');
-            bukaHalaman('dashboard');
-        }
     </script>
 </body>
 </html>
