@@ -58,9 +58,9 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('pengumuman')">
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-bullhorn text-emerald-600 mr-1"></i> Pengumuman Utama</span>
-                        <div class="text-xs text-gray-700 mt-2 font-medium" id="dash-pengumuman">Memuat...</div>
+                        <div class="text-xs text-gray-700 mt-2 font-medium line-clamp-2" id="dash-pengumuman">Memuat...</div>
                     </div>
-                    <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-xs">
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('kalender')">
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender</span>
                         <div class="text-xs font-bold text-gray-800 mt-2" id="dash-kalender">Memuat tanggal...</div>
                     </div>
@@ -123,6 +123,16 @@
                 </div>
             </section>
 
+            <!-- Halaman 6: Kalender -->
+            <section id="hal-kalender" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">📆 Kalender Informasi</h2>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs space-y-3 text-sm">
+                    <p><strong>Hari / Tanggal Masehi:</strong></p>
+                    <p id="tgl-lengkap-page" class="text-emerald-700 font-bold text-base bg-emerald-50 p-3 rounded-lg">Memuat...</p>
+                    <p class="text-xs text-gray-400">Kalender disinkronkan otomatis secara real-time dengan waktu perangkat Anda.</p>
+                </div>
+            </section>
+
             <!-- ==================== GATE KUNCI LOGIN PANEL ADMIN ==================== -->
             <section id="hal-admin-auth" class="menu-halaman hidden max-w-sm mx-auto pt-10 space-y-4">
                 <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-lg text-center space-y-4">
@@ -149,10 +159,20 @@
                 
                 <!-- Form 1: Pengumuman -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
-                    <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider"><i class="fas fa-bullhorn mr-1"></i> Buat Pengumuman</h3>
+                    <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider" id="admin-form-announcement-title"><i class="fas fa-bullhorn mr-1"></i> Buat Pengumuman Baru</h3>
+                    <input type="hidden" id="admIdPengumuman">
                     <input type="text" id="admJudulPengumuman" placeholder="Judul Pengumuman" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
                     <textarea id="admIsiPengumuman" placeholder="Isi detail pengumuman..." rows="3" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600"></textarea>
-                    <button onclick="adminTambahPengumuman()" class="w-full bg-emerald-700 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-emerald-800 transition">Simpan Pengumuman</button>
+                    <div class="flex gap-2">
+                        <button id="btnBatalEditAnn" onclick="resetFormPengumuman()" class="hidden w-1/3 bg-gray-400 text-white p-2.5 rounded-lg text-xs font-bold">Batal</button>
+                        <button id="btnSimpanAnn" onclick="adminTambahPengumuman()" class="flex-1 bg-emerald-700 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-emerald-800 transition">Simpan Pengumuman</button>
+                    </div>
+                    
+                    <!-- DAFTAR PENGUMUMAN UNTUK DIEDIT / DIHAPUS -->
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase">Daftar Pengumuman Aktif (Bisa Di-edit/Hapus):</p>
+                        <div id="adm-list-pengumuman" class="space-y-2 max-h-48 overflow-y-auto"></div>
+                    </div>
                 </div>
 
                 <!-- Form 2: Buku Artikel & Doa -->
@@ -187,7 +207,7 @@
     <!-- ==================== SCRIPT FIREBASE REALTIME SINKRONISASI ==================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             databaseURL: "https://harum-app-default-rtdb.firebaseio.com/"
@@ -196,28 +216,51 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // Map lokal untuk menaruh cache data pengumuman agar bisa ditarik ke form edit
+        let pengumumanCache = {};
+
         // --- AMBIL DATA DARI FIREBASE DAN TAMPILKAN DI WEB ---
         function muatDataFirebase() {
-            // 1. Pengumuman
+            // 1. Pengumuman + Setup Panel Edit & Hapus
             onValue(ref(db, 'harum-app/pengumuman'), (snapshot) => {
                 const data = snapshot.val();
                 const box = document.getElementById('box-pengumuman');
                 const dash = document.getElementById('dash-pengumuman');
+                const admList = document.getElementById('adm-list-pengumuman');
+                
                 if (data) {
+                    pengumumanCache = data; 
                     box.innerHTML = '';
+                    admList.innerHTML = '';
                     let keys = Object.keys(data).reverse();
                     dash.innerText = data[keys[0]].judul;
+                    
                     keys.forEach(key => {
+                        // Tampilan halaman publik
                         box.innerHTML += `
                             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
                                 <h3 class="font-bold text-emerald-800 text-sm">${data[key].judul}</h3>
                                 <p class="text-[10px] text-gray-400">${data[key].tanggal}</p>
-                                <p class="text-xs text-gray-600 mt-2">${data[key].isi}</p>
+                                <p class="text-xs text-gray-600 mt-2 whitespace-pre-wrap">${data[key].isi}</p>
+                            </div>`;
+                            
+                        // Tampilan baris manajemen di Admin Panel
+                        admList.innerHTML += `
+                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-100 text-xs">
+                                <div class="truncate pr-2 flex-1">
+                                    <p class="font-bold text-gray-700 truncate">${data[key].judul}</p>
+                                    <p class="text-[9px] text-gray-400">${data[key].tanggal}</p>
+                                </div>
+                                <div class="flex gap-1 shrink-0">
+                                    <button onclick="picuEditPengumuman('${key}')" class="bg-amber-500 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-edit"></i></button>
+                                    <button onclick="picuHapusPengumuman('${key}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-trash"></i></button>
+                                </div>
                             </div>`;
                     });
                 } else {
                     dash.innerText = "Belum ada pengumuman.";
                     box.innerHTML = "<p class='text-xs text-gray-400'>Kosong.</p>";
+                    admList.innerHTML = "<p class='text-[10px] text-gray-400 italic'>Tidak ada pengumuman untuk diedit.</p>";
                 }
             });
 
@@ -280,18 +323,68 @@
             
             // 5. Setup Kalender Otomatis Real-time Hari Ini
             const opsiTgl = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            const dashKal = document.getElementById('dash-kalender');
-            if (dashKal) dashKal.innerText = new Date().toLocaleDateString('id-ID', opsiTgl);
+            const tglSekarang = new Date().toLocaleDateString('id-ID', opsiTgl);
+            if (document.getElementById('dash-kalender')) document.getElementById('dash-kalender').innerText = tglSekarang;
+            if (document.getElementById('tgl-lengkap-page')) document.getElementById('tgl-lengkap-page').innerText = tglSekarang;
         }
 
-        // --- SISTEM DATA INPUT FORM KE FIREBASE ---
+        // --- SISTEM AKSI WRITE / INPUT & EDIT FORM KE FIREBASE ---
+        window.picuEditPengumuman = function(id) {
+            const item = pengumumanCache[id];
+            if(!item) return;
+            document.getElementById('admIdPengumuman').value = id;
+            document.getElementById('admJudulPengumuman').value = item.judul;
+            document.getElementById('admIsiPengumuman').value = item.isi;
+            
+            document.getElementById('admin-form-announcement-title').innerHTML = `<i class="fas fa-edit mr-1"></i> Edit Pengumuman Terpilih`;
+            document.getElementById('btnBatalEditAnn').classList.remove('hidden');
+            document.getElementById('btnSimpanAnn').innerText = "Simpan Perubahan";
+            document.getElementById('admJudulPengumuman').focus();
+        };
+
+        window.resetFormPengumuman = function() {
+            document.getElementById('admIdPengumuman').value = '';
+            document.getElementById('admJudulPengumuman').value = '';
+            document.getElementById('admIsiPengumuman').value = '';
+            document.getElementById('admin-form-announcement-title').innerHTML = `<i class="fas fa-bullhorn mr-1"></i> Buat Pengumuman Baru`;
+            document.getElementById('btnBatalEditAnn').classList.add('hidden');
+            document.getElementById('btnSimpanAnn').innerText = "Simpan Pengumuman";
+        };
+
         window.adminTambahPengumuman = function() {
+            const id = document.getElementById('admIdPengumuman').value.trim();
             const judul = document.getElementById('admJudulPengumuman').value.trim();
             const isi = document.getElementById('admIsiPengumuman').value.trim();
-            if (!judul || !isi) return alert("Lengkapi data!");
-            push(ref(db, 'harum-app/pengumuman'), {
-                judul, isi, tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-            }).then(() => { alert("Sukses!"); bukaHalaman('pengumuman'); });
+            if (!judul || !isi) return alert("Lengkapi judul & isi pengumuman!");
+            
+            if(id) {
+                // Mode Update/Edit Data Lama
+                set(ref(db, `harum-app/pengumuman/${id}`), {
+                    judul, isi, tanggal: pengumumanCache[id].tanggal || new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                }).then(() => { 
+                    alert("Pengumuman berhasil diperbarui!"); 
+                    resetFormPengumuman();
+                    bukaHalaman('pengumuman'); 
+                });
+            } else {
+                // Mode Tambah Baru
+                push(ref(db, 'harum-app/pengumuman'), {
+                    judul, isi, tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                }).then(() => { 
+                    alert("Pengumuman baru disimpan!"); 
+                    resetFormPengumuman();
+                    bukaHalaman('pengumuman'); 
+                });
+            }
+        };
+
+        window.picuHapusPengumuman = function(id) {
+            if(confirm("Apakah Anda yakin ingin menghapus pengumuman ini?")) {
+                remove(ref(db, `harum-app/pengumuman/${id}`)).then(() => {
+                    alert("Pengumuman berhasil dihapus!");
+                    resetFormPengumuman();
+                });
+            }
         };
 
         window.adminTambahArtikel = function() {
@@ -301,6 +394,9 @@
             if (!judul || !arti) return alert("Judul dan isi deskripsi wajib diisi!");
             push(ref(db, 'harum-app/artikel'), { judul, arab, arti }).then(() => {
                 alert("Artikel/Do'a berhasil ditambahkan!");
+                document.getElementById('admJudulArtikel').value = '';
+                document.getElementById('admIsiArab').value = '';
+                document.getElementById('admIsiArti').value = '';
                 bukaHalaman('artikel');
             });
         };
@@ -309,14 +405,24 @@
             const nama = document.getElementById('admNamaAnggota').value.trim();
             const iuran = document.getElementById('admNominalIuran').value.trim();
             if (!nama || !iuran) return alert("Lengkapi data!");
-            push(ref(db, 'harum-app/jumatpahing'), { nama, iuran }).then(() => { alert("Sukses!"); bukaHalaman('jumatpahing'); });
+            push(ref(db, 'harum-app/jumatpahing'), { nama, iuran }).then(() => { 
+                alert("Data iuran ditambahkan!"); 
+                document.getElementById('admNamaAnggota').value = '';
+                document.getElementById('admNominalIuran').value = '';
+                bukaHalaman('jumatpahing'); 
+            });
         };
 
         window.adminUpdateKas = function() {
             const total = document.getElementById('admTotalKas').value.trim();
             const keterangan = document.getElementById('admKetKas').value.trim();
             if (!total) return alert("Input nominal kas!");
-            set(ref(db, 'harum-app/uangkas'), { total, keterangan }).then(() => { alert("Uang Kas Di-update!"); bukaHalaman('uangkas'); });
+            set(ref(db, 'harum-app/uangkas'), { total, keterangan }).then(() => { 
+                alert("Uang Kas Di-update!"); 
+                document.getElementById('admTotalKas').value = '';
+                document.getElementById('admKetKas').value = '';
+                bukaHalaman('uangkas'); 
+            });
         };
 
         muatDataFirebase();
@@ -330,6 +436,7 @@
             { id: 'artikel', nama: 'Buku Artikel/Blog', ikon: 'fa-book-open' },
             { id: 'jumatpahing', nama: 'Jumat Pahing', ikon: 'fa-calendar-check' },
             { id: 'uangkas', nama: 'Uang Kas', ikon: 'fa-wallet' },
+            { id: 'kalender', nama: 'Kalender', ikon: 'fa-calendar-alt' },
             { id: 'admin-auth', nama: 'Admin Panel Panel', ikon: 'fa-cog' }
         ];
 
