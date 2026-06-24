@@ -60,7 +60,7 @@
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-bullhorn text-emerald-600 mr-1"></i> Pengumuman Utama</span>
                         <div class="text-xs text-gray-700 mt-2 font-medium" id="dash-pengumuman">Memuat...</div>
                     </div>
-                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('kalender')">
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-xs">
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender</span>
                         <div class="text-xs font-bold text-gray-800 mt-2" id="dash-kalender">Memuat tanggal...</div>
                     </div>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl text-center shadow-xs">
-                    <p class="font-arab text-xl text-amber-900 mb-2 leading-relaxed">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                    <p class="font-arab text-xl text-amber-900 mb-2 leading-relaxed">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَِّحيْمِ</p>
                     <p class="text-xs italic text-gray-600">"Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang."</p>
                 </div>
             </section>
@@ -123,16 +123,6 @@
                 </div>
             </section>
 
-            <!-- Halaman 6: Kalender -->
-            <section id="hal-kalender" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800"></div>📆 Kalender Sistem</h2>
-                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-xs space-y-3 text-sm">
-                    <p><strong>Masehi:</strong> <span id="kal-masehi">Memuat...</span></p>
-                    <p><strong>Hijriyah:</strong> <span id="kal-hijriyah">Memuat...</span></p>
-                    <p><strong>Pasaran / Keterangan:</strong> <span id="kal-pasaran">Memuat...</span></p>
-                </div>
-            </section>
-
             <!-- ==================== GATE KUNCI LOGIN PANEL ADMIN ==================== -->
             <section id="hal-admin-auth" class="menu-halaman hidden max-w-sm mx-auto pt-10 space-y-4">
                 <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-lg text-center space-y-4">
@@ -153,8 +143,8 @@
             <!-- ==================== HALAMAN ADMIN PANEL LENGKAP ==================== -->
             <section id="hal-admin-panel" class="menu-halaman hidden space-y-5 pb-10">
                 <div class="flex justify-between items-center bg-gray-100 p-3 rounded-xl">
-                    <h2 class="text-md font-bold text-gray-800">⚙️ Pengaturan Konten Web</h2>
-                    <button onclick="kunciUlangAdmin()" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-xs">Kunci Kembali</button>
+                    <h2 class="text-sm font-bold text-gray-800">⚙️ Pengaturan Konten Web</h2>
+                    <button onclick="kunciUlangAdmin()" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow">Kunci Kembali</button>
                 </div>
                 
                 <!-- Form 1: Pengumuman -->
@@ -182,21 +172,12 @@
                     <button onclick="adminTambahIuran()" class="w-full bg-emerald-700 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-emerald-800 transition">Simpan Iuran</button>
                 </div>
 
-                <!-- Form 4: Update Uang Kas Global -->
+                <!-- Form 4: Update Uang Kas -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
                     <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider"><i class="fas fa-wallet mr-1"></i> Update Saldo Uang Kas Utama</h3>
                     <input type="number" id="admTotalKas" placeholder="Total Saldo Kas Baru (Contoh: 5000000)" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
                     <input type="text" id="admKetKas" placeholder="Keterangan tambahan kas" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
                     <button onclick="adminUpdateKas()" class="w-full bg-teal-600 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-teal-700 transition">Update Saldo Kas</button>
-                </div>
-
-                <!-- Form 5: Update Kalender Manual -->
-                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
-                    <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider"><i class="fas fa-calendar-alt mr-1"></i> Set Tanggal Kalender Organisasi</h3>
-                    <input type="text" id="admKalMasehi" placeholder="Contoh: Rabu, 24 Juni 2026" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
-                    <input type="text" id="admKalHijriyah" placeholder="Contoh: 9 Muharram 1448 H" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
-                    <input type="text" id="admKalPasaran" placeholder="Contoh: Pahing / Acara Rutinan" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
-                    <button onclick="adminUpdateKalender()" class="w-full bg-teal-600 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-teal-700 transition">Update Kalender</button>
                 </div>
             </section>
 
@@ -296,21 +277,14 @@
                     if(kasKet) kasKet.innerText = data.keterangan || "Belum ada catatan.";
                 }
             });
-
-            // 5. Kalender
-            onValue(ref(db, 'harum-app/kalender'), (snapshot) => {
-                const data = snapshot.val();
-                const dashKal = document.getElementById('dash-kalender');
-                if (data) {
-                    document.getElementById('kal-masehi').innerText = data.masehi || '-';
-                    document.getElementById('kal-hijriyah').innerText = data.hijriyah || '-';
-                    document.getElementById('kal-pasaran').innerText = data.pasaran || '-';
-                    dashKal.innerText = (data.pasaran) ? "Hari: " + data.pasaran : data.masehi;
-                }
-            });
+            
+            // 5. Setup Kalender Otomatis Real-time Hari Ini
+            const opsiTgl = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const dashKal = document.getElementById('dash-kalender');
+            if (dashKal) dashKal.innerText = new Date().toLocaleDateString('id-ID', opsiTgl);
         }
 
-        // --- SISTEM WRITE / INPUT FORM KE FIREBASE ---
+        // --- SISTEM DATA INPUT FORM KE FIREBASE ---
         window.adminTambahPengumuman = function() {
             const judul = document.getElementById('admJudulPengumuman').value.trim();
             const isi = document.getElementById('admIsiPengumuman').value.trim();
@@ -345,13 +319,6 @@
             set(ref(db, 'harum-app/uangkas'), { total, keterangan }).then(() => { alert("Uang Kas Di-update!"); bukaHalaman('uangkas'); });
         };
 
-        window.adminUpdateKalender = function() {
-            const masehi = document.getElementById('admKalMasehi').value.trim();
-            const hijriyah = document.getElementById('admKalHijriyah').value.trim();
-            const pasaran = document.getElementById('admKalPasaran').value.trim();
-            set(ref(db, 'harum-app/kalender'), { masehi, hijriyah, pasaran }).then(() => { alert("Kalender Sinkron!"); bukaHalaman('kalender'); });
-        };
-
         muatDataFirebase();
     </script>
 
@@ -363,7 +330,6 @@
             { id: 'artikel', nama: 'Buku Artikel/Blog', ikon: 'fa-book-open' },
             { id: 'jumatpahing', nama: 'Jumat Pahing', ikon: 'fa-calendar-check' },
             { id: 'uangkas', nama: 'Uang Kas', ikon: 'fa-wallet' },
-            { id: 'kalender', nama: 'Kalender', ikon: 'fa-calendar-alt' },
             { id: 'admin-auth', nama: 'Admin Panel Panel', ikon: 'fa-cog' }
         ];
 
@@ -406,8 +372,7 @@
 
         window.verifikasiSandiAdmin = function() {
             const pin = document.getElementById('inputPinAdmin').value.trim();
-            // Ganti sandi di bawah ini dengan password Anda sendiri
-            if (pin === '123456') { 
+            if (pin === 'demak2026') { 
                 alert("Akses Admin Terbuka!");
                 sessionStorage.setItem('admin_authenticated', 'true');
                 document.getElementById('inputPinAdmin').value = '';
