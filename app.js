@@ -125,3 +125,4 @@ function handleLoginWindow() {
 
 // JALANKAN APLIKASI OTOMATIS SAAT HALAMAN SELESAI DIMUAT BROWSER
 document.addEventListener("DOMContentLoaded", initApp);
+
