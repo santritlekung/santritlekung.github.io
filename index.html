@@ -2,111 +2,122 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HARUM</title>
-    <!-- Memanggil Font Amiri Naskhi dari Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HARUM - Himpunan Alumni Roudlotul Ulum</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <!-- Navigasi Atas -->
-    <header class="main-header" style="background: #0b5e32; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; color: white;">
-        <div class="logo-side" style="display: flex; align-items: center; gap: 10px;">
-            <img src="logo.jpg" class="brand-logo" style="height: 40px; width: 40px; border-radius: 5px; object-fit: cover;">
-            <span class="app-title" style="font-weight: bold; font-size: 1.2rem;">HARUM</span>
-        </div>
-        <button id="btn-login" class="btn-login" onclick="handleLoginWindow()">Login</button>
-    </header>
-
-    <!-- Konten Utama Aplikasi -->
-    <main class="container">
-        <div id="main-content">
-            <!-- Ringkasan Kas Utama -->
-            <section class="card-summary">
-                <h2>Ringkasan Kas Utama</h2>
-                <div class="total-dana" id="display-total-kas">Rp 0</div>
-            </section>
-
-            <!-- Tiga Kotak Kategori Kas -->
-            <section class="menu-grid">
-                <div class="menu-item"><h3>KAS SOSIAL</h3><p id="display-total-sosial">Rp 0</p></div>
-                <div class="menu-item"><h3>SABILUN</h3><p id="display-total-sabilun">Rp 0</p></div>
-                <div class="menu-item"><h3>JUMAT PAHING</h3><p id="display-total-jumat">Rp 0</p></div>
-            </section>
-
-            <!-- Bagian Kalender / Agenda Kegiatan -->
-            <section class="card-agenda" style="margin-bottom: 15px;">
-                <h2>Agenda & Kalender Kegiatan</h2>
-                <ul id="list-agenda" class="agenda-list"><li class="empty-list">Belum ada agenda terdekat.</li></ul>
-            </section>
-
-            <!-- Bagian Blog Berita Sabilunnajah -->
-            <section class="card-agenda" style="margin-bottom: 25px;">
-                <h2>Blog Sabilunnajah</h2>
-                <div id="list-blog"><p class="empty-list" style="text-align: center; font-style: italic; color: #999; padding: 10px 0;">Belum ada artikel atau berita.</p></div>
-            </section>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen">
+            <div class="loader-container">
+                <img src="assets/logo.jpg" alt="HARUM" class="loading-logo">
+                <div class="loader"></div>
+                <p>Memuat Aplikasi...</p>
+            </div>
         </div>
 
-        <!-- PANEL KENDALI ADMIN -->
-        <div id="admin-panel" style="display: none; padding: 15px; margin-top: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-top: 4px solid #ffc107;">
-            <h2 style="font-size: 1.1rem; margin-bottom: 15px; color: #0b5e32; border-bottom: 2px solid #f0f2f5; padding-bottom: 5px; font-weight: bold;">⚙️ PANEL KENDALI ADMIN</h2>
-            
-            <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Pilih Modul Yang Ingin Diisi/Diubah:</label>
-            <select id="admin-action" onchange="toggleAdminForm()" style="width: 100%; padding: 10px; margin: 5px 0 15px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold;">
-                <option value="kas">1. Edit Nominal Uang Kas</option>
-                <option value="member">2. Tambah Member / User Baru</option>
-                <option value="agenda">3. Tambah Agenda / Kalender</option>
-                <option value="blog">4. Tulis Artikel Blog Sabilunnajah</option>
-            </select>
-
-            <!-- Form 1: Edit Kas -->
-            <div id="form-kas">
-                <label style="font-size: 0.8rem; color: #666;">Pilih Kategori Kas:</label>
-                <select id="input-kas-kategori" style="width: 100%; padding: 8px; margin: 5px 0 10px; border-radius: 5px; border: 1px solid #ccc;">
-                    <option value="kas">Kas Utama</option>
-                    <option value="sosial">Kas Sosial</option>
-                    <option value="sabilun">Sabilun</option>
-                    <option value="jumat">Jumat Pahing</option>
-                </select>
-                <input type="number" id="input-kas-nominal" placeholder="Masukkan total uang baru" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                <button onclick="saveKasAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Update Nominal Uang Kas</button>
-            </div>
-
-            <!-- Form 2: Tambah Member -->
-            <div id="form-member" style="display: none;">
-                <input type="text" id="input-member-hp" placeholder="Masukkan Nomor HP Member" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                <select id="input-member-role" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                    <option value="Admin">Admin (Bisa Edit Data)</option>
-                    <option value="User">User Biasa (Hanya Melihat)</option>
-                </select>
-                <button onclick="saveMemberAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Daftarkan Pengguna Baru</button>
-            </div>
-
-            <!-- Form 3: Tambah Agenda -->
-            <div id="form-agenda" style="display: none;">
-                <input type="text" id="input-agenda-teks" placeholder="Contoh: Jum'at, 10 Juli - Pengajian" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                <button onclick="saveAgendaAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Masukkan ke Daftar Agenda</button>
-            </div>
-
-            <!-- Form 4: Tambah Blog -->
-            <div id="form-blog" style="display: none;">
-                <input type="text" id="input-blog-judul" placeholder="Judul Artikel / Berita" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold;">
-                <textarea id="input-blog-isi" rows="4" placeholder="Tuliskan isi informasi di sini..." style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
-                
-                <!-- Pilihan Mode Arab -->
-                <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-                    <input type="checkbox" id="input-blog-arab" style="width: 18px; height: 18px; cursor: pointer;">
-                    <label for="input-blog-arab" style="font-size: 0.85rem; font-weight: bold; color: #d9534f; cursor: pointer;">Centang jika artikel ini menggunakan Tulisan Arab (Naskhi)</label>
+        <!-- Main Content -->
+        <div id="main-content" style="display:none;">
+            <!-- Header -->
+            <header id="app-header">
+                <button id="menu-toggle" class="menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo" onclick="navigateTo('home')">
+                    <img src="assets/logo.jpg" alt="HARUM">
+                    <span>HARUM</span>
                 </div>
-                
-                <button onclick="saveBlogAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Terbitkan Artikel Blog</button>
-            </div>
-        </div>
-    </main>
+                <div id="clock" class="header-clock">
+                    <i class="fas fa-clock"></i>
+                    <span id="time-display">00:00:00</span>
+                </div>
+            </header>
 
-    <script src="app.js?v=4"></script>
+            <!-- Sidebar -->
+            <div id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <img src="assets/logo.jpg" alt="HARUM" class="sidebar-logo">
+                    <h2>HARUM</h2>
+                    <p>Himpunan Alumni Roudlotul Ulum</p>
+                    <div id="user-info-sidebar" class="user-info"></div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" onclick="navigateTo('home')" data-page="home">
+                        <i class="fas fa-home"></i> Beranda
+                    </a>
+                    <a href="#" onclick="navigateTo('pengumuman')" data-page="pengumuman">
+                        <i class="fas fa-bullhorn"></i> Pengumuman
+                    </a>
+                    <a href="#" onclick="navigateTo('artikel')" data-page="artikel">
+                        <i class="fas fa-book"></i> Buku Artikel/Blog
+                    </a>
+                    <a href="#" onclick="navigateTo('jumat-pahing')" data-page="jumat-pahing">
+                        <i class="fas fa-calendar-check"></i> Jumat Pahing
+                    </a>
+                    <a href="#" onclick="navigateTo('kas')" data-page="kas">
+                        <i class="fas fa-money-bill-wave"></i> Uang Kas
+                    </a>
+                    <a href="#" onclick="navigateTo('kalender')" data-page="kalender">
+                        <i class="fas fa-calendar-alt"></i> Kalender
+                    </a>
+                    <a href="#" onclick="navigateTo('haul')" data-page="haul">
+                        <i class="fas fa-mosque"></i> Haul Akbar
+                    </a>
+                    <a href="#" onclick="navigateTo('donasi-haul')" data-page="donasi-haul">
+                        <i class="fas fa-hand-holding-heart"></i> Donasi Haul
+                    </a>
+                    <a href="#" onclick="navigateTo('rombongan')" data-page="rombongan">
+                        <i class="fas fa-bus"></i> Rombongan Malang
+                    </a>
+                    <a href="#" onclick="navigateTo('kedatangan-nyai')" data-page="kedatangan-nyai">
+                        <i class="fas fa-user-tie"></i> Kedatangan Nyai
+                    </a>
+                    <a href="#" onclick="navigateTo('profil')" data-page="profil">
+                        <i class="fas fa-user-circle"></i> Profil Saya
+                    </a>
+                    <div id="admin-menu" style="display:none;">
+                        <hr>
+                        <a href="#" onclick="navigateTo('admin-panel')" data-page="admin-panel">
+                            <i class="fas fa-cog"></i> Admin Panel
+                        </a>
+                    </div>
+                    <hr>
+                    <a href="#" onclick="logoutUser()" class="logout-link">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Overlay -->
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+            <!-- Page Content -->
+            <main id="page-content"></main>
+        </div>
+    </div>
+
+    <!-- Recaptcha Container -->
+    <div id="recaptcha-container"></div>
+
+    <!-- JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
