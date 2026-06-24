@@ -125,4 +125,72 @@ function handleLoginWindow() {
 
 // JALANKAN APLIKASI OTOMATIS SAAT HALAMAN SELESAI DIMUAT BROWSER
 document.addEventListener("DOMContentLoaded", initApp);
+// Fungsi berpindah formulir di dalam panel admin
+function toggleAdminForm() {
+    const action = document.getElementById("admin-action").value;
+    document.getElementById("form-kas").style.display = action === "kas" ? "block" : "none";
+    document.getElementById("form-member").style.display = action === "member" ? "block" : "none";
+    document.getElementById("form-agenda").style.display = action === "agenda" ? "block" : "none";
+}
+
+// 1. Fungsi Admin Menyimpan Nominal Uang Kas Baru
+function saveKasAdmin() {
+    const nominal = document.getElementById("input-kas-nominal").value;
+    if (!nominal) return alert("Masukkan nominal angka terlebih dahulu!");
+
+    // Mengirim pembaruan kas ke Firebase secara otomatis
+    fetch(`${FIREBASE_URL}kas.json`, {
+        method: "PUT",
+        body: JSON.stringify({ total: parseInt(nominal) })
+    })
+    .then(res => {
+        alert("Uang kas berhasil diperbarui!");
+        location.reload(); // Muat ulang aplikasi agar data langsung berubah
+    })
+    .catch(err => alert("Gagal menyimpan data: " + err));
+}
+
+// 2. Fungsi Admin Menambahkan Member / User Baru
+function saveMemberAdmin() {
+    const noHp = document.getElementById("input-member-hp").value;
+    const role = document.getElementById("input-member-role").value;
+    if (!noHp) return alert("Masukkan nomor HP member baru!");
+
+    fetch(`${FIREBASE_URL}users/${noHp}.json`, {
+        method: "PUT",
+        body: JSON.stringify(role)
+    })
+    .then(res => {
+        alert(`Member ${noHp} berhasil didaftarkan sebagai ${role}!`);
+        document.getElementById("input-member-hp").value = "";
+    })
+    .catch(err => alert("Gagal mendaftarkan member: " + err));
+}
+
+// 3. Fungsi Admin Menambahkan Agenda Kegiatan / Kalender Baru
+async function saveAgendaAdmin() {
+    const teksAgenda = document.getElementById("input-agenda-teks").value;
+    if (!teksAgenda) return alert("Tuliskan detail agendanya dahulu!");
+
+    try {
+        // Ambil data agenda lama dulu
+        const res = await fetch(`${FIREBASE_URL}agenda.json`);
+        let agendaLama = await res.json();
+        if (!Array.isArray(agendaLama)) agendaLama = [];
+
+        // Masukkan agenda baru ke dalam daftar
+        agendaLama.push(teksAgenda);
+
+        // Kirim kembali daftar yang baru ke Firebase
+        await fetch(`${FIREBASE_URL}agenda.json`, {
+            method: "PUT",
+            body: JSON.stringify(agendaLama)
+        });
+
+        alert("Agenda kalender baru berhasil ditambahkan!");
+        location.reload();
+    } catch (error) {
+        alert("Gagal menambahkan agenda: " + error);
+    }
+}
 
