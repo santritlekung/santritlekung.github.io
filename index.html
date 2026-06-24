@@ -24,7 +24,7 @@
                 <p class="text-xs text-emerald-200">Korwil Demak & Sekitarnya</p>
             </div>
             
-            <div id="boxInputHP" class="bg-white text-gray-800 p-5 rounded-2xl shadow-xl space-y-4 text-left">
+            <div class="bg-white text-gray-800 p-5 rounded-2xl shadow-xl space-y-4 text-left">
                 <div>
                     <label class="text-xs font-bold text-gray-400 block mb-1">NOMOR WHATSAPP</label>
                     <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden">
@@ -32,7 +32,7 @@
                         <input type="tel" id="inputNoHP" value="081330386625" class="w-full p-2.5 text-xs focus:outline-none">
                     </div>
                 </div>
-                <button onclick="prosesLoginDemo()" class="w-full bg-emerald-700 text-white p-3 rounded-xl text-xs font-bold hover:bg-emerald-800 transition">
+                <button onclick="prosesLoginDemo()" class="w-full bg-emerald-700 text-white p-3 rounded-xl text-xs font-bold hover:bg-emerald-800 transition shadow">
                     Masuk (Mode Uji Coba) <i class="fas fa-sign-in-alt ml-1"></i>
                 </button>
             </div>
@@ -41,7 +41,7 @@
 
     <header class="bg-emerald-700 text-white h-16 px-4 flex items-center justify-between shadow-md z-30 shrink-0">
         <div class="flex items-center space-x-3">
-            <button id="btnHamburger" class="text-2xl p-1 hover:text-emerald-200 transition">
+            <button id="btnHamburger" onclick="kendaliSidebar()" class="text-2xl p-1 hover:text-emerald-200 transition">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="flex items-center space-x-2 cursor-pointer" onclick="bukaHalaman('dashboard')">
@@ -53,7 +53,8 @@
     </header>
 
     <div class="flex flex-1 relative overflow-hidden">
-        <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"></div>
+        
+        <div id="sidebarOverlay" onclick="kendaliSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"></div>
         <aside id="sidebar" class="absolute inset-y-0 left-0 w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between">
             <div class="overflow-y-auto flex-1">
                 <div class="p-5 bg-emerald-800 text-white">
@@ -71,10 +72,221 @@
         </aside>
 
         <main class="flex-1 overflow-y-auto p-4" id="kontenHalaman">
-            <p class="text-center text-xs text-gray-400 mt-10">Memuat komponen halaman...</p>
+            
+            <section id="hal-dashboard" class="menu-halaman space-y-4">
+                <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 rounded-xl text-white shadow-md">
+                    <h2 class="text-xl font-bold">Selamat Datang di HARUM</h2>
+                    <p class="text-xs text-emerald-100 mt-1">Sistem Informasi Real-time Korwil Demak.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('pengumuman')">
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-bullhorn text-emerald-600 mr-1"></i> Pengumuman</span>
+                        <div class="text-xs text-gray-700 mt-2 font-medium">Rapat Haul Akbar...</div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('kalender')">
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender</span>
+                        <div class="text-xs font-bold text-gray-800 mt-2">Rabu Pahing, 24 Juni 2026</div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('jumatpahing')">
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-check text-emerald-600 mr-1"></i> Jumat Pahing</span>
+                        <div class="text-xs text-gray-700 mt-2">28 Anggota Aktif</div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('uangkas')">
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-wallet text-emerald-600 mr-1"></i> Uang Kas</span>
+                        <div class="text-sm font-bold text-emerald-600 mt-2">Rp 2.450.000</div>
+                    </div>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl text-center shadow-xs">
+                    <p class="font-arab text-xl text-amber-900 mb-2 leading-relaxed">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                    <p class="text-xs italic text-gray-600">"Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang."</p>
+                </div>
+            </section>
+
+            <section id="hal-pengumuman" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">📢 Pengumuman Resmi</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
+                    <h3 class="font-bold text-emerald-800 text-sm">Persiapan Haul Akbar Korwil Demak</h3>
+                    <p class="text-[10px] text-gray-400">24 Juni 2026 • Admin</p>
+                    <p class="text-xs text-gray-600 mt-2">Diharapkan seluruh alumni menghadiri rapat koordinasi malam Jumat besok.</p>
+                </div>
+            </section>
+
+            <section id="hal-artikel" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">📖 Buku Artikel & Do'a</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs space-y-2">
+                    <span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold">TAWASUL</span>
+                    <p class="font-arab text-2xl text-right text-gray-900 leading-loose">إِلَى حَضْرَةِ النَّبِيِّ الْمُصْطَفَى...</p>
+                </div>
+            </section>
+
+            <section id="hal-jumatpahing" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">📅 Data Jumat Pahing</h2>
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden text-xs shadow-xs">
+                    <table class="w-full text-left text-gray-600">
+                        <thead class="bg-gray-50 border-b border-gray-200 font-bold">
+                            <tr><th class="p-3">Nama</th><th class="p-3">Iuran</th><th class="p-3">Status</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100"><td class="p-3">Ahmad Mudhofar</td><td class="p-3">Rp 20.000</td><td class="p-3"><span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">LUNAS</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="hal-uangkas" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">💰 Uang Kas</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 text-center shadow-xs">
+                    <p class="text-xs text-gray-400 font-semibold">TOTAL SALDO KAS</p>
+                    <p class="text-2xl font-bold text-emerald-600 mt-1">Rp 2.450.000</p>
+                </div>
+            </section>
+
+            <section id="hal-kalender" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">📆 Kalender Sistem</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs space-y-2 text-sm">
+                    <p><strong>Masehi:</strong> Rabu, 24 Juni 2026</p>
+                    <p><strong>Hijriyah:</strong> 9 Muharram 1448 H</p>
+                    <p><strong>Pasaran:</strong> Pahing</p>
+                </div>
+            </section>
+
+            <section id="hal-haul" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">🕌 Haul Akbar</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs text-sm">
+                    <p class="font-bold text-emerald-700">Haul Syaikhuna Siddiq Abdullah</p>
+                    <p class="text-xs text-gray-600 mt-1">Lokasi: Pondok Pesantren Roudlotul Ulum, Malang.</p>
+                </div>
+            </section>
+
+            <section id="hal-donasi" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">🤲 Donasi Haul</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs space-y-3">
+                    <input type="text" placeholder="Nama Donatur" class="w-full p-2 border border-gray-200 rounded-lg text-xs">
+                    <input type="number" placeholder="Nominal Rp" class="w-full p-2 border border-gray-200 rounded-lg text-xs">
+                    <button class="w-full bg-emerald-700 text-white p-2 rounded-lg text-xs font-bold shadow">Kirim Donasi</button>
+                </div>
+            </section>
+
+            <section id="hal-rombongan" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">🚌 Rombongan Malang</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs text-center">
+                    <p class="text-xs text-gray-600 mb-3">Klik tombol di bawah untuk mendaftar ikut rombongan bus ke Malang.</p>
+                    <button class="bg-teal-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow">Ikut Rombongan</button>
+                </div>
+            </section>
+
+            <section id="hal-nyai" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">👩 Kedatangan Nyai</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs text-xs text-gray-600">
+                    Belum ada jadwal kunjungan terdekat dari Nyai. Informasi akan langsung diperbarui real-time oleh admin.
+                </div>
+            </section>
+
+            <section id="hal-profil" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">👤 Profil Saya</h2>
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
+                    <p class="font-bold text-sm" id="txtNamaProfil">Abah Admin Default</p>
+                    <p class="text-xs text-gray-400" id="txtHPProfil">081330386625</p>
+                </div>
+            </section>
+
+            <section id="hal-admin" class="menu-halaman hidden space-y-3">
+                <h2 class="text-xl font-bold text-gray-800">⚙️ Admin Panel Panel</h2>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-xs text-red-800 mb-2">
+                    <strong>Akses Terbuka:</strong> Mode Uji Coba Administrator Aktif.
+                </div>
+                <div class="space-y-2">
+                    <button class="w-full bg-white p-3 rounded-lg border border-gray-200 text-left text-xs font-semibold text-gray-700 flex justify-between"><span>✍️ Kelola Pengumuman</span><i class="fas fa-chevron-right text-gray-300"></i></button>
+                    <button class="w-full bg-white p-3 rounded-lg border border-gray-200 text-left text-xs font-semibold text-gray-700 flex justify-between"><span>📖 Kelola Artikel</span><i class="fas fa-chevron-right text-gray-300"></i></button>
+                </div>
+            </section>
+
         </main>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        const menus = [
+            { id: 'dashboard', nama: 'Beranda', ikon: 'fa-home' },
+            { id: 'pengumuman', nama: 'Pengumuman', ikon: 'fa-bullhorn' },
+            { id: 'artikel', nama: 'Buku Artikel/Blog', ikon: 'fa-book-open' },
+            { id: 'jumatpahing', nama: 'Jumat Pahing', ikon: 'fa-calendar-check' },
+            { id: 'uangkas', nama: 'Uang Kas', ikon: 'fa-wallet' },
+            { id: 'kalender', nama: 'Kalender', ikon: 'fa-calendar-alt' },
+            { id: 'haul', nama: 'Haul Akbar', ikon: 'fa-mosque' },
+            { id: 'donasi', nama: 'Donasi Haul', ikon: 'fa-hands-helping' },
+            { id: 'rombongan', nama: 'Rombongan Malang', ikon: 'fa-bus' },
+            { id: 'nyai', nama: 'Kedatangan Nyai', ikon: 'fa-user-grace' },
+            { id: 'profil', nama: 'Profil Saya', ikon: 'fa-user' },
+            { id: 'admin', nama: 'Admin Panel', ikon: 'fa-cog' }
+        ];
+
+        // Jalankan pas halaman pertama terbuka
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuKonten = document.getElementById('menuKonten');
+            menuKonten.innerHTML = '';
+            
+            // Render list navigasi menu
+            menus.forEach(m => {
+                const btn = document.createElement('button');
+                btn.className = `w-full flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium text-sm text-left transition`;
+                btn.onclick = () => { bukaHalaman(m.id); kendaliSidebar(); };
+                btn.innerHTML = `<i class="fas ${m.ikon} w-6 text-center text-emerald-600"></i> <span>${m.nama}</span>`;
+                menuKonten.appendChild(btn);
+            });
+
+            // Timer Jam Digital
+            setInterval(() => {
+                document.getElementById('jamDigital').innerText = new Date().toLocaleTimeString('id-ID');
+            }, 1000);
+
+            // Cek Session login lokal
+            if (localStorage.getItem('user_harum')) {
+                eksekusiMasuk(localStorage.getItem('user_harum'));
+            }
+        });
+
+        // Toggle Sidebar Buka/Tutup
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function kendaliSidebar() {
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // Pindah Halaman SPA
+        function bukaHalaman(idHalaman) {
+            document.querySelectorAll('.menu-halaman').forEach(h => h.classList.add('hidden'));
+            const target = document.getElementById(`hal-${idHalaman}`);
+            if (target) target.classList.remove('hidden');
+        }
+
+        // Bypass Tombol Masuk Uji Coba
+        function prosesLoginDemo() {
+            const noHP = document.getElementById('inputNoHP').value.trim();
+            if (!noHP) return alert("Silakan isi nomor HP!");
+
+            localStorage.setItem('user_harum', noHP);
+            eksekusiMasuk(noHP);
+        }
+
+        function eksekusiMasuk(noHP) {
+            document.getElementById('layarLogin').classList.add('hidden');
+            document.getElementById('userPhoneDisplay').innerText = "HP: " + noHP;
+            document.getElementById('txtHPProfil').innerText = noHP;
+        }
+
+        function logoutAplikasi() {
+            if (confirm("Keluar dari aplikasi?")) {
+                localStorage.removeItem('user_harum');
+                location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
