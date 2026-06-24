@@ -3,817 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HARUM</title>
-    
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <title>HARUM - Aplikasi Alumni</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
-        
-        #loading-screen {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: #1a237e; display: flex; justify-content: center; align-items: center;
-            z-index: 9999;
-        }
-        .loader-container { text-align: center; color: white; }
-        .loader {
-            width: 50px; height: 50px; margin: 20px auto;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top-color: white; border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        #app-header {
-            background: #1a237e; padding: 12px 16px;
-            display: flex; align-items: center; justify-content: space-between;
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px;
-        }
-        .menu-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-        .header-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .header-logo img { width: 36px; height: 36px; border-radius: 50%; }
-        .header-logo span { color: white; font-size: 20px; font-weight: bold; }
-        .header-clock { color: white; font-size: 14px; background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 20px; }
-        
-        #page-content { margin-top: 60px; padding: 16px; }
-        
-        .login-container {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #1a237e, #283593); padding: 20px;
-        }
-        .login-card {
-            background: white; border-radius: 12px; padding: 40px 30px;
-            width: 100%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        .login-logo { text-align: center; margin-bottom: 30px; }
-        .login-logo img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; }
-        .login-logo h1 { font-size: 28px; color: #1a237e; }
-        .login-logo p { color: #757575; font-size: 14px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
-        .form-group input {
-            width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0;
-            border-radius: 8px; font-size: 16px;
-        }
-        .form-group input:focus { outline: none; border-color: #1a237e; }
-        .input-group { display: flex; border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
-        .input-group .prefix { padding: 12px; background: #f5f5f5; font-weight: 600; }
-        .input-group input { border: none; flex: 1; }
-        .input-group input:focus { border-color: transparent; }
-        .btn {
-            width: 100%; padding: 14px; border: none; border-radius: 8px;
-            font-size: 16px; font-weight: 600; cursor: pointer;
-        }
-        .btn-primary { background: #1a237e; color: white; }
-        .btn-primary:hover { background: #0d1445; }
-        .btn-success { background: #4caf50; color: white; }
-        .otp-hint { font-size: 13px; color: #757575; margin: 10px 0; }
-        .back-link { margin-top: 12px; color: #1a237e; cursor: pointer; font-size: 14px; }
-        
-        .sidebar {
-            position: fixed; top: 0; left: -280px; width: 280px; height: 100vh;
-            background: white; z-index: 200; transition: left 0.3s;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.15); overflow-y: auto;
-        }
-        .sidebar.open { left: 0; }
-        .sidebar-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5); z-index: 150; display: none;
-        }
-        .sidebar-overlay.active { display: block; }
-        .sidebar-header { background: #1a237e; padding: 20px; text-align: center; color: white; }
-        .sidebar-logo { width: 70px; height: 70px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); margin-bottom: 10px; }
-        .sidebar-header h2 { font-size: 22px; }
-        .sidebar-header p { font-size: 12px; opacity: 0.8; }
-        .sidebar-nav a {
-            display: flex; align-items: center; padding: 12px 20px;
-            color: #212121; text-decoration: none; gap: 14px; font-size: 15px;
-        }
-        .sidebar-nav a:hover { background: #f5f5f5; }
-        .sidebar-nav a i { width: 22px; font-size: 18px; color: #1a237e; }
-        .sidebar-nav hr { border: none; border-top: 1px solid #e0e0e0; margin: 8px 20px; }
-        .logout-link { color: #f44336 !important; }
-        .logout-link i { color: #f44336 !important; }
-        
-        .page-title { font-size: 22px; font-weight: bold; color: #1a237e; margin-bottom: 20px; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-        .card {
-            background: white; border-radius: 12px; padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;
-            border-left: 4px solid #1a237e;
-        }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
-        .card-title { font-size: 14px; color: #757575; font-weight: 500; }
-        .card-value { font-size: 22px; font-weight: bold; margin: 4px 0; }
-        .card-subtitle { font-size: 13px; color: #757575; }
-        
-        .data-list { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .data-item { padding: 16px 20px; border-bottom: 1px solid #e0e0e0; }
-        .data-item:last-child { border-bottom: none; }
-        .data-item .title { font-weight: 600; font-size: 16px; }
-        .data-item .meta { font-size: 13px; color: #757575; }
-        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
-        .badge-success { background: #e8f5e9; color: #2e7d32; }
-        .badge-warning { background: #fff3e0; color: #e65100; }
-        
-        .form-container { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .form-container h3 { margin-bottom: 16px; color: #1a237e; }
+        body { font-family: 'Inter', sans-serif; }
+        .arabic-text { font-family: 'Amiri', serif; direction: rtl; }
     </style>
 </head>
-<body>
-    <div id="app">
-        <!-- Loading -->
-        <div id="loading-screen">
-            <div class="loader-container">
-                <div style="font-size:60px;">🕌</div>
-                <h1 style="margin:10px 0;">HARUM</h1>
-                <div class="loader"></div>
-                <p>Memuat Aplikasi...</p>
+<body class="bg-gray-50 text-gray-800 antialiased h-screen flex flex-col overflow-hidden">
+
+    <header class="bg-emerald-700 text-white h-16 px-4 flex items-center justify-between shadow-md z-30 shrink-0">
+        <div class="flex items-center space-x-3">
+            <button id="menuBtn" class="text-2xl p-1 focus:outline-none hover:text-emerald-200 transition">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="switchPage('dashboard')">
+                <img src="logo.jpg" alt="Logo" class="w-8 h-8 rounded-full bg-white object-cover" onerror="this.src='https://via.placeholder.com/150'">
+                <span class="font-bold text-lg tracking-wider">HARUM</span>
             </div>
         </div>
+        <div id="digitalClock" class="font-mono text-sm bg-emerald-800 px-3 py-1 rounded shadow-inner">
+            00:00:00
+        </div>
+    </header>
 
-        <!-- Main -->
-        <div id="main-content" style="display:none;">
-            <!-- Header -->
-            <header id="app-header">
-                <button id="menu-toggle" class="menu-btn"><i class="fas fa-bars"></i></button>
-                <div class="header-logo" onclick="navigateTo('home')">
-                    <span style="font-size:28px;">🕌</span>
-                    <span>HARUM</span>
+    <div class="flex flex-1 relative overflow-hidden">
+        
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300 opacity-0"></div>
+        <aside id="sidebar" class="absolute inset-y-0 left-0 w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between">
+            <div class="overflow-y-auto flex-1">
+                <div class="p-5 bg-emerald-800 text-white">
+                    <h3 class="font-bold text-lg">Menu Navigasi</h3>
+                    <p class="text-xs text-emerald-200" id="userPhoneDisplay">Memuat status login...</p>
                 </div>
-                <div id="clock" class="header-clock"><span id="time-display">00:00:00</span></div>
-            </header>
+                <nav class="p-2 space-y-1" id="navMenu">
+                    </nav>
+            </div>
+            <div class="p-4 border-t border-gray-100 bg-gray-50">
+                <button onclick="handleLogout()" class="w-full flex items-center space-x-3 text-red-600 p-2 rounded-lg hover:bg-red-50 font-medium transition">
+                    <i class="fas fa-sign-out-alt w-6 text-center"></i>
+                    <span>Keluar (Logout)</span>
+                </button>
+            </div>
+        </aside>
 
-            <!-- Sidebar -->
-            <div id="sidebar" class="sidebar">
-                <div class="sidebar-header">
-                    <div style="font-size:50px;">🕌</div>
-                    <h2>HARUM</h2>
-                    <p>Himpunan Alumni Roudlotul Ulum</p>
-                    <div id="user-info-sidebar" style="margin-top:10px;font-size:14px;"></div>
+        <main class="flex-1 overflow-y-auto p-4" id="mainContent">
+            
+            <section id="page-dashboard" class="page-view space-y-4">
+                <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 rounded-xl text-white shadow-md">
+                    <h2 class="text-xl font-bold">Selamat Datang di HARUM</h2>
+                    <p class="text-xs text-emerald-100 mt-1">Sistem Informasi Real-time Korwil Demak & Sekitarnya.</p>
                 </div>
-                <nav class="sidebar-nav">
-                    <a href="#" onclick="navigateTo('home')"><i class="fas fa-home"></i> Beranda</a>
-                    <a href="#" onclick="navigateTo('pengumuman')"><i class="fas fa-bullhorn"></i> Pengumuman</a>
-                    <a href="#" onclick="navigateTo('artikel')"><i class="fas fa-book"></i> Artikel</a>
-                    <a href="#" onclick="navigateTo('jumat-pahing')"><i class="fas fa-calendar-check"></i> Jumat Pahing</a>
-                    <a href="#" onclick="navigateTo('kas')"><i class="fas fa-money-bill-wave"></i> Uang Kas</a>
-                    <a href="#" onclick="navigateTo('kalender')"><i class="fas fa-calendar-alt"></i> Kalender</a>
-                    <a href="#" onclick="navigateTo('haul')"><i class="fas fa-mosque"></i> Haul Akbar</a>
-                    <a href="#" onclick="navigateTo('donasi-haul')"><i class="fas fa-hand-holding-heart"></i> Donasi Haul</a>
-                    <a href="#" onclick="navigateTo('rombongan')"><i class="fas fa-bus"></i> Rombongan</a>
-                    <a href="#" onclick="navigateTo('kedatangan-nyai')"><i class="fas fa-user-tie"></i> Kedatangan Nyai</a>
-                    <a href="#" onclick="navigateTo('profil')"><i class="fas fa-user-circle"></i> Profil Saya</a>
-                    <div id="admin-menu" style="display:none;">
-                        <hr>
-                        <a href="#" onclick="navigateTo('admin-panel')"><i class="fas fa-cog"></i> Admin Panel</a>
+
+                <div class="grid grid-cols-2 gap-3" id="dashboardGrid">
+                    <div class="bg-white p-3 rounded-xl shadow-xs border border-gray-100 flex flex-col justify-between" onclick="switchPage('kalender')">
+                        <span class="text-xs text-gray-500 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender</span>
+                        <div id="dash-kalender" class="text-sm font-bold text-gray-800 mt-2">Loading...</div>
                     </div>
-                    <hr>
-                    <a href="#" onclick="logoutUser()" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </nav>
-            </div>
-            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+                    <div class="bg-white p-3 rounded-xl shadow-xs border border-gray-100 flex flex-col justify-between" onclick="switchPage('uangkas')">
+                        <span class="text-xs text-gray-500 font-semibold"><i class="fas fa-wallet text-emerald-600 mr-1"></i> Uang Kas</span>
+                        <div id="dash-kas" class="text-lg font-bold text-emerald-600 mt-2">Rp 0</div>
+                    </div>
+                </div>
 
-            <main id="page-content"></main>
-        </div>
+                <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl shadow-xs text-center">
+                    <p class="arabic-text text-xl text-amber-900 mb-2" id="dash-quote-arab">Loading...</p>
+                    <p class="text-xs italic text-gray-600" id="dash-quote-arti">Loading...</p>
+                </div>
+            </section>
+
+            <section id="page-pengumuman" class="page-view hidden">
+                <h2 class="text-xl font-bold mb-4">📢 Pengumuman Terbaru</h2>
+                <div id="list-pengumuman" class="space-y-3"></div>
+            </section>
+
+        </main>
     </div>
 
-    <div id="recaptcha-container"></div>
+    <script type="module">
+        // Import Firebase modules yang dibutuhkan disini
+        // Serta logika untuk Firebase Realtime Database v10 SDK
+    </script>
 
     <script>
-        // ===== FIREBASE CONFIG =====
-        const firebaseConfig = {
-    apiKey: "AIzaSyAnVJfyb7qvZekQ6rxvWF6Jj4rMdmXb-UV",
-    authDomain: "harum-app.firebaseapp.com",
-    databaseURL: "https://harum-app-default-rtdb.firebaseio.com",
-    projectId: "harum-app",
-    storageBucket: "harum-app.firebasestorage.app",
-    messagingSenderId: "962611577620",
-    appId: "1:962611577620:web:ead2e21e23541af01ab881"
-};
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-
-        // ===== HELPER FUNCTIONS =====
-        function formatDate(ts) {
-            if (!ts) return '-';
-            return new Date(ts).toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' });
-        }
-        function formatCurrency(n) {
-            return new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', minimumFractionDigits:0 }).format(n);
-        }
-        function showToast(msg, type='info') {
-            const colors = { success:'#4caf50', error:'#f44336', info:'#2196f3' };
-            const t = document.createElement('div');
-            t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:'+colors[type]+';color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:999;max-width:90%;text-align:center';
-            t.textContent = msg;
-            document.body.appendChild(t);
-            setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 3000);
-        }
-
-        // ===== AUTH =====
-        let currentUser = null, currentUserData = null, isAdmin = false;
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                currentUser = user;
-                database.ref('anggota/' + user.phoneNumber).on('value', snap => {
-                    const data = snap.val();
-                    if (data) {
-                        currentUserData = data;
-                        isAdmin = data.role === 'admin';
-                        document.getElementById('user-info-sidebar').innerHTML = data.nama + ' (' + (isAdmin ? 'Admin' : 'Anggota') + ')';
-                        document.getElementById('admin-menu').style.display = isAdmin ? 'block' : 'none';
-                    }
-                });
-                showMainApp();
-            } else {
-                showLoginPage();
-            }
-        });
-
-        function showLoginPage() {
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('loading-screen').style.display = 'none';
-            let container = document.querySelector('.login-container');
-            if (!container) {
-                container = document.createElement('div');
-                container.className = 'login-container';
-                container.id = 'login-container';
-                document.body.appendChild(container);
-            }
-            container.innerHTML = `
-                <div class="login-card">
-                    <div class="login-logo"><div style="font-size:60px;">🕌</div><h1>HARUM</h1><p>Himpunan Alumni Roudlotul Ulum</p></div>
-                    <form id="login-form">
-                        <div id="step-1">
-                            <div class="form-group">
-                                <label>Nomor HP</label>
-                                <div class="input-group">
-                                    <span class="prefix">+62</span>
-                                    <input type="tel" id="phone-input" placeholder="81234567890" required>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary" id="send-otp-btn">Kirim OTP</button>
-                        </div>
-                        <div id="step-2" style="display:none;">
-                            <div class="form-group">
-                                <label>Kode OTP</label>
-                                <input type="text" id="otp-input" placeholder="123456" maxlength="6" required>
-                                <p class="otp-hint">Kode telah dikirim ke +62 <span id="otp-phone"></span></p>
-                            </div>
-                            <button type="submit" class="btn btn-primary" id="verify-otp-btn">Verifikasi</button>
-                            <div class="back-link" onclick="goBackToPhone()">← Kembali</div>
-                        </div>
-                    </form>
-                </div>
-            `;
-            document.getElementById('login-form').addEventListener('submit', handleLogin);
-        }
-
-        function showMainApp() {
-            const login = document.getElementById('login-container');
-            if (login) login.remove();
-            document.getElementById('main-content').style.display = 'block';
-            document.getElementById('loading-screen').style.display = 'none';
-            navigateTo('home');
-            startClock();
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const step1 = document.getElementById('step-1'), step2 = document.getElementById('step-2');
-            const phone = document.getElementById('phone-input'), otp = document.getElementById('otp-input');
-            const sendBtn = document.getElementById('send-otp-btn'), verifyBtn = document.getElementById('verify-otp-btn');
-
-            if (step1.style.display !== 'none') {
-                const p = phone.value.trim();
-                if (!p || p.length < 10) { showToast('Masukkan nomor HP valid', 'error'); return; }
-                sendBtn.disabled = true; sendBtn.textContent = 'Mengirim...';
-                const appVerifier = new firebase.auth.RecaptchaVerifier('send-otp-btn', { size:'invisible' });
-                auth.signInWithPhoneNumber('+62'+p, appVerifier)
-                    .then(cr => {
-                        window.confirmationResult = cr;
-                        step1.style.display = 'none'; step2.style.display = 'block';
-                        document.getElementById('otp-phone').textContent = p;
-                        showToast('Kode OTP telah dikirim', 'success');
-                        sendBtn.disabled = false; sendBtn.textContent = 'Kirim OTP';
-                        otp.focus();
-                    })
-                    .catch(err => { showToast(err.message, 'error'); sendBtn.disabled = false; sendBtn.textContent = 'Kirim OTP'; });
-            } else {
-                const code = otp.value.trim();
-                if (!code || code.length < 6) { showToast('Masukkan kode OTP', 'error'); return; }
-                verifyBtn.disabled = true; verifyBtn.textContent = 'Memverifikasi...';
-                window.confirmationResult.confirm(code)
-                    .then(() => { showToast('Login berhasil!', 'success'); })
-                    .catch(err => { showToast('Kode OTP tidak valid', 'error'); verifyBtn.disabled = false; verifyBtn.textContent = 'Verifikasi'; });
-            }
-        }
-
-        function goBackToPhone() {
-            document.getElementById('step-1').style.display = 'block';
-            document.getElementById('step-2').style.display = 'none';
-        }
-
-        function logoutUser() {
-            if (confirm('Yakin logout?')) {
-                auth.signOut().then(() => { showToast('Logout berhasil', 'success'); closeSidebar(); });
-            }
-        }
-
-        // ===== SIDEBAR =====
-        document.getElementById('menu-toggle').addEventListener('click', toggleSidebar);
-        document.getElementById('sidebar-overlay').addEventListener('click', closeSidebar);
+        // Logika Interaksi Sidebar & Navigasi Antar-Halaman
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
 
         function toggleSidebar() {
-            const s = document.getElementById('sidebar'), o = document.getElementById('sidebar-overlay');
-            s.classList.toggle('open'); o.classList.toggle('active');
-        }
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('sidebar-overlay').classList.remove('active');
-        }
-
-        // ===== CLOCK =====
-        function startClock() {
-            function update() {
-                document.getElementById('time-display').textContent = new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
-            }
-            update(); setInterval(update, 1000);
-        }
-
-        // ===== NAVIGATION =====
-        function navigateTo(page) {
-            if (!currentUser) { showLoginPage(); return; }
-            if (page === 'admin-panel' && !isAdmin) { showToast('Akses ditolak', 'error'); return; }
-            closeSidebar();
-            const content = document.getElementById('page-content');
-            content.innerHTML = '';
-
-            switch(page) {
-                case 'home': loadDashboard(content); break;
-                case 'pengumuman': loadPengumuman(content); break;
-                case 'artikel': loadArtikel(content); break;
-                case 'jumat-pahing': loadJumatPahing(content); break;
-                case 'kas': loadKas(content); break;
-                case 'kalender': loadKalender(content); break;
-                case 'haul': loadHaul(content); break;
-                case 'donasi-haul': loadDonasiHaul(content); break;
-                case 'rombongan': loadRombongan(content); break;
-                case 'kedatangan-nyai': loadKedatanganNyai(content); break;
-                case 'profil': loadProfil(content); break;
-                case 'admin-panel': loadAdminPanel(content); break;
-                default: loadDashboard(content);
-            }
-
-            document.querySelectorAll('.sidebar-nav a').forEach(l => l.classList.remove('active'));
-        }
-
-        // ===== DASHBOARD =====
-        function loadDashboard(c) {
-            c.innerHTML = '<div class="page-title">🏠 Beranda</div><div class="card-grid" id="dash-cards"></div>';
-            const cards = [
-                { id:'pengumuman', icon:'📢', title:'Pengumuman', page:'pengumuman', color:'#FF6B6B' },
-                { id:'artikel', icon:'📖', title:'Artikel', page:'artikel', color:'#4ECDC4' },
-                { id:'jumat-pahing', icon:'📅', title:'Jumat Pahing', page:'jumat-pahing', color:'#45B7D1' },
-                { id:'kas', icon:'💰', title:'Uang Kas', page:'kas', color:'#96CEB4' },
-                { id:'haul', icon:'🕌', title:'Haul Akbar', page:'haul', color:'#DDA0DD' },
-                { id:'donasi', icon:'🤲', title:'Donasi Haul', page:'donasi-haul', color:'#F7DC6F' },
-                { id:'rombongan', icon:'🚌', title:'Rombongan', page:'rombongan', color:'#85C1E9' },
-                { id:'nyai', icon:'👩', title:'Kedatangan Nyai', page:'kedatangan-nyai', color:'#F1948A' }
-            ];
-            const container = document.getElementById('dash-cards');
-            cards.forEach(card => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.style.borderLeftColor = card.color;
-                div.innerHTML = `<div class="card-title">${card.icon} ${card.title}</div><div class="card-value" id="dash-${card.id}">Loading...</div>`;
-                div.onclick = () => navigateTo(card.page);
-                container.appendChild(div);
-            });
-
-            // Real-time updates
-            database.ref('pengumuman').on('value', s => {
-                const data = s.val();
-                const items = data ? Object.values(data) : [];
-                document.getElementById('dash-pengumuman').textContent = items.length > 0 ? items[0]?.judul || 'Ada' : 'Tidak ada';
-            });
-            database.ref('artikel').on('value', s => {
-                const data = s.val();
-                const items = data ? Object.values(data) : [];
-                document.getElementById('dash-artikel').textContent = items.length > 0 ? items[0]?.judul || 'Ada' : 'Tidak ada';
-            });
-            database.ref('iuran_jumat_pahing').on('value', s => {
-                const data = s.val();
-                const items = data ? Object.values(data) : [];
-                const total = items.reduce((sum, i) => sum + (i.nominal || 0), 0);
-                document.getElementById('dash-jumat-pahing').textContent = items.length + ' anggota - ' + formatCurrency(total);
-            });
-            database.ref('kas/transaksi').on('value', s => {
-                const data = s.val();
-                const items = data ? Object.values(data) : [];
-                const total = items.reduce((sum, t) => sum + (t.jenis === 'masuk' ? t.nominal : -t.nominal), 0);
-                document.getElementById('dash-kas').textContent = formatCurrency(total);
-            });
-            database.ref('haul/donasi').on('value', s => {
-                const data = s.val();
-                const items = data ? Object.values(data) : [];
-                const total = items.reduce((sum, d) => sum + (d.nominal || 0), 0);
-                document.getElementById('dash-donasi').textContent = formatCurrency(total);
-            });
-            database.ref('rombongan_malang').on('value', s => {
-                const data = s.val();
-                const items = data ? Object.values(data) : [];
-                document.getElementById('dash-rombongan').textContent = items.length + ' peserta';
-            });
-            database.ref('kedatangan_nyai').on('value', s => {
-                const data = s.val();
-                const items = data ? Object.values(data) : [];
-                document.getElementById('dash-nyai').textContent = items.length + ' terdaftar';
-            });
-        }
-
-        // ===== KALENDER =====
-        function loadKalender(c) {
-            const now = new Date();
-            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-            const pasarans = ['Legi','Pahing','Pon','Wage','Kliwon'];
-            const dayName = days[now.getDay()];
-            const pasaran = pasarans[Math.floor(now.getTime()/(1000*60*60*24)) % 5];
-            c.innerHTML = `
-                <div class="page-title">📆 Kalender</div>
-                <div class="card" style="border-left-color:#FF6B6B;cursor:default;text-align:center;padding:30px;">
-                    <div style="font-size:48px;">📅</div>
-                    <div style="font-size:28px;font-weight:bold;color:#1a237e;">${dayName} ${pasaran}</div>
-                    <div style="font-size:18px;margin:10px 0;">${now.toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' })} M</div>
-                </div>
-            `;
-        }
-
-        // ===== PROFIL =====
-        function loadProfil(c) {
-            c.innerHTML = `
-                <div class="page-title">👤 Profil Saya</div>
-                <div class="card" style="border-left-color:#1a237e;cursor:default;text-align:center;padding:30px;">
-                    <div style="font-size:64px;">👤</div>
-                    <div style="font-size:22px;font-weight:bold;color:#1a237e;">${currentUserData?.nama || 'Anggota'}</div>
-                    <div style="font-size:14px;color:#757575;">${currentUser?.phoneNumber || 'Tidak ada'}</div>
-                    <div style="font-size:14px;color:#757575;">${currentUserData?.role === 'admin' ? '👑 Admin' : '👤 Anggota'}</div>
-                </div>
-            `;
-        }
-
-        // ===== PENGUMUMAN =====
-        function loadPengumuman(c) {
-            c.innerHTML = `<div class="page-title">📢 Pengumuman</div><div id="pengumuman-list" class="data-list"></div>`;
-            database.ref('pengumuman').orderByChild('tanggal').limitToLast(50).on('value', s => {
-                const data = s.val();
-                const list = document.getElementById('pengumuman-list');
-                if (!data) { list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Belum ada pengumuman</p>'; return; }
-                const items = Object.keys(data).map(k => ({id:k, ...data[k]})).sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-                list.innerHTML = items.map(item => `
-                    <div class="data-item">
-                        <div class="title">${item.judul || 'Pengumuman'}</div>
-                        <div class="meta">${formatDate(item.tanggal)} - ${item.isi || ''}</div>
-                    </div>
-                `).join('');
-            });
-        }
-
-        // ===== ARTIKEL =====
-        function loadArtikel(c) {
-            c.innerHTML = `<div class="page-title">📖 Artikel</div><div id="artikel-list" class="data-list"></div>`;
-            database.ref('artikel').orderByChild('tanggal').on('value', s => {
-                const data = s.val();
-                const list = document.getElementById('artikel-list');
-                if (!data) { list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Belum ada artikel</p>'; return; }
-                const items = Object.keys(data).map(k => ({id:k, ...data[k]})).sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-                list.innerHTML = items.map(item => `
-                    <div class="data-item">
-                        <div class="title">${item.judul || 'Artikel'}</div>
-                        <div class="meta">${formatDate(item.tanggal)} ${item.kategori ? '🏷️ '+item.kategori : ''}</div>
-                        <div style="margin-top:4px;font-size:14px;color:#757575;">${(item.konten || item.isi || '').substring(0,100)}${(item.konten || item.isi || '').length > 100 ? '...' : ''}</div>
-                    </div>
-                `).join('');
-            });
-        }
-
-        // ===== JUMAT PAHING =====
-        function loadJumatPahing(c) {
-            c.innerHTML = `<div class="page-title">📅 Jumat Pahing</div><div id="iuran-list" class="data-list"></div>`;
-            database.ref('iuran_jumat_pahing').on('value', s => {
-                const data = s.val();
-                const list = document.getElementById('iuran-list');
-                if (!data) { list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Belum ada data</p>'; return; }
-                const items = Object.keys(data).map(k => ({id:k, ...data[k]}));
-                const total = items.reduce((sum, i) => sum + (i.nominal || 0), 0);
-                const lunas = items.filter(i => i.status === 'lunas').length;
-                list.innerHTML = `
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;">
-                        <div style="background:#e8f5e9;padding:12px;border-radius:8px;text-align:center;">
-                            <div style="font-size:12px;color:#757575;">Total Iuran</div>
-                            <div style="font-size:20px;font-weight:bold;">${formatCurrency(total)}</div>
-                        </div>
-                        <div style="background:#e3f2fd;padding:12px;border-radius:8px;text-align:center;">
-                            <div style="font-size:12px;color:#757575;">Anggota Aktif</div>
-                            <div style="font-size:20px;font-weight:bold;">${lunas}/${items.length}</div>
-                        </div>
-                    </div>
-                    ${items.map(item => `
-                        <div class="data-item">
-                            <div class="title">${item.nama || 'Anggota'}</div>
-                            <div class="meta">${formatDate(item.tanggal)} - ${formatCurrency(item.nominal)} <span class="badge ${item.status === 'lunas' ? 'badge-success' : 'badge-warning'}">${item.status || 'belum'}</span></div>
-                        </div>
-                    `).join('')}
-                `;
-            });
-        }
-
-        // ===== KAS =====
-        function loadKas(c) {
-            c.innerHTML = `<div class="page-title">💰 Uang Kas</div><div id="kas-list" class="data-list"></div>`;
-            database.ref('kas/transaksi').on('value', s => {
-                const data = s.val();
-                const list = document.getElementById('kas-list');
-                if (!data) { list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Belum ada transaksi</p>'; return; }
-                const items = Object.keys(data).map(k => ({id:k, ...data[k]}));
-                const total = items.reduce((sum, t) => sum + (t.jenis === 'masuk' ? t.nominal : -t.nominal), 0);
-                const masuk = items.filter(t => t.jenis === 'masuk').reduce((sum, t) => sum + t.nominal, 0);
-                const keluar = items.filter(t => t.jenis === 'keluar').reduce((sum, t) => sum + t.nominal, 0);
-                list.innerHTML = `
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:16px;">
-                        <div style="background:#e8f5e9;padding:12px;border-radius:8px;text-align:center;">
-                            <div style="font-size:12px;color:#757575;">Saldo</div>
-                            <div style="font-size:18px;font-weight:bold;color:${total >= 0 ? '#4CAF50' : '#f44336'}">${formatCurrency(total)}</div>
-                        </div>
-                        <div style="background:#e3f2fd;padding:12px;border-radius:8px;text-align:center;">
-                            <div style="font-size:12px;color:#757575;">Pemasukan</div>
-                            <div style="font-size:16px;font-weight:bold;color:#4CAF50;">${formatCurrency(masuk)}</div>
-                        </div>
-                        <div style="background:#ffebee;padding:12px;border-radius:8px;text-align:center;">
-                            <div style="font-size:12px;color:#757575;">Pengeluaran</div>
-                            <div style="font-size:16px;font-weight:bold;color:#f44336;">${formatCurrency(keluar)}</div>
-                        </div>
-                    </div>
-                    ${items.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)).map(item => `
-                        <div class="data-item" style="display:flex;justify-content:space-between;">
-                            <div><div class="title">${item.keterangan || 'Transaksi'}</div><div class="meta">${formatDate(item.tanggal)} <span class="badge ${item.jenis === 'masuk' ? 'badge-success' : 'badge-warning'}">${item.jenis}</span></div></div>
-                            <div style="font-weight:bold;color:${item.jenis === 'masuk' ? '#4CAF50' : '#f44336'}">${item.jenis === 'masuk' ? '+' : '-'} ${formatCurrency(item.nominal)}</div>
-                        </div>
-                    `).join('')}
-                `;
-            });
-        }
-
-        // ===== HAUL =====
-        function loadHaul(c) {
-            c.innerHTML = `<div class="page-title">🕌 Haul Akbar</div><div id="haul-content" class="card" style="border-left-color:#FF6B6B;cursor:default;padding:20px;text-align:center;"><p style="color:#757575;">Loading...</p></div>`;
-            database.ref('haul/info_acara').on('value', s => {
-                const data = s.val();
-                const el = document.getElementById('haul-content');
-                if (!data) { el.innerHTML = '<p style="color:#757575;">Belum ada info haul</p>'; return; }
-                el.innerHTML = `<h3 style="color:#1a237e;">${data.judul || 'Haul Akbar'}</h3><p>${data.deskripsi || ''}</p>${data.tanggal ? '<p>📅 '+formatDate(data.tanggal)+'</p>' : ''}${data.tempat ? '<p>📍 '+data.tempat+'</p>' : ''}`;
-            });
-        }
-
-        // ===== DONASI HAUL =====
-        function loadDonasiHaul(c) {
-            c.innerHTML = `
-                <div class="page-title">🤲 Donasi Haul</div>
-                <div class="form-container">
-                    <h3>Donasi Sekarang</h3>
-                    <form id="donasi-form">
-                        <div class="form-group"><label>Nama Donatur</label><input type="text" id="donasi-nama" required></div>
-                        <div class="form-group"><label>Nominal (Rp)</label><input type="number" id="donasi-nominal" required min="1000"></div>
-                        <button type="submit" class="btn btn-success">Kirim Donasi</button>
-                    </form>
-                </div>
-                <div id="donasi-list" class="data-list"></div>
-            `;
-            document.getElementById('donasi-form').addEventListener('submit', e => {
-                e.preventDefault();
-                const nama = document.getElementById('donasi-nama').value;
-                const nominal = parseInt(document.getElementById('donasi-nominal').value);
-                if (!nama || !nominal || nominal < 1000) { showToast('Isi data dengan benar', 'error'); return; }
-                const btn = e.target.querySelector('button');
-                btn.disabled = true; btn.textContent = 'Mengirim...';
-                database.ref('haul/donasi').push({ nama, nominal, tanggal: new Date().toISOString() })
-                    .then(() => { showToast('Donasi berhasil! 🙏', 'success'); document.getElementById('donasi-form').reset(); btn.disabled = false; btn.textContent = 'Kirim Donasi'; })
-                    .catch(err => { showToast('Error: '+err.message, 'error'); btn.disabled = false; btn.textContent = 'Kirim Donasi'; });
-            });
-            database.ref('haul/donasi').orderByChild('tanggal').limitToLast(50).on('value', s => {
-                const data = s.val();
-                const list = document.getElementById('donasi-list');
-                if (!data) { list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Belum ada donasi</p>'; return; }
-                const items = Object.keys(data).map(k => ({id:k, ...data[k]})).sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-                const total = items.reduce((sum, i) => sum + i.nominal, 0);
-                list.innerHTML = `<div style="padding:12px 20px;background:#e8f5e9;font-weight:bold;">Total: ${formatCurrency(total)}</div>${items.map(item => `<div class="data-item" style="display:flex;justify-content:space-between;"><div><div class="title">${item.nama}</div><div class="meta">${formatDate(item.tanggal)}</div></div><div style="font-weight:bold;color:#4CAF50;">${formatCurrency(item.nominal)}</div></div>`).join('')}`;
-            });
-        }
-
-        // ===== ROMBONGAN =====
-        function loadRombongan(c) {
-            c.innerHTML = `
-                <div class="page-title">🚌 Rombongan Malang</div>
-                <div class="form-container">
-                    <h3>Daftar Rombongan</h3>
-                    <form id="rombongan-form">
-                        <div class="form-group"><label>Nama</label><input type="text" id="rombongan-nama" required></div>
-                        <div class="form-group"><label>Nomor HP</label><input type="tel" id="rombongan-hp" required></div>
-                        <button type="submit" class="btn btn-primary">Daftar</button>
-                    </form>
-                </div>
-                <div id="rombongan-list" class="data-list"></div>
-            `;
-            document.getElementById('rombongan-form').addEventListener('submit', e => {
-                e.preventDefault();
-                const nama = document.getElementById('rombongan-nama').value;
-                const hp = document.getElementById('rombongan-hp').value;
-                database.ref('rombongan_malang').push({ nama, hp, status_konfirmasi:'menunggu', tanggal_daftar: new Date().toISOString() })
-                    .then(() => { showToast('Pendaftaran berhasil!', 'success'); document.getElementById('rombongan-form').reset(); })
-                    .catch(err => showToast('Error: '+err.message, 'error'));
-            });
-            database.ref('rombongan_malang').on('value', s => {
-                const data = s.val();
-                const list = document.getElementById('rombongan-list');
-                if (!data) { list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Belum ada peserta</p>'; return; }
-                const items = Object.keys(data).map(k => ({id:k, ...data[k]}));
-                list.innerHTML = items.map(item => `
-                    <div class="data-item" style="display:flex;justify-content:space-between;">
-                        <div><div class="title">${item.nama}</div><div class="meta">${item.hp} <span class="badge ${item.status_konfirmasi === 'confirmed' ? 'badge-success' : 'badge-warning'}">${item.status_konfirmasi || 'menunggu'}</span></div></div>
-                    </div>
-                `).join('');
-            });
-        }
-
-        // ===== KEDATANGAN NYAI =====
-        function loadKedatanganNyai(c) {
-            c.innerHTML = `
-                <div class="page-title">👩 Kedatangan Nyai</div>
-                <div class="form-container">
-                    <h3>Daftar Acara</h3>
-                    <form id="nyai-form">
-                        <div class="form-group"><label>Nama</label><input type="text" id="nyai-nama" required></div>
-                        <div class="form-group"><label>Nomor HP</label><input type="tel" id="nyai-hp" required></div>
-                        <button type="submit" class="btn btn-primary">Daftar</button>
-                    </form>
-                </div>
-                <div id="nyai-list" class="data-list"></div>
-            `;
-            document.getElementById('nyai-form').addEventListener('submit', e => {
-                e.preventDefault();
-                const nama = document.getElementById('nyai-nama').value;
-                const hp = document.getElementById('nyai-hp').value;
-                database.ref('kedatangan_nyai').push({ nama, hp, status_konfirmasi:'menunggu', tanggal_daftar: new Date().toISOString() })
-                    .then(() => { showToast('Pendaftaran berhasil!', 'success'); document.getElementById('nyai-form').reset(); })
-                    .catch(err => showToast('Error: '+err.message, 'error'));
-            });
-            database.ref('kedatangan_nyai').on('value', s => {
-                const data = s.val();
-                const list = document.getElementById('nyai-list');
-                if (!data) { list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Belum ada pendaftar</p>'; return; }
-                const items = Object.keys(data).map(k => ({id:k, ...data[k]}));
-                list.innerHTML = items.map(item => `
-                    <div class="data-item" style="display:flex;justify-content:space-between;">
-                        <div><div class="title">${item.nama}</div><div class="meta">${item.hp} <span class="badge ${item.status_konfirmasi === 'confirmed' ? 'badge-success' : 'badge-warning'}">${item.status_konfirmasi || 'menunggu'}</span></div></div>
-                    </div>
-                `).join('');
-            });
-        }
-
-        // ===== ADMIN PANEL =====
-        function loadAdminPanel(c) {
-            if (!isAdmin) {
-                c.innerHTML = '<div style="text-align:center;padding:40px;"><div style="font-size:64px;">🚫</div><h2 style="color:#f44336;">Akses Ditolak</h2></div>';
-                return;
-            }
-            c.innerHTML = `
-                <div class="page-title">⚙️ Admin Panel</div>
-                <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:16px;">
-                    ${['pengumuman','artikel','iuran','transaksi','donasi','rombongan','nyai'].map(tab => `<button class="btn btn-primary btn-sm" onclick="switchTab('${tab}')" style="padding:8px 16px;font-size:13px;width:auto;flex-shrink:0;">${tab.charAt(0).toUpperCase()+tab.slice(1)}</button>`).join('')}
-                </div>
-                <div id="admin-content"></div>
-            `;
-            window.adminTab = 'pengumuman';
-            loadAdminData('pengumuman');
-        }
-
-        window.adminData = [];
-
-        function switchTab(tab) {
-            window.adminTab = tab;
-            loadAdminData(tab);
-        }
-
-        function loadAdminData(tab) {
-            const refs = { pengumuman:'pengumuman', artikel:'artikel', iuran:'iuran_jumat_pahing', transaksi:'kas/transaksi', donasi:'haul/donasi', rombongan:'rombongan_malang', nyai:'kedatangan_nyai' };
-            const container = document.getElementById('admin-content');
-            container.innerHTML = `
-                <div style="display:flex;gap:12px;margin-bottom:16px;">
-                    <button class="btn btn-success btn-sm" onclick="showAddForm()" style="padding:8px 16px;font-size:13px;width:auto;">+ Tambah</button>
-                </div>
-                <div id="admin-list" class="data-list"><p style="padding:20px;text-align:center;color:#757575;">Loading...</p></div>
-            `;
-            database.ref(refs[tab]).on('value', s => {
-                const data = s.val();
-                window.adminData = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
-                renderAdminList(tab);
-            });
-        }
-
-        function renderAdminList(tab) {
-            const list = document.getElementById('admin-list');
-            if (!list) return;
-            if (window.adminData.length === 0) {
-                list.innerHTML = '<p style="padding:20px;text-align:center;color:#757575;">Tidak ada data</p>';
-                return;
-            }
-            list.innerHTML = window.adminData.map(item => `
-                <div class="data-item" style="display:flex;justify-content:space-between;align-items:center;">
-                    <div><div class="title">${item.judul || item.nama || item.keterangan || 'Data'}</div>
-                    <div class="meta">${item.tanggal ? formatDate(item.tanggal) : ''} ${item.nominal ? formatCurrency(item.nominal) : ''}</div></div>
-                    <div style="display:flex;gap:8px;">
-                        <button onclick="editItem('${tab}','${item.id}')" style="padding:4px 10px;border:none;border-radius:4px;background:#e3f2fd;color:#1565c0;cursor:pointer;">✏️</button>
-                        <button onclick="deleteItem('${tab}','${item.id}')" style="padding:4px 10px;border:none;border-radius:4px;background:#ffebee;color:#c62828;cursor:pointer;">🗑️</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function showAddForm() {
-            const container = document.getElementById('admin-content');
-            const form = document.createElement('div');
-            form.className = 'form-container';
-            form.id = 'admin-form';
-            form.innerHTML = `
-                <h3>Tambah Data</h3>
-                <form id="admin-form-fields">
-                    <div class="form-group"><label>Judul</label><input type="text" id="form-judul" required></div>
-                    <div class="form-group"><label>Konten</label><textarea id="form-konten" rows="3"></textarea></div>
-                    <div class="form-actions" style="display:flex;gap:12px;">
-                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('admin-form').remove()" style="width:auto;padding:10px 20px;">Batal</button>
-                        <button type="submit" class="btn btn-success" style="width:auto;padding:10px 20px;">Simpan</button>
-                    </div>
-                </form>
-            `;
-            const list = document.getElementById('admin-list');
-            container.insertBefore(form, list);
-            document.getElementById('admin-form-fields').addEventListener('submit', handleAdminSubmit);
-            window.editingId = null;
-        }
-
-        window.editingId = null;
-
-        function editItem(tab, id) {
-            window.editingId = id;
-            const item = window.adminData.find(d => d.id === id);
-            if (!item) return;
-            showAddForm();
-            document.getElementById('form-judul').value = item.judul || item.nama || '';
-            document.getElementById('form-konten').value = item.isi || item.konten || '';
-            document.querySelector('#admin-form h3').textContent = 'Edit Data';
-        }
-
-        function handleAdminSubmit(e) {
-            e.preventDefault();
-            const refs = { pengumuman:'pengumuman', artikel:'artikel', iuran:'iuran_jumat_pahing', transaksi:'kas/transaksi', donasi:'haul/donasi', rombongan:'rombongan_malang', nyai:'kedatangan_nyai' };
-            const data = {
-                judul: document.getElementById('form-judul').value,
-                isi: document.getElementById('form-konten').value,
-                tanggal: new Date().toISOString()
-            };
-            const ref = database.ref(refs[window.adminTab]);
-            const btn = e.target.querySelector('button[type="submit"]');
-            btn.disabled = true; btn.textContent = 'Menyimpan...';
-            if (window.editingId) {
-                ref.child(window.editingId).update(data)
-                    .then(() => { showToast('Data diupdate', 'success'); document.getElementById('admin-form').remove(); btn.disabled = false; btn.textContent = 'Simpan'; window.editingId = null; })
-                    .catch(err => { showToast('Error: '+err.message, 'error'); btn.disabled = false; btn.textContent = 'Simpan'; });
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            if (isOpen) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                overlay.classList.remove('opacity-100');
             } else {
-                ref.push(data)
-                    .then(() => { showToast('Data ditambahkan', 'success'); document.getElementById('admin-form').remove(); btn.disabled = false; btn.textContent = 'Simpan'; })
-                    .catch(err => { showToast('Error: '+err.message, 'error'); btn.disabled = false; btn.textContent = 'Simpan'; });
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
             }
         }
 
-        function deleteItem(tab, id) {
-            if (!confirm('Hapus data ini?')) return;
-            const refs = { pengumuman:'pengumuman', artikel:'artikel', iuran:'iuran_jumat_pahing', transaksi:'kas/transaksi', donasi:'haul/donasi', rombongan:'rombongan_malang', nyai:'kedatangan_nyai' };
-            database.ref(refs[tab]).child(id).remove()
-                .then(() => showToast('Data dihapus', 'success'))
-                .catch(err => showToast('Error: '+err.message, 'error'));
+        menuBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Data List Menu Sidebar
+        const menus = [
+            { id: 'dashboard', label: 'Beranda', icon: 'fa-home' },
+            { id: 'pengumuman', label: 'Pengumuman', icon: 'fa-bullhorn' },
+            { id: 'artikel', label: 'Buku Artikel/Blog', icon: 'fa-book-open' },
+            { id: 'jumatpahing', label: 'Jumat Pahing', icon: 'fa-calendar-check' },
+            { id: 'uangkas', label: 'Uang Kas', icon: 'fa-wallet' },
+            { id: 'kalender', label: 'Kalender', icon: 'fa-calendar-alt' },
+            { id: 'haul', label: 'Haul Akbar', icon: 'fa-mosque' },
+            { id: 'donasi', label: 'Donasi Haul', icon: 'fa-hands-helping' },
+            { id: 'rombongan', label: 'Rombongan Malang', icon: 'fa-bus' },
+            { id: 'nyai', label: 'Kedatangan Nyai', icon: 'fa-user-grace' },
+            { id: 'profil', label: 'Profil Saya', icon: 'fa-user' },
+            { id: 'admin', label: 'Admin Panel', icon: 'fa-cog', adminOnly: true }
+        ];
+
+        // Render Menu ke Sidebar
+        const navMenu = document.getElementById('navMenu');
+        menus.forEach(m => {
+            const btn = document.createElement('button');
+            btn.className = `w-full flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition font-medium text-sm text-left`;
+            btn.onclick = () => { switchPage(m.id); toggleSidebar(); };
+            btn.innerHTML = `<i class="fas ${m.icon} w-6 text-center text-emerald-600"></i> <span>${m.label}</span>`;
+            navMenu.appendChild(btn);
+        });
+
+        // Handler Pindah Halaman Berbasis SPA
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+            const activePage = document.getElementById(`page-${pageId}`);
+            if(activePage) activePage.classList.remove('hidden');
         }
 
-        // Start app
-        console.log('HARUM App Loaded ✅');
+        // Digital Clock Real-time
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('digitalClock').innerText = now.toLocaleTimeString('id-ID');
+        }, 1000);
     </script>
 </body>
 </html>
