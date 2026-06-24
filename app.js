@@ -107,7 +107,11 @@ function handleLoginWindow() {
                     badge.innerText = role;
                     badge.className = `badge badge-${role.toLowerCase()}`;
                 }
-                alert(`Selamat datang! Anda berhasil masuk sebagai ${role}.`);
+                alert(`Selamat datang! Anda berhasil masuk sebagai ${role}.`);// Jika yang login terdeteksi sebagai Admin, buka panel kendalinya
+if (role === "Admin") {
+    document.getElementById("admin-panel").style.display = "block";
+}
+
             } else {
                 // Jika nomor HP tidak terdaftar di cabang 'users' Firebase
                 if (badge) {
