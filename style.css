@@ -123,4 +123,13 @@ body {
     font-style: italic;
     color: #999;
 }
+/* Gaya Khusus Tulisan Arab di Blog Sabilunnajah */
+.text-arab-mode {
+    font-family: 'Amiri', 'Traditional Arabic', serif !important;
+    direction: rtl !important;      /* Mengubah arah ketikan dari Kanan ke Kiri */
+    text-align: right !important;   /* Meratakan teks ke sebelah kanan */
+    font-size: 1.45rem !important;  /* Ukuran font Arab dibuat sedikit lebih besar agar harakatnya terlihat jelas */
+    line-height: 2 !important;      /* Jarak antar baris longgar agar tidak menumpuk */
+}
+
 
