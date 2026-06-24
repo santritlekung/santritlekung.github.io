@@ -37,6 +37,41 @@
             </section>
         </div>
     </main>
+    <!-- Panel Input Admin (Awalnya Tersembunyi) -->
+    <div id="admin-panel" style="display: none; padding: 15px; margin-top: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <h2 style="font-size: 1.1rem; margin-bottom: 15px; color: #0b5e32; border-bottom: 2px solid #f0f2f5; padding-bottom: 5px;">Panel Kendali Admin</h2>
+        
+        <!-- Dropdown Pilih Fitur -->
+        <label style="font-size: 0.85rem; font-weight: bold;">Pilih Yang Ingin Diubah:</label>
+        <select id="admin-action" onchange="toggleAdminForm()" style="width: 100%; padding: 8px; margin: 5px 0 15px; border-radius: 5px; border: 1px solid #ccc;">
+            <option value="kas">Update Uang Kas / Keuangan</option>
+            <option value="member">Tambah Member / User Baru</option>
+            <option value="agenda">Tambah Agenda / Kalender</option>
+        </select>
+
+        <!-- Form Ubah Kas -->
+        <div id="form-kas">
+            <input type="number" id="input-kas-nominal" placeholder="Masukkan total kas baru (Angka saja)" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+            <button onclick="saveKasAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Simpan Nominal Kas</button>
+        </div>
+
+        <!-- Form Tambah Member -->
+        <div id="form-member" style="display: none;">
+            <input type="text" id="input-member-hp" placeholder="Nomor HP Baru (Contoh: 081234567)" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+            <select id="input-member-role" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                <option value="Admin">Admin</option>
+                <option value="User">User Biasa</option>
+            </select>
+            <button onclick="saveMemberAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Daftarkan Member</button>
+        </div>
+
+        <!-- Form Tambah Agenda -->
+        <div id="form-agenda" style="display: none;">
+            <input type="text" id="input-agenda-teks" placeholder="Contoh: 28 Juni - Rapat Rutin Bulanan" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+            <button onclick="saveAgendaAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Tambahkan ke Kalender</button>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
