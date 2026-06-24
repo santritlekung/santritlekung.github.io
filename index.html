@@ -16,29 +16,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased h-screen flex flex-col overflow-hidden">
 
-    <div id="layarLogin" class="fixed inset-0 bg-emerald-900 z-50 flex flex-col justify-center items-center p-6 text-white">
-        <div class="w-full max-w-sm text-center space-y-6">
-            <div class="space-y-2">
-                <img src="logo.jpg" alt="Logo HARUM" class="w-20 h-20 rounded-full mx-auto bg-white object-cover border-2 border-emerald-500" onerror="this.src='https://via.placeholder.com/150'">
-                <h1 class="text-2xl font-bold tracking-wider">Aplikasi HARUM</h1>
-                <p class="text-xs text-emerald-200">Korwil Demak & Sekitarnya</p>
-            </div>
-            
-            <div class="bg-white text-gray-800 p-5 rounded-2xl shadow-xl space-y-4 text-left">
-                <div>
-                    <label class="text-xs font-bold text-gray-400 block mb-1">NOMOR WHATSAPP</label>
-                    <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden">
-                        <span class="bg-gray-100 px-3 py-2.5 text-xs font-semibold text-gray-500">+62</span>
-                        <input type="tel" id="inputNoHP" value="081330386625" class="w-full p-2.5 text-xs focus:outline-none">
-                    </div>
-                </div>
-                <button onclick="prosesLoginDemo()" class="w-full bg-emerald-700 text-white p-3 rounded-xl text-xs font-bold hover:bg-emerald-800 transition shadow">
-                    Masuk (Mode Uji Coba) <i class="fas fa-sign-in-alt ml-1"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <header class="bg-emerald-700 text-white h-16 px-4 flex items-center justify-between shadow-md z-30 shrink-0">
         <div class="flex items-center space-x-3">
             <button id="btnHamburger" onclick="kendaliSidebar()" class="text-2xl p-1 hover:text-emerald-200 transition">
@@ -59,15 +36,9 @@
             <div class="overflow-y-auto flex-1">
                 <div class="p-5 bg-emerald-800 text-white">
                     <h3 class="font-bold text-lg">Menu Navigasi</h3>
-                    <p class="text-xs text-emerald-200" id="userPhoneDisplay">User: -</p>
+                    <p class="text-xs text-emerald-200">Mode Akses: Terbuka & Real-time</p>
                 </div>
                 <nav class="p-2 space-y-1" id="menuKonten"></nav>
-            </div>
-            <div class="p-4 border-t border-gray-100 bg-gray-50">
-                <button onclick="logoutAplikasi()" class="w-full flex items-center space-x-3 text-red-600 p-2 rounded-lg hover:bg-red-50 font-medium transition">
-                    <i class="fas fa-sign-out-alt w-6 text-center"></i>
-                    <span>Keluar (Logout)</span>
-                </button>
             </div>
         </aside>
 
@@ -80,8 +51,8 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('pengumuman')">
-                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-bullhorn text-emerald-600 mr-1"></i> Pengumuman</span>
-                        <div class="text-xs text-gray-700 mt-2 font-medium">Rapat Haul Akbar...</div>
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-bullhorn text-emerald-600 mr-1"></i> Pengumuman Utama</span>
+                        <div class="text-xs text-gray-700 mt-2 font-medium" id="dash-pengumuman">Memuat...</div>
                     </div>
                     <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('kalender')">
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-alt text-emerald-600 mr-1"></i> Kalender</span>
@@ -89,11 +60,11 @@
                     </div>
                     <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('jumatpahing')">
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-calendar-check text-emerald-600 mr-1"></i> Jumat Pahing</span>
-                        <div class="text-xs text-gray-700 mt-2">28 Anggota Aktif</div>
+                        <div class="text-xs text-gray-700 mt-2" id="dash-jumat">Menerima data...</div>
                     </div>
                     <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('uangkas')">
                         <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-wallet text-emerald-600 mr-1"></i> Uang Kas</span>
-                        <div class="text-sm font-bold text-emerald-600 mt-2">Rp 2.450.000</div>
+                        <div class="text-sm font-bold text-emerald-600 mt-2" id="dash-kas">Rp 0</div>
                     </div>
                 </div>
                 <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl text-center shadow-xs">
@@ -104,10 +75,8 @@
 
             <section id="hal-pengumuman" class="menu-halaman hidden space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">📢 Pengumuman Resmi</h2>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
-                    <h3 class="font-bold text-emerald-800 text-sm">Persiapan Haul Akbar Korwil Demak</h3>
-                    <p class="text-[10px] text-gray-400">24 Juni 2026 • Admin</p>
-                    <p class="text-xs text-gray-600 mt-2">Diharapkan seluruh alumni menghadiri rapat koordinasi malam Jumat besok.</p>
+                <div id="box-pengumuman" class="space-y-3">
+                    <p class="text-xs text-gray-400">Memuat pengumuman...</p>
                 </div>
             </section>
 
@@ -120,24 +89,24 @@
             </section>
 
             <section id="hal-jumatpahing" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">📅 Data Jumat Pahing</h2>
+                <h2 class="text-xl font-bold text-gray-800">📅 Data Iuran Jumat Pahing</h2>
                 <div class="bg-white rounded-xl border border-gray-200 overflow-hidden text-xs shadow-xs">
                     <table class="w-full text-left text-gray-600">
                         <thead class="bg-gray-50 border-b border-gray-200 font-bold">
-                            <tr><th class="p-3">Nama</th><th class="p-3">Iuran</th><th class="p-3">Status</th></tr>
+                            <tr><th class="p-3">Nama Anggota</th><th class="p-3">Nominal Iuran</th><th class="p-3">Status</th></tr>
                         </thead>
-                        <tbody>
-                            <tr class="border-b border-gray-100"><td class="p-3">Ahmad Mudhofar</td><td class="p-3">Rp 20.000</td><td class="p-3"><span class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">LUNAS</span></td></tr>
+                        <tbody id="table-jumatpahing">
+                            <tr><td colspan="3" class="p-3 text-center text-gray-400">Memuat data iuran...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             <section id="hal-uangkas" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">💰 Uang Kas</h2>
+                <h2 class="text-xl font-bold text-gray-800">💰 Laporan Saldo Uang Kas</h2>
                 <div class="bg-white p-4 rounded-xl border border-gray-100 text-center shadow-xs">
-                    <p class="text-xs text-gray-400 font-semibold">TOTAL SALDO KAS</p>
-                    <p class="text-2xl font-bold text-emerald-600 mt-1">Rp 2.450.000</p>
+                    <p class="text-xs text-gray-400 font-semibold">TOTAL SALDO AKTIF</p>
+                    <p class="text-2xl font-bold text-emerald-600 mt-1" id="kas-total-besar">Rp 0</p>
                 </div>
             </section>
 
@@ -150,59 +119,143 @@
                 </div>
             </section>
 
-            <section id="hal-haul" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">🕌 Haul Akbar</h2>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs text-sm">
-                    <p class="font-bold text-emerald-700">Haul Syaikhuna Siddiq Abdullah</p>
-                    <p class="text-xs text-gray-600 mt-1">Lokasi: Pondok Pesantren Roudlotul Ulum, Malang.</p>
-                </div>
-            </section>
+            <section id="hal-haul" class="menu-halaman hidden"><h2 class="text-xl font-bold">🕌 Haul Akbar</h2></section>
+            <section id="hal-donasi" class="menu-halaman hidden"><h2 class="text-xl font-bold">🤲 Donasi</h2></section>
+            <section id="hal-rombongan" class="menu-halaman hidden"><h2 class="text-xl font-bold">🚌 Rombongan</h2></section>
+            <section id="hal-nyai" class="menu-halaman hidden"><h2 class="text-xl font-bold">👩 Kedatangan Nyai</h2></section>
+            <section id="hal-profil" class="menu-halaman hidden"><h2 class="text-xl font-bold">👤 Profil</h2></section>
 
-            <section id="hal-donasi" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">🤲 Donasi Haul</h2>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs space-y-3">
-                    <input type="text" placeholder="Nama Donatur" class="w-full p-2 border border-gray-200 rounded-lg text-xs">
-                    <input type="number" placeholder="Nominal Rp" class="w-full p-2 border border-gray-200 rounded-lg text-xs">
-                    <button class="w-full bg-emerald-700 text-white p-2 rounded-lg text-xs font-bold shadow">Kirim Donasi</button>
+            <section id="hal-admin" class="menu-halaman hidden space-y-4">
+                <h2 class="text-xl font-bold text-gray-800">⚙️ Admin Panel Panel (Input Real-time)</h2>
+                
+                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
+                    <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider">✍️ Buat / Tambah Pengumuman Baru</h3>
+                    <input type="text" id="admJudulPengumuman" placeholder="Judul Pengumuman" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
+                    <textarea id="admIsiPengumuman" placeholder="Isi detail pengumuman..." rows="3" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600"></textarea>
+                    <button onclick="adminTambahPengumuman()" class="w-full bg-emerald-700 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-emerald-800 transition">
+                        Publikasikan Pengumuman <i class="fas fa-paper-plane ml-1"></i>
+                    </button>
                 </div>
-            </section>
 
-            <section id="hal-rombongan" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">🚌 Rombongan Malang</h2>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs text-center">
-                    <p class="text-xs text-gray-600 mb-3">Klik tombol di bawah untuk mendaftar ikut rombongan bus ke Malang.</p>
-                    <button class="bg-teal-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow">Ikut Rombongan</button>
-                </div>
-            </section>
-
-            <section id="hal-nyai" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">👩 Kedatangan Nyai</h2>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs text-xs text-gray-600">
-                    Belum ada jadwal kunjungan terdekat dari Nyai. Informasi akan langsung diperbarui real-time oleh admin.
-                </div>
-            </section>
-
-            <section id="hal-profil" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">👤 Profil Saya</h2>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
-                    <p class="font-bold text-sm" id="txtNamaProfil">Abah Admin Default</p>
-                    <p class="text-xs text-gray-400" id="txtHPProfil">081330386625</p>
-                </div>
-            </section>
-
-            <section id="hal-admin" class="menu-halaman hidden space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">⚙️ Admin Panel Panel</h2>
-                <div class="bg-red-50 p-3 rounded-lg border border-red-200 text-xs text-red-800 mb-2">
-                    <strong>Akses Terbuka:</strong> Mode Uji Coba Administrator Aktif.
-                </div>
-                <div class="space-y-2">
-                    <button class="w-full bg-white p-3 rounded-lg border border-gray-200 text-left text-xs font-semibold text-gray-700 flex justify-between"><span>✍️ Kelola Pengumuman</span><i class="fas fa-chevron-right text-gray-300"></i></button>
-                    <button class="w-full bg-white p-3 rounded-lg border border-gray-200 text-left text-xs font-semibold text-gray-700 flex justify-between"><span>📖 Kelola Artikel</span><i class="fas fa-chevron-right text-gray-300"></i></button>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
+                    <h3 class="font-bold text-xs text-emerald-700 uppercase tracking-wider">👥 Tambah Anggota & Iuran Jumat Pahing</h3>
+                    <input type="text" id="admNamaAnggota" placeholder="Nama Lengkap Anggota" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
+                    <input type="number" id="admNominalIuran" placeholder="Nominal Iuran (Contoh: 20000)" class="w-full p-2 border border-gray-200 rounded-lg text-xs focus:outline-emerald-600">
+                    <button onclick="adminTambahIuran()" class="w-full bg-teal-600 text-white p-2.5 rounded-lg text-xs font-bold hover:bg-teal-700 transition">
+                        Simpan Data Iuran <i class="fas fa-save ml-1"></i>
+                    </button>
                 </div>
             </section>
 
         </main>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Konfigurasi Proyek Firebase Anda
+        const firebaseConfig = {
+            databaseURL: "https://harum-app-default-rtdb.firebaseio.com/"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // --- AMBIL DATA REAL-TIME DARI FIREBASE ---
+        function inisialisasiDataRealtime() {
+            // 1. Sinkronisasi Halaman & Dashboard Pengumuman
+            onValue(ref(db, 'harum-app/pengumuman'), (snapshot) => {
+                const data = snapshot.val();
+                const box = document.getElementById('box-pengumuman');
+                const dash = document.getElementById('dash-pengumuman');
+                if (data) {
+                    box.innerHTML = '';
+                    let keys = Object.keys(data).reverse(); // Yang terbaru di atas
+                    dash.innerText = data[keys[0]].judul;
+                    
+                    keys.forEach(key => {
+                        box.innerHTML += `
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs relative">
+                                <h3 class="font-bold text-emerald-800 text-sm">${data[key].judul}</h3>
+                                <p class="text-[10px] text-gray-400 mt-0.5">${data[key].tanggal}</p>
+                                <p class="text-xs text-gray-600 mt-2">${data[key].isi}</p>
+                            </div>`;
+                    });
+                } else {
+                    dash.innerText = "Belum ada pengumuman.";
+                    box.innerHTML = "<p class='text-xs text-gray-400'>Kosong.</p>";
+                }
+            });
+
+            // 2. Sinkronisasi Tabel Jumat Pahing & Total Saldo Kas
+            onValue(ref(db, 'harum-app/jumatpahing'), (snapshot) => {
+                const data = snapshot.val();
+                const tabel = document.getElementById('table-jumatpahing');
+                const dashJumat = document.getElementById('dash-jumat');
+                const dashKas = document.getElementById('dash-kas');
+                const kasBesar = document.getElementById('kas-total-besar');
+                
+                if (data) {
+                    tabel.innerHTML = '';
+                    let totalKas = 0;
+                    let jumlahAnggota = Object.keys(data).length;
+                    
+                    Object.keys(data).forEach(key => {
+                        let item = data[key];
+                        totalKas += parseInt(item.iuran || 0);
+                        tabel.innerHTML += `
+                            <tr class="border-b border-gray-100">
+                                <td class="p-3 font-medium text-gray-800">${item.nama}</td>
+                                <td class="p-3">Rp ${parseInt(item.iuran).toLocaleString('id-ID')}</td>
+                                <td class="p-3"><span class="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded-full font-bold">LUNAS</span></td>
+                            </tr>`;
+                    });
+                    
+                    dashJumat.innerText = jumlahAnggota + " Anggota Terdata";
+                    let formatUang = "Rp " + totalKas.toLocaleString('id-ID');
+                    dashKas.innerText = formatUang;
+                    if(kasBesar) kasBesar.innerText = formatUang;
+                }
+            });
+        }
+
+        // --- FUNGSI ADMIN: MENAMBAH DATA KE FIREBASE ---
+        window.adminTambahPengumuman = function() {
+            const judul = document.getElementById('admJudulPengumuman').value.trim();
+            const isi = document.getElementById('admIsiPengumuman').value.trim();
+            if (!judul || !isi) return alert("Mohon lengkapi judul dan isi pengumuman!");
+
+            const baruRef = push(ref(db, 'harum-app/pengumuman'));
+            set(baruRef, {
+                judul: judul,
+                isi: isi,
+                tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            }).then(() => {
+                alert("Pengumuman berhasil dipublikasikan secara real-time!");
+                document.getElementById('admJudulPengumuman').value = '';
+                document.getElementById('admIsiPengumuman').value = '';
+                bukaHalaman('pengumuman');
+            });
+        };
+
+        window.adminTambahIuran = function() {
+            const nama = document.getElementById('admNamaAnggota').value.trim();
+            const iuran = document.getElementById('admNominalIuran').value.trim();
+            if (!nama || !iuran) return alert("Mohon lengkapi nama dan nominal iuran!");
+
+            const baruRef = push(ref(db, 'harum-app/jumatpahing'));
+            set(baruRef, { nama: nama, iuran: iuran }).then(() => {
+                alert("Data iuran anggota berhasil disimpan!");
+                document.getElementById('admNamaAnggota').value = '';
+                document.getElementById('admNominalIuran').value = '';
+                bukaHalaman('jumatpahing');
+            });
+        };
+
+        // Jalankan sinkronisasi database saat aplikasi dimulai
+        inisialisasiDataRealtime();
+    </script>
 
     <script>
         const menus = [
@@ -212,20 +265,11 @@
             { id: 'jumatpahing', nama: 'Jumat Pahing', ikon: 'fa-calendar-check' },
             { id: 'uangkas', nama: 'Uang Kas', ikon: 'fa-wallet' },
             { id: 'kalender', nama: 'Kalender', ikon: 'fa-calendar-alt' },
-            { id: 'haul', nama: 'Haul Akbar', ikon: 'fa-mosque' },
-            { id: 'donasi', nama: 'Donasi Haul', ikon: 'fa-hands-helping' },
-            { id: 'rombongan', nama: 'Rombongan Malang', ikon: 'fa-bus' },
-            { id: 'nyai', nama: 'Kedatangan Nyai', ikon: 'fa-user-grace' },
-            { id: 'profil', nama: 'Profil Saya', ikon: 'fa-user' },
-            { id: 'admin', nama: 'Admin Panel', ikon: 'fa-cog' }
+            { id: 'admin', nama: 'Admin Panel Panel', ikon: 'fa-cog' }
         ];
 
-        // Jalankan pas halaman pertama terbuka
         document.addEventListener("DOMContentLoaded", () => {
             const menuKonten = document.getElementById('menuKonten');
-            menuKonten.innerHTML = '';
-            
-            // Render list navigasi menu
             menus.forEach(m => {
                 const btn = document.createElement('button');
                 btn.className = `w-full flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium text-sm text-left transition`;
@@ -233,22 +277,11 @@
                 btn.innerHTML = `<i class="fas ${m.ikon} w-6 text-center text-emerald-600"></i> <span>${m.nama}</span>`;
                 menuKonten.appendChild(btn);
             });
-
-            // Timer Jam Digital
-            setInterval(() => {
-                document.getElementById('jamDigital').innerText = new Date().toLocaleTimeString('id-ID');
-            }, 1000);
-
-            // Cek Session login lokal
-            if (localStorage.getItem('user_harum')) {
-                eksekusiMasuk(localStorage.getItem('user_harum'));
-            }
+            setInterval(() => { document.getElementById('jamDigital').innerText = new Date().toLocaleTimeString('id-ID'); }, 1000);
         });
 
-        // Toggle Sidebar Buka/Tutup
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
-        
         function kendaliSidebar() {
             if (sidebar.classList.contains('-translate-x-full')) {
                 sidebar.classList.remove('-translate-x-full');
@@ -259,35 +292,11 @@
             }
         }
 
-        // Pindah Halaman SPA
-        function bukaHalaman(idHalaman) {
+        window.bukaHalaman = function(idHalaman) {
             document.querySelectorAll('.menu-halaman').forEach(h => h.classList.add('hidden'));
             const target = document.getElementById(`hal-${idHalaman}`);
             if (target) target.classList.remove('hidden');
         }
-
-        // Bypass Tombol Masuk Uji Coba
-        function prosesLoginDemo() {
-            const noHP = document.getElementById('inputNoHP').value.trim();
-            if (!noHP) return alert("Silakan isi nomor HP!");
-
-            localStorage.setItem('user_harum', noHP);
-            eksekusiMasuk(noHP);
-        }
-
-        function eksekusiMasuk(noHP) {
-            document.getElementById('layarLogin').classList.add('hidden');
-            document.getElementById('userPhoneDisplay').innerText = "HP: " + noHP;
-            document.getElementById('txtHPProfil').innerText = noHP;
-        }
-
-        function logoutAplikasi() {
-            if (confirm("Keluar dari aplikasi?")) {
-                localStorage.removeItem('user_harum');
-                location.reload();
-            }
-        }
     </script>
 </body>
 </html>
-
