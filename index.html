@@ -4,20 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HARUM - Alumni Roudlotul Ulum</title>
-    <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Amiri (Arab) & Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-arab { font-family: 'Amiri', serif; }
-        /* Responsif untuk HP agar tidak meluber */
         main, section { max-width: 100%; overflow-x: hidden; }
     </style>
 </head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col w-full overflow-x-hidden">
+
+    <header class="bg-emerald-700 text-white h-16 px-4 flex items-center justify-between shadow-md sticky top-0 z-30 w-full">
+        <div class="flex items-center space-x-3">
+            <button onclick="kendaliSidebar()" class="text-2xl p-1"><i class="fas fa-bars"></i></button>
+            <span class="font-bold text-lg tracking-wider cursor-pointer" onclick="bukaHalaman('dashboard')">HARUM</span>
+        </div>
+        <div id="jamDigital" class="font-mono text-sm bg-emerald-800 px-3 py-1 rounded">00:00:00</div>
+    </header>
+
+    <div class="flex flex-1 relative w-full">
+        <div id="sidebarOverlay" onclick="kendaliSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+        <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col">
+            <div class="p-5 bg-emerald-800 text-white">
+                <h3 class="font-bold text-lg">Menu Navigasi</h3>
+            </div>
+            <nav class="p-2 space-y-1" id="menuKonten"></nav>
+        </aside>
+
+        <main class="flex-1 p-4 pb-24 w-full" id="kontenHalaman">
+            <section id="hal-dashboard" class="menu-halaman space-y-4">
+                <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 rounded-xl text-white shadow-md">
+                    <h2 class="text-xl font-bold">Selamat Datang, Abah</h2>
+                    <p class="text-xs text-emerald-100">Sistem Informasi Alumni</p>
+                </div>
+
+                <div id="quotes-box" class="bg-white border-l-4 border-emerald-600 p-5 rounded-r-xl shadow-xs cursor-pointer" onclick="muatQuotesRandom()">
+                    <p id="quotes-teks" class="text-gray-700 italic text-sm leading-relaxed mb-2">"Memuat hikmah..."</p>
+                    <p id="quotes-sumber" class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest"></p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('haul')">
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-star text-amber-600 mr-1"></i> Haul Syaikhuna</span>
+                        <div class="text-xs text-gray-700 mt-2 font-bold text-amber-700">Donasi & Rombongan</div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-xs" onclick="bukaHalaman('uangkas')">
+                        <span class="text-xs text-gray-400 font-semibold"><i class="fas fa-wallet text-emerald-600 mr-1"></i> Uang Kas</span>
+                        <div class="text-sm font-bold text-emerald-600 mt-2" id="dash-kas">Rp 0</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="hal-haul" class="menu-halaman hidden space-y-4">...</section>
+            <section id="hal-uangkas" class="menu-halaman hidden space-y-3">...</section>
+        </main>
+    </div>
+
+    <script type="module">
+        // Daftar Quotes (Data internal)
+        const daftarQuotes = [
+            { teks: "Barangsiapa mengenal dirinya, maka ia mengenal Tuhannya.", sumber: "Imam Al-Ghazali" },
+            { teks: "Janganlah engkau menuntut Allah untuk memenuhi kebutuhanmu sesuai kehendakmu, tapi tuntutlah dirimu untuk memenuhi hak Allah sesuai kehendak-Nya.", sumber: "Ibnu Athaillah Al-Sakandari" },
+            { teks: "Hati yang bersih adalah cermin yang memantulkan cahaya Ilahi.", sumber: "Imam Al-Ghazali" },
+            { teks: "Sabar adalah menahan diri dari mengeluh saat tertimpa musibah.", sumber: "Ibnu Athaillah" },
+            { teks: "Boleh jadi kamu membenci sesuatu, padahal ia amat baik bagimu.", sumber: "QS. Al-Baqarah: 216" },
+            { teks: "Hanya kepada-Mu kami menyembah dan hanya kepada-Mu kami mohon pertolongan.", sumber: "QS. Al-Fatihah: 5" }
+        ];
+
+        window.muatQuotesRandom = function() {
+            const index = Math.floor(Math.random() * daftarQuotes.length);
+            const q = daftarQuotes[index];
+            document.getElementById('quotes-teks').innerText = `"${q.teks}"`;
+            document.getElementById('quotes-sumber').innerText = `- ${q.sumber}`;
+        };
+
+        // Jalankan saat pertama kali dibuka
+        document.addEventListener("DOMContentLoaded", () => {
+            muatQuotesRandom();
+            // ... (Fungsi lainnya dari Firebase tetap di sini)
+        });
+        
+        // ... (Fungsi navigasi lainnya)
+    </script>
+</body>
+</html>
+
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col w-full overflow-x-hidden">
 
     <!-- ==================== HEADER UTAMA ==================== -->
