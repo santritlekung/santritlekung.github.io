@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HARUM</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <!-- Memanggil Font Amiri Naskhi dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
@@ -46,7 +50,7 @@
             </section>
         </div>
 
-        <!-- PANEL KENDALI ADMIN (Otomatis Muncul Hanya Jika Login Admin Sukses) -->
+        <!-- PANEL KENDALI ADMIN -->
         <div id="admin-panel" style="display: none; padding: 15px; margin-top: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-top: 4px solid #ffc107;">
             <h2 style="font-size: 1.1rem; margin-bottom: 15px; color: #0b5e32; border-bottom: 2px solid #f0f2f5; padding-bottom: 5px; font-weight: bold;">⚙️ PANEL KENDALI ADMIN</h2>
             
@@ -67,13 +71,13 @@
                     <option value="sabilun">Sabilun</option>
                     <option value="jumat">Jumat Pahing</option>
                 </select>
-                <input type="number" id="input-kas-nominal" placeholder="Masukkan total uang baru (Angka saja, misal: 500000)" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                <input type="number" id="input-kas-nominal" placeholder="Masukkan total uang baru" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
                 <button onclick="saveKasAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Update Nominal Uang Kas</button>
             </div>
 
             <!-- Form 2: Tambah Member -->
             <div id="form-member" style="display: none;">
-                <input type="text" id="input-member-hp" placeholder="Masukkan Nomor HP Member (Contoh: 0812345678)" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                <input type="text" id="input-member-hp" placeholder="Masukkan Nomor HP Member" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
                 <select id="input-member-role" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
                     <option value="Admin">Admin (Bisa Edit Data)</option>
                     <option value="User">User Biasa (Hanya Melihat)</option>
@@ -83,19 +87,26 @@
 
             <!-- Form 3: Tambah Agenda -->
             <div id="form-agenda" style="display: none;">
-                <input type="text" id="input-agenda-teks" placeholder="Contoh: Jum'at, 10 Juli - Pengajian Akbar Ruwahan" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                <input type="text" id="input-agenda-teks" placeholder="Contoh: Jum'at, 10 Juli - Pengajian" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
                 <button onclick="saveAgendaAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Masukkan ke Daftar Agenda</button>
             </div>
 
             <!-- Form 4: Tambah Blog -->
             <div id="form-blog" style="display: none;">
                 <input type="text" id="input-blog-judul" placeholder="Judul Artikel / Berita" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-weight: bold;">
-                <textarea id="input-blog-isi" rows="4" placeholder="Tuliskan isi informasi atau berita di sini..." style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
+                <textarea id="input-blog-isi" rows="4" placeholder="Tuliskan isi informasi di sini..." style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
+                
+                <!-- Pilihan Mode Arab -->
+                <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="input-blog-arab" style="width: 18px; height: 18px; cursor: pointer;">
+                    <label for="input-blog-arab" style="font-size: 0.85rem; font-weight: bold; color: #d9534f; cursor: pointer;">Centang jika artikel ini menggunakan Tulisan Arab (Naskhi)</label>
+                </div>
+                
                 <button onclick="saveBlogAdmin()" style="width: 100%; background: #0b5e32; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">Terbitkan Artikel Blog</button>
             </div>
         </div>
     </main>
 
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=4"></script>
 </body>
 </html>
