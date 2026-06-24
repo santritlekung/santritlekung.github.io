@@ -1,7 +1,9 @@
-// Konfigurasi Alamat Firebase Realtime Database Anda
+// ==========================================================================
+// 1. KONFIGURASI ALAMAT FIREBASE REALTIME DATABASE
+// ==========================================================================
 const FIREBASE_URL = "https://harum-app-default-rtdb.firebaseio.com/";
 
-// Data Cadangan Standar (Mencegah macet/loading terus jika Firebase kosong)
+// Data Cadangan Standar (Mencegah aplikasi macet/loading terus jika database kosong)
 const defaultData = {
     kas: { total: 0 },
     sosial: { total: 0 },
@@ -10,14 +12,16 @@ const defaultData = {
     agenda: []
 };
 
-// Fungsi Mengambil Data dari Firebase
+// ==========================================================================
+// 2. FUNGSI UNTUK MENGAMBIL DATA DARI FIREBASE (READ DATA)
+// ==========================================================================
 async function fetchData(path) {
     try {
         const response = await fetch(`${FIREBASE_URL}${path}.json`);
-        if (!response.ok) throw new Error("Gagal mengambil data");
+        if (!response.ok) throw new Error("Gagal mengambil data dari server");
         const data = await response.json();
         
-        // Jika data di peladen null/kosong, pakai data cadangan standar
+        // Jika data di database null/belum ada, gunakan data cadangan
         if (data === null) {
             return defaultData[path] || 0;
         }
@@ -28,62 +32,96 @@ async function fetchData(path) {
     }
 }
 
-// Fungsi Mengisi Data ke Tampilan Layar (UI)
+// ==========================================================================
+// 3. FUNGSI UTAMA UNTUK MENAMPILKAN DATA KE LAYAR (INITIALIZE APP)
+// ==========================================================================
 async function initApp() {
     const loadingScreen = document.getElementById("loading-screen");
     const mainContent = document.getElementById("main-content");
 
-    // Ambil semua data dari Firebase secara paralel
+    // Ambil data secara bersamaan dari Firebase
     const dataKas = await fetchData("kas");
     const dataSosial = await fetchData("sosial");
     const dataSabilun = await fetchData("sabilun");
     const dataJumat = await fetchData("jumat");
     const dataAgenda = await fetchData("agenda");
 
-    // Suntikkan data ke elemen HTML
-    document.getElementById("display-total-kas").innerText = `Rp ${Number(dataKas.total || 0).toLocaleString('id-ID')}`;
-    document.getElementById("display-total-sosial").innerText = `Rp ${Number(dataSosial.total || 0).toLocaleString('id-ID')}`;
-    document.getElementById("display-total-sabilun").innerText = `Rp ${Number(dataSabilun.total || 0).toLocaleString('id-ID')}`;
-    document.getElementById("display-total-jumat").innerText = `Rp ${Number(dataJumat.total || 0).toLocaleString('id-ID')}`;
-
-    // Tampilkan data agenda jika ada
-    const listAgenda = document.getElementById("list-agenda");
-    if (Array.isArray(dataAgenda) && dataAgenda.length > 0) {
-        listAgenda.innerHTML = "";
-        dataAgenda.forEach(item => {
-            const li = document.createElement("li");
-            li.innerText = item;
-            listAgenda.appendChild(li);
-        });
+    // Suntikkan nominal dana ke elemen HTML (Format Mata Uang Rupiah)
+    if (document.getElementById("display-total-kas")) {
+        document.getElementById("display-total-kas").innerText = `Rp ${Number(dataKas.total || 0).toLocaleString('id-ID')}`;
+    }
+    if (document.getElementById("display-total-sosial")) {
+        document.getElementById("display-total-sosial").innerText = `Rp ${Number(dataSosial.total || 0).toLocaleString('id-ID')}`;
+    }
+    if (document.getElementById("display-total-sabilun")) {
+        document.getElementById("display-total-sabilun").innerText = `Rp ${Number(dataSabilun.total || 0).toLocaleString('id-ID')}`;
+    }
+    if (document.getElementById("display-total-jumat")) {
+        document.getElementById("display-total-jumat").innerText = `Rp ${Number(dataJumat.total || 0).toLocaleString('id-ID')}`;
     }
 
-    // Sembunyikan layar loading, tampilkan konten utama aplikasi
-    loadingScreen.style.display = "none";
-    mainContent.classList.remove("content-hidden");
+    // Tampilkan daftar agenda kegiatan
+    const listAgenda = document.getElementById("list-agenda");
+    if (listAgenda) {
+        if (Array.isArray(dataAgenda) && dataAgenda.length > 0) {
+            listAgenda.innerHTML = "";
+            dataAgenda.forEach(item => {
+                const li = document.createElement("li");
+                li.innerText = item;
+                listAgenda.appendChild(li);
+            });
+        } else {
+            listAgenda.innerHTML = '<li class="empty-list">Belum ada agenda terdekat.</li>';
+        }
+    }
+
+    // Sembunyikan layar loading dan tampilkan menu utama aplikasi
+    if (loadingScreen) loadingScreen.style.display = "none";
+    if (mainContent) mainContent.classList.remove("content-hidden");
 }
 
-// Fungsi simulasi klik Login Nomor HP
+// ==========================================================================
+// 4. FUNGSI LOGIN NOMOR HP (SINKRONISASI DENGAN FIREBASE)
+// ==========================================================================
 function handleLoginWindow() {
     const nomorHp = prompt("Masukkan nomor HP Anda yang terdaftar:");
+    
+    // Jika user menekan tombol Batal (Cancel) atau membiarkan kosong
     if (!nomorHp) return;
 
-    // Cek hak akses ke cabang /users di Firebase Anda
+    // Menampilkan notifikasi awal proses pengecekan
+    alert("Sedang memeriksa nomor: " + nomorHp);
+
+    // Ambil data role user dari cabang 'users/nomor_hp' di Firebase Anda
     fetch(`${FIREBASE_URL}users/${nomorHp}.json`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Respons jaringan bermasalah.");
+            return res.json();
+        })
         .then(role => {
             const badge = document.getElementById("user-role");
+            
             if (role) {
-                badge.innerText = role;
-                badge.className = `badge badge-${role.toLowerCase()}`;
-                alert(`Selamat datang, Anda login sebagai ${role}!`);
+                // Jika nomor HP ditemukan dan memiliki Role (misal: "Admin")
+                if (badge) {
+                    badge.innerText = role;
+                    badge.className = `badge badge-${role.toLowerCase()}`;
+                }
+                alert(`Selamat datang! Anda berhasil masuk sebagai ${role}.`);
             } else {
-                badge.innerText = "User";
-                badge.className = "badge badge-user";
-                alert("Nomor Anda belum terdaftar sebagai Admin. Masuk sebagai User biasa.");
+                // Jika nomor HP tidak terdaftar di cabang 'users' Firebase
+                if (badge) {
+                    badge.innerText = "User";
+                    badge.className = "badge badge-user";
+                }
+                alert("Nomor Anda tidak terdaftar sebagai Admin. Anda masuk sebagai Pengunjung (User) biasa.");
             }
         })
-        .catch(err => alert("Gagal memeriksa data login. Periksa koneksi internet."));
+        .catch(err => {
+            console.error("Kesalahan sistem login:", err);
+            alert("Gagal terhubung ke database. Pastikan koneksi internet stabil atau periksa Rules Firebase Anda.");
+        });
 }
 
-// Jalankan inisialisasi aplikasi saat halaman selesai dimuat
+// JALANKAN APLIKASI OTOMATIS SAAT HALAMAN SELESAI DIMUAT BROWSER
 document.addEventListener("DOMContentLoaded", initApp);
