@@ -1,381 +1,169 @@
-/* ==========================================================================
-   1. VARIABLES & RESET STYLES
-   ========================================================================== */
-:root {
-    --primary-color: #0f5132;    /* Hijau Islami Tua */
-    --secondary-color: #198754;  /* Hijau Daun */
-    --accent-color: #ffc107;     /* Emas/Kuning Aksen */
-    --dark-color: #212529;       /* Teks Utama */
-    --light-color: #f8f9fa;      /* Background Utama */
-    --white: #ffffff;
-    --danger-color: #dc3545;
-    --border-color: #dee2e6;
-    --sidebar-width: 260px;
-    --header-height: 60px;
-    --font-latin: 'Inter', sans-serif;
-    --font-arabic: 'Amiri', serif;
-    --shadow: 0 2px 4px rgba(0,0,0,0.08);
-    --transition: all 0.3s ease;
-}
-
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    font-family: var(--font-latin);
-    background-color: var(--light-color);
-    color: var(--dark-color);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    background-color: #f4f6f9;
+    color: #333;
 }
 
-/* ==========================================================================
-   2. LAYOUT STRUCTURE (SHELL APLIKASI)
-   ========================================================================== */
-.app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* HEADER */
-.app-header {
-    height: var(--header-height);
-    background-color: var(--primary-color);
-    color: var(--white);
+/* Navigasi Atas */
+.main-header {
+    background-color: #0b5e32;
+    color: white;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    box-shadow: var(--shadow);
-}
-
-.header-left, .header-right {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.app-logo-area {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logo-img {
-    height: 35px;
-    width: auto;
-    object-fit: contain;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .app-title {
-    font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: bold;
     letter-spacing: 1px;
 }
 
-/* BODY LOOP */
-.app-body {
-    display: flex;
-    flex: 1;
-    margin-top: var(--header-height);
-    position: relative;
-}
-
-/* SIDEBAR NAVIGASI */
-.app-sidebar {
-    width: var(--sidebar-width);
-    background-color: var(--white);
-    border-right: 1px solid var(--border-color);
-    position: fixed;
-    top: var(--header-height);
-    bottom: 0;
-    left: calc(-1 * var(--sidebar-width)); /* Sembunyi secara default di mobile */
-    z-index: 90;
-    transition: var(--transition);
-    overflow-y: auto;
-}
-
-/* Sidebar Aktif (Terbuka di Mobile) */
-.app-sidebar.active {
-    left: 0;
-}
-
-.sidebar-nav ul {
-    list-style: none;
-    padding: 1rem 0;
-}
-
-.sidebar-nav .nav-link {
+/* Tombol Login & Badge Status */
+.auth-container {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.75rem 1.5rem;
-    color: #495057;
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
+    gap: 10px;
 }
 
-.sidebar-nav .nav-link i {
-    width: 20px;
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-.sidebar-nav .nav-link:hover, 
-.sidebar-nav .nav-link.active {
-    background-color: #e8f5e9;
-    color: var(--primary-color);
-    border-left: 4px solid var(--secondary-color);
-}
-
-.nav-divider {
-    padding: 1rem 1.5rem 0.25rem 1.5rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #868e96;
-    font-weight: 700;
-}
-
-/* MAIN CONTENT AREA */
-.app-main {
-    flex: 1;
-    padding: 1.25rem;
-    width: 100%;
-    transition: var(--transition);
-}
-
-/* FOOTER */
-.app-footer {
-    background-color: #e9ecef;
-    text-align: center;
-    padding: 1rem;
+.badge {
+    padding: 5px 12px;
+    border-radius: 15px;
     font-size: 0.85rem;
-    color: #6c757d;
-    border-top: 1px solid var(--border-color);
+    font-weight: bold;
 }
 
-/* ==========================================================================
-   3. KOMPONEN UTAMA UI & FORM & UTILITIES
-   ========================================================================== */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
+.badge-tamu { background-color: #6c757d; color: white; }
+.badge-user { background-color: #17a2b8; color: white; }
+.badge-admin { background-color: #ffc107; color: #212529; }
+
+.btn-login {
+    background-color: #ffc107;
     border: none;
-    border-radius: 6px;
-    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 5px;
+    font-weight: bold;
     cursor: pointer;
-    transition: var(--transition);
+}
+
+/* Konten Utama */
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Efek Loading */
+.loading-box {
+    text-align: center;
+    padding: 5px;
+    margin-top: 50px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #0b5e32;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Konten Tersembunyi */
+.content-hidden {
+    display: none;
+}
+
+/* Kartu Ringkasan */
+.card-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card-summary h2 {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.total-dana {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0b5e32;
+}
+
+/* Grid Menu */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    background: white;
+    padding: 12px 5px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.menu-item h3 {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.menu-item p {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Agenda */
+.card-agenda {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card-agenda h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #f4f6f9;
+    padding-bottom: 5px;
+}
+
+.agenda-list {
+    list-style: none;
+}
+
+.agenda-list li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
     font-size: 0.9rem;
 }
 
-.btn-icon {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 0.25rem;
-}
-
-.btn-primary { background-color: var(--accent-color); color: var(--dark-color); }
-.btn-primary:hover { background-color: #e0a800; }
-.btn-success { background-color: var(--secondary-color); color: var(--white); }
-.btn-success:hover { background-color: #146c43; }
-.btn-danger { background-color: var(--danger-color); color: var(--white); }
-.btn-danger:hover { background-color: #b21f2d; }
-.btn-block { width: 100%; justify-content: center; }
-
-.badge {
-    padding: 0.25rem 0.6rem;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-.badge-user { background-color: rgba(255,255,255,0.2); color: var(--white); border: 1px solid rgba(255,255,255,0.4); }
-.badge-admin { background-color: var(--accent-color); color: var(--dark-color); }
-
-.hidden { display: none !important; }
-
-.loading-spinner {
-    text-align: center;
-    padding: 3rem;
-    color: var(--secondary-color);
-    font-size: 1.2rem;
-}
-
-/* ==========================================================================
-   4. INTERFACES KHUSUS (SABILUN NAJAH & YOUTUBE PLAYER)
-   ========================================================================== */
-/* Tulisan Arab khusus Amalan */
-.arabic-text {
-    font-family: var(--font-arabic);
-    font-size: 2.2rem;
-    line-height: 2.2;
-    text-align: right;
-    direction: rtl;
-    padding: 1.5rem 0;
-    color: #111;
-}
-
-/* Player Youtube Responsif */
-.video-responsive {
-    position: relative;
-    padding-bottom: 56.25%; /* Rasio 16:9 */
-    height: 0;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    background-color: #000;
-    margin-bottom: 1rem;
-}
-
-.video-responsive iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
-
-/* ==========================================================================
-   5. MODAL DIALOG (LOGIN POPUP)
-   ========================================================================== */
-.modal-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 1rem;
-}
-
-.modal-box {
-    background-color: var(--white);
-    border-radius: 12px;
-    width: 100%;
-    max-width: 400px;
-    z-index: 1010;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    overflow: hidden;
-    animation: modalSlideUp 0.3s ease;
-}
-
-.modal-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-header {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 1rem 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.btn-close {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.modal-body { padding: 1.5rem; }
-
-.form-group { margin-bottom: 1.25rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
-
-.input-with-icon {
-    position: relative;
-}
-
-.input-with-icon i {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #a0aec0;
-}
-
-.input-with-icon input {
-    width: 100%;
-    padding: 0.75rem 0.75rem 0.75rem 38px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 1rem;
-    outline: none;
-    transition: var(--transition);
-}
-
-.input-with-icon input:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15);
-}
-
-.form-help { font-size: 0.75rem; color: #6c757d; display: block; margin-top: 0.25rem; }
-.alert { padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; font-weight: 500; }
-.alert-danger { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
-
-/* Overlay Sidebar Mobile Background */
-.sidebar-overlay {
-    position: fixed;
-    top: var(--header-height);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.4);
-    z-index: 85;
-    display: none;
-}
-.sidebar-overlay.active { display: block; }
-
-@keyframes modalSlideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* ==========================================================================
-   6. RESPONSIVE MEDIA QUERIES (DESKTOP VERSION)
-   ========================================================================== */
-@media (min-width: 992px) {
-    #sidebar-toggle {
-        display: none; /* Sembunyikan hamburger menu di desktop */
-    }
-
-    .app-sidebar {
-        left: 0; /* Selalu tampilkan sidebar di layar lebar */
-    }
-
-    .app-main {
-        margin-left: var(--sidebar-width); /* Berikan ruang untuk sidebar */
-        padding: 2rem;
-    }
-    
-    .sidebar-overlay {
-        display: none !important;
-    }
+.empty-list {
+    color: #999;
+    font-style: italic;
 }
