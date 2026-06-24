@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; margin: 0 !important; padding: 0 !important; bg-color: #f9fafb; }
         .font-arab { font-family: 'Amiri', serif; }
         .line-clamp-2 {
             display: -webkit-box;
@@ -16,6 +16,9 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        /* Memaksa elemen menempel ke atas secara mutlak tanpa celah hantu */
+        main { display: block !important; margin-top: 0 !important; padding-top: 12px !important; }
+        section { margin-top: 0 !important; padding-top: 0 !important; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen">
@@ -26,7 +29,8 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="flex items-center space-x-2 cursor-pointer" onclick="bukaHalaman('dashboard')">
-                <div class="h-8 w-8 rounded-full bg-emerald-600 border-2 border-amber-300 flex items-center justify-center font-bold text-xs text-amber-300">H</div>
+                <img src="logo.jpg" alt="Logo" class="h-9 w-9 rounded-full object-cover border-2 border-amber-300 shadow-sm" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                <div id="logoFallback" class="hidden h-9 w-9 rounded-full bg-emerald-600 border-2 border-amber-300 items-center justify-center font-bold text-xs text-amber-300">H</div>
                 <span class="font-bold text-lg tracking-wider">HARUM</span>
             </div>
         </div>
@@ -42,10 +46,10 @@
         <nav class="p-3 space-y-1 overflow-y-auto flex-1" id="menuKonten"></nav>
     </aside>
 
-    <main class="block p-4 pb-28 w-full max-w-xl mx-auto" id="kontenHalaman">
+    <main class="w-full max-w-xl mx-auto px-4 pb-28" id="kontenHalaman">
         
-        <section id="hal-dashboard" class="menu-halaman space-y-4">
-            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 rounded-xl text-white shadow-sm mt-0">
+        <section id="hal-dashboard" class="menu-halaman space-y-4" style="margin-top: 0 !important; padding-top: 0 !important;">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 rounded-xl text-white shadow-sm" style="margin-top: 0 !important;">
                 <h2 class="text-lg font-bold">Selamat Datang di HARUM</h2>
                 <p class="text-xs text-emerald-100 mt-0.5">Sistem Informasi Real-time Korwil Demak.</p>
             </div>
@@ -444,7 +448,8 @@
                 if(adm) adm.innerHTML = '';
                 if (data) {
                     Object.keys(data).reverse().forEach(k => {
-                        user.innerHTML += `<div class="bg-white p-2 rounded-xl border border-gray-100 shadow-xs mt-3"><div class="relative w-full aspect-video rounded-lg overflow-hidden bg-black"><iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube-nocookie.com/embed/${data[k].ytId}?origin=http://localhost" frameborder="0" referrerpolicy="no-referrer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><h3 class="font-bold text-xs text-gray-800 mt-1.5 px-0.5">${data[k].judul}</h3></div>`;
+                        // FORCED FALLBACK: Menggunakan format no-referrer embed untuk bypass pembatasan browser lokal offline
+                        user.innerHTML += `<div class="bg-white p-2 rounded-xl border border-gray-100 shadow-xs mt-3"><div class="relative w-full aspect-video rounded-lg overflow-hidden bg-black"><iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${data[k].ytId}?autoplay=0&hl=id&cc_lang_pref=id" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><h3 class="font-bold text-xs text-gray-800 mt-1.5 px-0.5">${data[k].judul}</h3></div>`;
                         adm.innerHTML += `<div class="flex items-center justify-between bg-gray-50 p-1 rounded text-[10px]"><span>${data[k].judul}</span><div class="flex space-x-1"><button onclick="adminEditVideo('${k}','${data[k].judul}','${data[k].link}')" class="text-emerald-600 px-1"><i class="fas fa-edit"></i></button><button onclick="hapusNode('video','${k}')" class="text-red-600 px-1"><i class="fas fa-trash"></i></button></div></div>`;
                     });
                 }
@@ -577,4 +582,3 @@
     </script>
 </body>
 </html>
-
