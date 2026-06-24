@@ -202,69 +202,283 @@
 
         </main>
     </div>
-    <!-- ==================== SCRIPT LOGIKA (FIREBASE) ==================== -->
+       <!-- ==================== SCRIPT LOGIKA (FIREBASE) UTAH & FIX ==================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // CONFIG FIREBASE ABAH (Pastikan diisi lengkap sesuai akun Firebase Abah)
         const firebaseConfig = { 
-            // Masukkan konfigurasi Firebase Abah di sini 
+            databaseURL: "https://harum-app-default-rtdb.firebaseio.com/" 
         };
+        
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Fungsi Navigasi Sidebar
-        window.kendaliSidebar = () => {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        };
+        let pengumumanCache = {};
+        let artikelCache = {};
 
-        window.bukaHalaman = (id) => {
-            document.querySelectorAll('.menu-halaman').forEach(el => el.classList.add('hidden'));
-            document.getElementById('hal-' + id).classList.remove('hidden');
-            window.kendaliSidebar();
-        };
+        // --- DAFTAR MENU SIDEBAR ---
+        const menus = [
+            { id: 'dashboard', nama: 'Beranda', ikon: 'fa-home' },
+            { id: 'pengumuman', nama: 'Pengumuman', ikon: 'fa-bullhorn' },
+            { id: 'artikel', nama: 'Buku Artikel/Blog', ikon: 'fa-book-open' },
+            { id: 'jumatpahing', nama: 'Jumat Pahing', ikon: 'fa-calendar-check' },
+            { id: 'uangkas', nama: 'Uang Kas', ikon: 'fa-wallet' },
+            { id: 'kalender', nama: 'Kalender', ikon: 'fa-calendar-alt' },
+            { id: 'admin-auth', nama: 'Admin Panel', ikon: 'fa-cog' }
+        ];
 
-        // Sinkronisasi Data Artikel & Do'a (Judul Tengah)
-        onValue(ref(db, 'harum-app/artikel'), (snapshot) => {
-            const data = snapshot.val();
-            const box = document.getElementById('box-artikel');
-            const admListArt = document.getElementById('adm-list-artikel');
-            box.innerHTML = '';
-            if(admListArt) admListArt.innerHTML = '';
-
-            if (data) {
-                Object.keys(data).reverse().forEach(key => {
-                    let item = data[key];
-                    // Tampilan User: Judul Besar Tengah
-                    box.innerHTML += `
-                        <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-xs">
-                            <h3 class="text-lg font-bold text-emerald-800 text-center uppercase border-b border-emerald-100 pb-2 mb-3">${item.judul}</h3>
-                            ${item.arab ? `<p class="font-arab text-3xl text-center text-gray-950 leading-loose my-4">${item.arab}</p>` : ''}
-                            <p class="text-xs text-gray-600 text-justify leading-relaxed mt-2">${item.arti}</p>
-                        </div>`;
-                    
-                    // Tampilan Admin: List untuk Edit/Hapus
-                    if(admListArt) {
-                        admListArt.innerHTML += `
-                            <div class="flex items-center justify-between bg-gray-50 p-2 rounded text-xs">
-                                <span class="font-bold truncate">${item.judul}</span>
-                                <div class="flex gap-1">
-                                    <button onclick="alert('Fitur edit siap dipanggil')" class="bg-amber-500 text-white px-2 py-1 rounded"><i class="fas fa-edit"></i></button>
-                                </div>
-                            </div>`;
-                    }
+        // --- RENDER MENU & KENDALI SIDEBAR ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuKonten = document.getElementById('menuKonten');
+            if (menuKonten) {
+                menuKonten.innerHTML = '';
+                menus.forEach(m => {
+                    const btn = document.createElement('button');
+                    btn.className = `w-full flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium text-sm text-left transition`;
+                    btn.onclick = () => { 
+                        if(m.id === 'admin-auth' && sessionStorage.getItem('admin_authenticated') === 'true') {
+                            bukaHalaman('admin-panel');
+                        } else {
+                            bukaHalaman(m.id); 
+                        }
+                    };
+                    btn.innerHTML = `<i class="fas ${m.ikon} w-6 text-center text-emerald-600"></i> <span>${m.nama}</span>`;
+                    menuKonten.appendChild(btn);
                 });
             }
+            
+            // Jalankan Jam Digital
+            setInterval(() => { 
+                const jamEl = document.getElementById('jamDigital');
+                if (jamEl) jamEl.innerText = new Date().toLocaleTimeString('id-ID'); 
+            }, 1000);
+            
+            // Muat Data Firebase
+            muatDataFirebase();
         });
 
-        // Jam Digital
-        setInterval(() => {
-            document.getElementById('jamDigital').innerText = new Date().toLocaleTimeString('id-ID');
-        }, 1000);
+        window.kendaliSidebar = function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        };
 
+        window.bukaHalaman = function(idHalaman) {
+            document.querySelectorAll('.menu-halaman').forEach(h => h.classList.add('hidden'));
+            const target = document.getElementById(`hal-${idHalaman}`);
+            if (target) target.classList.remove('hidden');
+            
+            // Otomatis tutup sidebar setelah klik menu
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        };
+
+        // --- AMBIL DATA DARI FIREBASE ---
+        function muatDataFirebase() {
+            // 1. Pengumuman
+            onValue(ref(db, 'harum-app/pengumuman'), (snapshot) => {
+                const data = snapshot.val();
+                const box = document.getElementById('box-pengumuman');
+                const dash = document.getElementById('dash-pengumuman');
+                const admList = document.getElementById('adm-list-pengumuman');
+                
+                if (data) {
+                    pengumumanCache = data; 
+                    if(box) box.innerHTML = '';
+                    if(admList) admList.innerHTML = '';
+                    let keys = Object.keys(data).reverse();
+                    if(dash) dash.innerText = data[keys[0]].judul;
+                    
+                    keys.forEach(key => {
+                        if(box) {
+                            box.innerHTML += `
+                                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-xs">
+                                    <h3 class="font-bold text-emerald-800 text-sm">${data[key].judul}</h3>
+                                    <p class="text-[10px] text-gray-400">${data[key].tanggal}</p>
+                                    <p class="text-xs text-gray-600 mt-2 whitespace-pre-wrap">${data[key].isi}</p>
+                                </div>`;
+                        }
+                        if(admList) {
+                            admList.innerHTML += `
+                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-100 text-xs">
+                                    <div class="truncate pr-2 flex-1">
+                                        <p class="font-bold text-gray-700 truncate">${data[key].judul}</p>
+                                    </div>
+                                    <div class="flex gap-1 shrink-0">
+                                        <button onclick="picuEditPengumuman('${key}')" class="bg-amber-500 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-edit"></i></button>
+                                        <button onclick="picuHapusPengumuman('${key}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>`;
+                        }
+                    });
+                }
+            });
+
+            // 2. Artikel & Do'a (Judul Besar & Tengah)
+            onValue(ref(db, 'harum-app/artikel'), (snapshot) => {
+                const data = snapshot.val();
+                const box = document.getElementById('box-artikel');
+                const admListArt = document.getElementById('adm-list-artikel');
+                if (data) {
+                    artikelCache = data;
+                    if(box) box.innerHTML = '';
+                    if(admListArt) admListArt.innerHTML = '';
+                    
+                    Object.keys(data).reverse().forEach(key => {
+                        let arabHtml = data[key].arab ? `<p class="font-arab text-3xl text-center text-gray-950 leading-loose my-4">${data[key].arab}</p>` : '';
+                        if(box) {
+                            box.innerHTML += `
+                                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-xs space-y-3">
+                                    <div class="text-center border-b border-gray-100 pb-2">
+                                        <h3 class="text-lg font-bold text-emerald-800 tracking-wide uppercase">${data[key].judul}</h3>
+                                    </div>
+                                    ${arabHtml}
+                                    <p class="text-xs text-gray-600 italic text-justify leading-relaxed mt-2">${data[key].arti}</p>
+                                </div>`;
+                        }
+                        if(admListArt) {
+                            admListArt.innerHTML += `
+                                <div class="flex items-center justify-between bg-gray-50 p-2 rounded border border-gray-100 text-xs">
+                                    <div class="truncate pr-2 flex-1">
+                                        <p class="font-bold text-gray-700 truncate">${data[key].judul}</p>
+                                    </div>
+                                    <div class="flex gap-1 shrink-0">
+                                        <button onclick="picuEditArtikel('${key}')" class="bg-amber-500 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-edit"></i></button>
+                                        <button onclick="picuHapusArtikel('${key}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>`;
+                        }
+                    });
+                }
+            });
+
+            // 3. Jumat Pahing
+            onValue(ref(db, 'harum-app/jumatpahing'), (snapshot) => {
+                const data = snapshot.val();
+                const tabel = document.getElementById('table-jumatpahing');
+                const dashJumat = document.getElementById('dash-jumat');
+                if (data) {
+                    if(tabel) tabel.innerHTML = '';
+                    let jumlah = Object.keys(data).length;
+                    Object.keys(data).forEach(key => {
+                        if(tabel) {
+                            tabel.innerHTML += `
+                                <tr class="border-b border-gray-100">
+                                    <td class="p-3 font-medium text-gray-800">${data[key].nama}</td>
+                                    <td class="p-3">Rp ${parseInt(data[key].iuran).toLocaleString('id-ID')}</td>
+                                    <td class="p-3"><span class="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded-full font-bold">LUNAS</span></td>
+                                </tr>`;
+                        }
+                    });
+                    if(dashJumat) dashJumat.innerText = jumlah + " Anggota Terdata";
+                }
+            });
+
+            // 4. Uang Kas
+            onValue(ref(db, 'harum-app/uangkas'), (snapshot) => {
+                const data = snapshot.val();
+                const dashKas = document.getElementById('dash-kas');
+                const kasBesar = document.getElementById('kas-total-besar');
+                const kasKet = document.getElementById('kas-keterangan');
+                if (data) {
+                    let uang = "Rp " + parseInt(data.total || 0).toLocaleString('id-ID');
+                    if(dashKas) dashKas.innerText = uang;
+                    if(kasBesar) kasBesar.innerText = uang;
+                    if(kasKet) kasKet.innerText = data.keterangan || "Belum ada catatan.";
+                }
+            });
+            
+            hitungKalenderLengkap();
+        }
+
+        // --- HITUNG KALENDER LENGKAP ---
+        function hitungKalenderLengkap() {
+            const sekarang = new Date();
+            const opsiMasehi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const txtMasehi = sekarang.toLocaleDateString('id-ID', opsiMasehi);
+            
+            const opsiHijriyah = { day: 'numeric', month: 'long', year: 'numeric' };
+            let txtHijriyah = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', opsiHijriyah).format(sekarang) + " هجرية";
+
+            const daftarPasaran = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+            const daftarHariJawa = ["Akad", "Senen", "Seloso", "Rebo", "Kemis", "Jumat", "Setu"];
+            const selisihHari = Math.floor((sekarang.getTime() - new Date("1970-01-01").getTime()) / (1000 * 60 * 60 * 24));
+            
+            const indeksPasaran = (selisihHari + 3) % 5;
+            const txtPasaran = `${daftarHariJawa[sekarang.getDay()]} ${daftarPasaran[indeksPasaran < 0 ? indeksPasaran + 5 : indeksPasaran]}`;
+
+            const dashKal = document.getElementById('dash-kalender');
+            if (dashKal) {
+                dashKal.innerHTML = `
+                    <div class="text-gray-800 font-bold">${txtPasaran}</div>
+                    <div class="text-[10px] text-gray-500 mt-0.5">${txtMasehi}</div>
+                    <div class="text-xs text-emerald-700 font-arab font-bold mt-0.5" style="direction: rtl; text-align: left;">${txtHijriyah}</div>`;
+            }
+
+            if (document.getElementById('page-kal-masehi')) document.getElementById('page-kal-masehi').innerText = txtMasehi;
+            if (document.getElementById('page-kal-hijriyah')) document.getElementById('page-kal-hijriyah').innerText = txtHijriyah;
+            if (document.getElementById('page-kal-pasaran')) document.getElementById('page-kal-pasaran').innerText = txtPasaran;
+        }
+
+        // --- VERIFIKASI ADMIN PANEL ---
+        window.verifikasiSandiAdmin = function() {
+            const pin = document.getElementById('inputPinAdmin').value.trim();
+            if (pin === 'demak2026') { 
+                alert("Akses Admin Terbuka!");
+                sessionStorage.setItem('admin_authenticated', 'true');
+                document.getElementById('inputPinAdmin').value = '';
+                bukaHalaman('admin-panel');
+            } else {
+                alert("PIN Salah!");
+            }
+        };
+
+        window.kunciUlangAdmin = function() {
+            sessionStorage.removeItem('admin_authenticated');
+            bukaHalaman('dashboard');
+        };
+
+        // --- LOGIKA FORM ADMIN (PENGUMUMAN & ARTIKEL) ---
+        window.adminTambahPengumuman = function() {
+            const judul = document.getElementById('admJudulPengumuman').value.trim();
+            const isi = document.getElementById('admIsiPengumuman').value.trim();
+            if (!judul || !isi) return alert("Lengkapi data!");
+            push(ref(db, 'harum-app/pengumuman'), {
+                judul, isi, tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            }).then(() => { alert("Disimpan!"); document.getElementById('admJudulPengumuman').value=''; document.getElementById('admIsiPengumuman').value=''; bukaHalaman('pengumuman'); });
+        };
+
+        window.adminTambahArtikel = function() {
+            const judul = document.getElementById('admJudulArtikel').value.trim().toUpperCase();
+            const arab = document.getElementById('admIsiArab').value.trim();
+            const arti = document.getElementById('admIsiArti').value.trim();
+            if (!judul || !arti) return alert("Wajib diisi!");
+            push(ref(db, 'harum-app/artikel'), { judul, arab, arti }).then(() => { alert("Sukses Menyimpan!"); document.getElementById('admJudulArtikel').value=''; document.getElementById('admIsiArab').value=''; document.getElementById('admIsiArti').value=''; bukaHalaman('artikel'); });
+        };
+
+        window.adminTambahIuran = function() {
+            const nama = document.getElementById('admNamaAnggota').value.trim();
+            const iuran = document.getElementById('admNominalIuran').value.trim();
+            if (!nama || !iuran) return alert("Lengkapi data!");
+            push(ref(db, 'harum-app/jumatpahing'), { nama, iuran }).then(() => { alert("Sukses!"); document.getElementById('admNamaAnggota').value = ''; document.getElementById('admNominalIuran').value = ''; bukaHalaman('jumatpahing'); });
+        };
+
+        window.adminUpdateKas = function() {
+            const total = document.getElementById('admTotalKas').value.trim();
+            const keterangan = document.getElementById('admKetKas').value.trim();
+            if (!total) return alert("Input nominal!");
+            set(ref(db, 'harum-app/uangkas'), { total, keterangan }).then(() => { alert("Kas Di-update!"); document.getElementById('admTotalKas').value = ''; document.getElementById('admKetKas').value = ''; bukaHalaman('uangkas'); });
+        };
     </script>
 </body>
 </html>
