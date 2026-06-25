@@ -267,6 +267,27 @@
             { id: 'admin-auth', nama: 'Admin Panel', ikon: 'fa-cog' }
         ];
 
+        // ==================== LOGIKA HISTORY / TOMBOL KEMBALI HP ====================
+        window.bukaHalaman = function(id, dataDariHistory = false) {
+            document.querySelectorAll('.menu-halaman').forEach(h => h.classList.add('hidden'));
+            const target = document.getElementById('hal-' + id);
+            if (target) target.classList.remove('hidden');
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+
+            if (!dataDariHistory) {
+                window.history.pushState({ halamanId: id }, "", "");
+            }
+        };
+
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.halamanId) {
+                window.bukaHalaman(event.state.halamanId, true);
+            } else {
+                window.bukaHalaman('dashboard', true);
+            }
+        });
+
         // ==================== FUNGSI GLOBAL ====================
         window.muatQuotesRandom = function() {
             const index = Math.floor(Math.random() * daftarQuotes.length);
@@ -278,14 +299,6 @@
         window.kendaliSidebar = function() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
             document.getElementById('sidebarOverlay').classList.toggle('hidden');
-        };
-
-        window.bukaHalaman = function(id) {
-            document.querySelectorAll('.menu-halaman').forEach(h => h.classList.add('hidden'));
-            const target = document.getElementById('hal-' + id);
-            if (target) target.classList.remove('hidden');
-            document.getElementById('sidebar').classList.add('-translate-x-full');
-            document.getElementById('sidebarOverlay').classList.add('hidden');
         };
 
         window.hapusNode = function(path, key) {
@@ -309,7 +322,6 @@
             bukaHalaman('dashboard');
         };
 
-        // Ekstrak ID video dari url youtube biasa/share
         function ambilIdYoutube(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             const match = url.match(regExp);
@@ -630,6 +642,9 @@
 
         // ==================== INISIALISASI ====================
         document.addEventListener("DOMContentLoaded", () => {
+            // Set riwayat halaman awal (dashboard) ke state browser
+            window.history.replaceState({ halamanId: 'dashboard' }, "", "");
+
             const menuKonten = document.getElementById('menuKonten');
             if (menuKonten) {
                 menuKonten.innerHTML = '';
